@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 
-import Skystone_14999.Parameters.ParameterHM;
+import UltimateGoal_RobotTeam.Parameters.ParameterHM;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 

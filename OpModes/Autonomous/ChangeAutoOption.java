@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import Skystone_14999.OpModes.TeleOp.BasicTeleOp;
+import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 
 @Autonomous(name="ChangeAutoOption", group="Autonomous")
 @Disabled

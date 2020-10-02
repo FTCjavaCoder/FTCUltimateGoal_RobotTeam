@@ -9,8 +9,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-import Skystone_14999.HarwareConfig.HardwareBilly;
-import Skystone_14999.OpModes.Autonomous.BasicAuto;
+import UltimateGoal_RobotTeam.HarwareConfig.HardwareBilly;
+import UltimateGoal_RobotTeam.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="Auto Driving Test", group="Test")
 @Disabled

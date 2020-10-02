@@ -81,7 +81,7 @@ public class Hardware_Pw
     // public ElapsedTime period  = new ElapsedTime();
 
     // To keep information about initial parameters
-    public Skystone_14999.Parameters.Constants_Pw cons = new Skystone_14999.Parameters.Constants_Pw();
+    public UltimateGoal_RobotTeam.Parameters.Constants_Pw cons = new UltimateGoal_RobotTeam.Parameters.Constants_Pw();
 
     // Calibration Mode. Variables
     private boolean jackCalibrationMode = false;

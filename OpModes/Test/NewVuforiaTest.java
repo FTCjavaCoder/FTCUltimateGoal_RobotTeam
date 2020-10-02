@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
-import Skystone_14999.OpModes.Autonomous.BasicAuto;
+import UltimateGoal_RobotTeam.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="New Vuforia Test", group="Test")
 @Disabled

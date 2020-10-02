@@ -2,7 +2,7 @@ package UltimateGoal_RobotTeam.OpModes.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import Skystone_14999.OpModes.TeleOp.BasicTeleOp;
+import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 
 
 @TeleOp(name="Servo Test", group="TeleOp")

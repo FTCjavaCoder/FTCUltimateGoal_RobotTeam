@@ -45,7 +45,7 @@ public class FullDrive_Pw extends OpMode
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
-    private Skystone_14999.HarwareConfig.Hardware_Pw Billy;
+    private UltimateGoal_RobotTeam.HarwareConfig.Hardware_Pw Billy;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -54,7 +54,7 @@ public class FullDrive_Pw extends OpMode
     public void init() {
         telemetry.addData("Status", "Initialized");
 
-        Billy = new Skystone_14999.HarwareConfig.Hardware_Pw(this);
+        Billy = new UltimateGoal_RobotTeam.HarwareConfig.Hardware_Pw(this);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
