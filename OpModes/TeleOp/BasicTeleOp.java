@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //import TestOpModesOffline.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -177,8 +178,7 @@ public class BasicTeleOp extends BasicOpMode {
         Billy.servoFoundationL.setPosition(0.80);
         Billy.servoFoundationR.setPosition(0.20);
 
-        Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
-        Billy.armServoRed.setPosition(Billy.stoneArmInitRed);
+        Billy.wobbleGoalServo.setPosition(Billy.stoneArmInitBlue);
         Billy.rackServoBlue.setPosition(Billy.rackInitBlue);
         Billy.rackServoRed.setPosition(Billy.rackInitRed);
 
@@ -213,7 +213,7 @@ public class BasicTeleOp extends BasicOpMode {
                 telemetry.addData("Gripper", "Servo Left (%.2f), Servo Right (%.2f)",
                         Billy.stoneServoLeft.getPosition(), Billy.stoneServoRight.getPosition());
                 telemetry.addData("Autonomous", "Servo Blue (%.2f), Servo Red (%.2f)",
-                        Billy.armServoBlue.getPosition(), Billy.armServoRed.getPosition());
+                        Billy.wobbleGoalServo.getPosition());
 
             case 4 :
             // Status and Heading

@@ -34,24 +34,28 @@ import UltimateGoal_RobotTeam.Parameters.Constants;
 public class HardwareBilly
 {
     /* Public OpMode members. */
-    public DcMotor frontLeft   = null;
+    public DcMotor  frontLeft   = null;
     public DcMotor  frontRight  = null;
     public DcMotor  backLeft    = null;
     public DcMotor  backRight   = null;
-    public DcMotor jack = null;
+    public DcMotor  shooterLeft = null;
+    public DcMotor  shooterRight = null;
+    public DcMotor  jack = null;
     public DcMotor  slide       = null;
 
-    public Servo servoFoundationL  = null;
+    public Servo  servoFoundationL  = null;
     public Servo  servoFoundationR  = null;
     public BNO055IMU imu = null;
     public HardwareMap hwMap           =  null;
     public ElapsedTime period  = new ElapsedTime();
 
+    public Servo  wobbleGoalServo    = null;
+
     public Servo  stoneServoLeft    = null;
     public Servo  stoneServoRight   = null;
     public Servo  armServoBlue    = null;
-    public Servo  rackServoBlue = null;
     public Servo  armServoRed   = null;
+    public Servo  rackServoBlue = null;
     public Servo  rackServoRed = null;
     public Servo  servoCapstoneRelease   = null;
 
@@ -135,6 +139,8 @@ public class HardwareBilly
             frontRight = hwMap.get(DcMotor.class, "motor_fr");
             backLeft = hwMap.get(DcMotor.class, "motor_bl");
             backRight = hwMap.get(DcMotor.class, "motor_br");
+            shooterLeft = hwMap.get(DcMotor.class, "motor_shooterL");
+            shooterRight = hwMap.get(DcMotor.class, "motor_shooterR");
             jack = hwMap.get(DcMotor.class, "motor_jack");
             slide = hwMap.get(DcMotor.class, "motor_slide");
 
@@ -142,11 +148,13 @@ public class HardwareBilly
             servoFoundationL = hwMap.get(Servo.class, "foundation_l_servo");
             servoFoundationR = hwMap.get(Servo.class, "foundation_r_servo");
 
-            armServoBlue = hwMap.get(Servo.class, "blue_arm_servo");
-            rackServoBlue = hwMap.get(Servo.class, "blue_rack_servo");
-            armServoRed = hwMap.get(Servo.class, "red_arm_servo");
-            rackServoRed = hwMap.get(Servo.class, "red_rack_servo");
+            wobbleGoalServo = hwMap.get(Servo.class, "wobble_goal_servo");
 
+
+            rackServoBlue = hwMap.get(Servo.class, "blue_rack_servo");
+            rackServoRed = hwMap.get(Servo.class, "red_rack_servo");
+            armServoBlue = hwMap.get(Servo.class, "arm_servo_Blue");
+            armServoRed= hwMap.get(Servo.class, "arm_servo_Red");
             stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
             stoneServoRight = hwMap.get(Servo.class, "stone_servo_right");
             servoCapstoneRelease = hwMap.get(Servo.class, "capstone_servo");
@@ -210,7 +218,7 @@ public class HardwareBilly
             backRight = hwMap.get(DcMotor.class, "motor_br");
 
 //            stoneServoArm = hwMap.get(Servo.class, "stone_arm_servo");
-            armServoBlue = hwMap.get(Servo.class, "blue_arm_servo");
+            wobbleGoalServo = hwMap.get(Servo.class, "wobble_goal_servo");
 //            armServoRed = hwMap.get(Servo.class, "red_arm_servo");
 
 //            jackStopSensor = hwMap.get(TouchSensor.class, "touch_sensor");
