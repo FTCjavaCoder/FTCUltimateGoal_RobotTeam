@@ -24,13 +24,13 @@ public class WobbleGoalGrabTest extends BasicTeleOp {
 
         while (opModeIsActive()) {
 
-            if (gamepad1.b) {
+            if (gamepad1.y) {
 
                 wobbleGoalPos = wobbleGrabPos;
                 TestGrabGoal(wobbleGoalPos);
                 sleep(250);
             }
-            if (gamepad1.x) {
+            if (gamepad1.a) {
 
                 wobbleGoalPos = wobbleReleasePos;
                 TestGrabGoal(wobbleGoalPos);
@@ -46,7 +46,6 @@ public class WobbleGoalGrabTest extends BasicTeleOp {
             telemetry.update();
         }
     }
-
 
     public void TestGrabGoal(double armPos) {
 

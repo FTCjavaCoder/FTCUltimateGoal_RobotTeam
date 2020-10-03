@@ -34,6 +34,8 @@ public class Constants {
     public double IMU_ROTATE_TOL = 1.0;
     public double IMU_DISTANCE_TOL = 1.0;
 
+    public double SHOOTER_POWER_LIMIT = 0.5;
+
     public int MOVE_TOL = 30;// tolerance for motor reaching final positions in drive methods
 
     public double TELEOP_DRIVE_POWER_LIMIT = 1.0;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
@@ -107,6 +109,8 @@ public class Constants {
 
         pHM.put("rotatePowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.75
 
+        pHM.put("shooterPowerLimit", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit));
+
         pHM.put("powerGain", new ParameterHM(0.1, ParameterHM.instanceType.powerLimit));// was 0.2
 
         pHM.put("rotatePowerGain", new ParameterHM(0.01, ParameterHM.instanceType.powerLimit));// was 0.02
@@ -167,6 +171,9 @@ public class Constants {
             }
             if(s.equals("rotatePowerLimit")) {
                 ROTATE_POWER_LIMIT = pHM.get(s).value;
+            }
+            if(s.equals("shooterPowerLimit")) {
+                SHOOTER_POWER_LIMIT = pHM.get(s).value;
             }
             if(s.equals("powerGain")) {
                 POWER_GAIN = pHM.get(s).value;
