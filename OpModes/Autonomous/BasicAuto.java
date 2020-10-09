@@ -45,7 +45,6 @@ public class BasicAuto extends BasicOpMode {
 
     public double blockCamera = 0.525;
     public double extraFwdToBlock = 0;
-
     public boolean getSecondStone = true;
 
     public enum autoChoice {SkyStoneOutside, SkyStoneInside, SkyStoneOutsideUnmoved, SkyStoneInsideUnmoved}
@@ -57,15 +56,15 @@ public class BasicAuto extends BasicOpMode {
     //Define all double variables
     public double start = 0;//timer variable to use for setting waits in the code
     public float hsvValues[] = {0F, 0F, 0F};
-    public String stonePos = "Unknown";
-
-    public boolean skystoneFound = false;
-
-    public int stoneSelect = -1;// FOR BLUE: 0 nearest to bridge, 1 center, 2 farthest from bridge FOR RED: 0 farthest from bridge, 1 center, 2 nearest to bridge
-
-    public double secondStoneBackup = 8;
-
-    public double extraRedDistance = 0;// added because of relative difference of starting position of robot on Red
+//    public String stonePos = "Unknown";
+//
+//    public boolean skystoneFound = false;
+//
+//    public int stoneSelect = -1;// FOR BLUE: 0 nearest to bridge, 1 center, 2 farthest from bridge FOR RED: 0 farthest from bridge, 1 center, 2 nearest to bridge
+//
+//    public double secondStoneBackup = 8;
+//
+//    public double extraRedDistance = 0;// added because of relative difference of starting position of robot on Red
 
     public double stoneArmUnderBridgeBlue;// for blue oriented servo
     public double stoneArmDownBlue;// was 0.05 and 0
@@ -75,11 +74,11 @@ public class BasicAuto extends BasicOpMode {
     public double stoneArmDownRed;// was 0.7
     public double rackOutRed;// untested
 //THIS IS JUST TO DECLARE THE VARIABLES YOU WILL ALSO NEED TO CHANGE THE VALUES IN THE INITIALIZE METHOD
-
-    public double vuforiaWaitTime = 1.5;// was 1
-
-    public double leftBound = 400;// in pixels defaults for TensorFlow
-    public double rightBound = 900;// in pixels defaults for TensorFlow
+//
+//    public double vuforiaWaitTime = 1.5;// was 1
+//
+//    public double leftBound = 400;// in pixels defaults for TensorFlow
+//    public double rightBound = 900;// in pixels defaults for TensorFlow
 
     public boolean drivingMiniBot = false;
 
@@ -87,12 +86,12 @@ public class BasicAuto extends BasicOpMode {
 
     public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
 
-    public boolean haveBlueFoundation = false;
-    public boolean haveRedFoundation = false;
-    public boolean haveBlueSkyStone1 = false;
-    public boolean haveBlueSkyStone2 = false;
-    public boolean haveRedSkyStone1 = false;
-    public boolean haveRedSkyStone2 = false;
+//    public boolean haveBlueFoundation = false;
+//    public boolean haveRedFoundation = false;
+//    public boolean haveBlueSkyStone1 = false;
+//    public boolean haveBlueSkyStone2 = false;
+//    public boolean haveRedSkyStone1 = false;
+//    public boolean haveRedSkyStone2 = false;
 /** COMMENTED OUT FOR EXPERIMENTAL CODE
 
  //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
@@ -126,19 +125,19 @@ public class BasicAuto extends BasicOpMode {
 
     public VuforiaTrackable stoneTarget = null;
 
-    public static final String TFOD_MODEL_ASSET = "Skystone.tflite";
-    public static final String LABEL_FIRST_ELEMENT = "Stone";
-    public static final String LABEL_SECOND_ELEMENT = "Skystone";
-
-    public TFObjectDetector tfod;
-
-    public double middleOfStone;
-
-    public double angleWhenFound;
-
-    public double zoneShift;
-
-    public double bridgeBack;
+//    public static final String TFOD_MODEL_ASSET = "Skystone.tflite";
+//    public static final String LABEL_FIRST_ELEMENT = "Stone";
+//    public static final String LABEL_SECOND_ELEMENT = "Skystone";
+//
+//    public TFObjectDetector tfod;
+//
+//    public double middleOfStone;
+//
+//    public double angleWhenFound;
+//
+//    public double zoneShift;
+//
+//    public double bridgeBack;
 
     @Override
     //    public void runOpMode() throws InterruptedException {
