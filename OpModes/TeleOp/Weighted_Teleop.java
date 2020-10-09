@@ -39,10 +39,10 @@ public class Weighted_Teleop extends BasicTeleOp {
 
             // use the left stick on gamepad2 to raise/lower the jack
 //            Billy.jackPower(gamepad1, gamepad2);
-            Billy.jackPowerEncoderStop(gamepad1, gamepad2, this);
-
-            // use the right stick on gamepad2 to extend/retract the slide
-            Billy.slidePower(gamepad1, gamepad2, this);
+//            Billy.jackPowerEncoderStop(gamepad1, gamepad2, this);
+//
+//            // use the right stick on gamepad2 to extend/retract the slide
+//            Billy.slidePower(gamepad1, gamepad2, this);
 
             //
             if (gamepad2.right_bumper) {
