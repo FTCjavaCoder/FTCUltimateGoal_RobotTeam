@@ -2,12 +2,12 @@ package UltimateGoal_RobotTeam.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import UltimateGoal_RobotTeam.HarwareConfig.HardwareBilly;
+import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobot;
 import UltimateGoal_RobotTeam.Parameters.Constants;
 
 public class BasicOpMode extends LinearOpMode {
 
-    public HardwareBilly Billy = new HardwareBilly();// call using Billy.(for hardware or angle unwrap method)
+    public HardwareRobot Billy = new HardwareRobot();// call using Billy.(for hardware or angle unwrap method)
     public Constants cons = new Constants();// call using cons.(constant DRIVE_POWER_LIMIT etc.)
 
     //********************UPDATED 12/27/19 for OpMpde HashMap *********************************

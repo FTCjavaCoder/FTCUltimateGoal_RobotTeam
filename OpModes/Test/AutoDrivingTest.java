@@ -4,12 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-import UltimateGoal_RobotTeam.HarwareConfig.HardwareBilly;
+import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobot;
 import UltimateGoal_RobotTeam.OpModes.Autonomous.BasicAuto;
 
 @Autonomous(name="Auto Driving Test", group="Test")
@@ -43,19 +40,19 @@ public class AutoDrivingTest extends BasicAuto {
         Billy.initIMU(this);
 
         pressAToContinue();
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, 60, 0, "IMU Forward 60 Inches", this);
+        Billy.IMUDriveFwdRight(HardwareRobot.moveDirection.FwdBack, 60, 0, "IMU Forward 60 Inches", this);
 
         pressAToContinue();
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.FwdBack, -60, 0, "IMU Backward 60 Inches", this);
+        Billy.IMUDriveFwdRight(HardwareRobot.moveDirection.FwdBack, -60, 0, "IMU Backward 60 Inches", this);
 
         pressAToContinue();
         Billy.IMUDriveRotate(-90,"Rotate 90 deg CCW", this);
 
         pressAToContinue();
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, 60, -90, "IMU Right 60 Inches", this);
+        Billy.IMUDriveFwdRight(HardwareRobot.moveDirection.RightLeft, 60, -90, "IMU Right 60 Inches", this);
 
         pressAToContinue();
-        Billy.IMUDriveFwdRight(HardwareBilly.moveDirection.RightLeft, -60, -90, "IMU Left 60 Inches", this);
+        Billy.IMUDriveFwdRight(HardwareRobot.moveDirection.RightLeft, -60, -90, "IMU Left 60 Inches", this);
 
 //        pressAToContinue();
 //        Billy.IMUDriveRotate(0,"Rotate 90 deg CW", this);

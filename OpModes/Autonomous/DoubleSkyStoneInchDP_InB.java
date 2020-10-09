@@ -40,19 +40,7 @@ public class DoubleSkyStoneInchDP_InB extends BasicAuto {
 
         Billy.initIMU(this);
 
-        fwdToTwoStone();
-
-        vuforiaStoneLocateInches();
-
-        goToStone();
-
-        takeStone1();
-
-        getStone2();
-
-        takeStone2();
-
-        twoStonePark();
+        //Methods: tasks, driving, etc. go here
 
         telemetry.addData("stoneYLocation","(%.2f)", stoneYLocation);
         telemetry.addLine("OpMode Complete");

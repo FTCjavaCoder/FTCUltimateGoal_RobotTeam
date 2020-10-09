@@ -41,30 +41,31 @@ public class Constants {
     public double TELEOP_DRIVE_POWER_LIMIT = 1.0;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
     public double TELEOP_ROTATE_POWER_LIMIT = 1.0;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
 
-    public double JACK_POWER_LIMIT = 1.0;
-    public double SLIDE_POWER_LIMIT = 0.40;// was 0.6
-
+    //Old Skystone variables
+//    public double JACK_POWER_LIMIT = 1.0;
+//    public double SLIDE_POWER_LIMIT = 0.40;// was 0.6
+//
 //    public final double TURN_POWER =  0.40;
-
-    public double forwardFirstMove = 21;// was 13
-    public double skystoneExtraBack = 8;
-
+//
+//    public double forwardFirstMove = 21;// was 13
+//    public double skystoneExtraBack = 8;
+//
     public double doRotateMethod = 0;
-
-    public double skystoneExtraSideways = 0;
-    public double skystoneExtraStoneGrab = -1;
-
-    public double adjustVuforiaPhone = 0;
-
-    public double tensorFlowMinimumConfidence = 0.5;
-
-    public double sideGrabSkystone = 13.0;
-    public double sidePullSkystone = 6.0;
-    public double sideGrab2Skystone = 6.0;
-
-    public double delayForPark = 20;
-
-    public double backTowardsBridge = 0;// added on constant
+//
+//    public double skystoneExtraSideways = 0;
+//    public double skystoneExtraStoneGrab = -1;
+//
+//    public double adjustVuforiaPhone = 0;
+//
+//    public double tensorFlowMinimumConfidence = 0.5;
+//
+//    public double sideGrabSkystone = 13.0;
+//    public double sidePullSkystone = 6.0;
+//    public double sideGrab2Skystone = 6.0;
+//
+//    public double delayForPark = 20;
+//
+//    public double backTowardsBridge = 0;// added on constant
 
     public final double ROBOT_INCH_TO_MOTOR_DEG = 360 / (3.875 * 3.14159); // units deg/inch - 360 deg. / wheel circumference (Wheel diameter x pi)
     public final int NUMBER_OF_JACK_STAGES = 3;// ASSUMING 3 PAIRS OF PIECES PER SIDE
@@ -91,7 +92,7 @@ public class Constants {
 
     public final double inchesPerPixel = 24 / 1280;// was 38 || inches per pixel for Tensor Flow to relate to vuforia zones
 
-    public final double distanceFromStones = (48 - 16) - forwardFirstMove;
+//    public final double distanceFromStones = (48 - 16) - forwardFirstMove;
 
     public static VuforiaLocalizer.CameraDirection CAMERA_CHOICE = FRONT;// was BACK
     public static final String VUFORIA_KEY = " AUtTfjH/////AAAAGalBbST5Vkv8kqIoszZrsYOCBYcUVlFwYJ2rvrvVgm4ie/idQYx2x++SWi3UMEJnuP7Zww+cqOgyLepotRs9ppGxpCDcintIz0pIixMr+bievjJUDzdn0PyAJ6QUZK3xzoqDkTY1R99qvRORmTTqCx2/rGfYPlcOpdL5oWdhQsUatHyneF/eiWGBincPqBx3JfVwZnscF/B7J+u76YA4VTWLl8bl3iu26IYXMZE0zi7Pk+s9/pRQCCrLcxsvns4ouiSg3n61Z+jv8aS6y9ncwDdg0nm/XwDeiIrworkIPcPTW73LKpzX/63C1HprikXUJ+fm1eAkCfNy06n9SNTq20jxc7NXtGVUoE+WbNGmE4yb ";
@@ -127,35 +128,35 @@ public class Constants {
 
         pHM.put("teleOpRotatePowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.40
 
-        pHM.put("jackPowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.75
-
-        pHM.put("slidePowerLimit", new ParameterHM(0.40, ParameterHM.instanceType.powerLimit));// was 0.40
-
-        pHM.put("moveTol", new ParameterHM(30, ParameterHM.instanceType.toleranceCounts));// was !! 8 !!
-
-        pHM.put("forwardFirstMove", new ParameterHM(21, ParameterHM.instanceType.distanceInches));// was 13 For forward before Vuforia in 2 stone
-
-        pHM.put("skystoneExtraBack", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different backup distance to get to second Skystone
-
-        pHM.put("doRotateMethod", new ParameterHM(0, ParameterHM.instanceType.toleranceCounts));// set to 1 to use IMURotate at the end of each IMUFwdRight move
-
-        pHM.put("skystoneExtraSideways", new ParameterHM(0, ParameterHM.instanceType.distanceInches));//
-
-        pHM.put("skystoneExtraStoneGrab", new ParameterHM(-2.0, ParameterHM.instanceType.distanceInches));// was 0 and unused to move more or less when pulling stone out
-
-        pHM.put("adjustVuforiaPhone", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different positions of phone to adjust values Vuforia uses to determine Left, Center, or Right
-
-        pHM.put("tensorFlowMinimumConfidence", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit));// For adjusting TensorFlow confidence level
-
-        pHM.put("sideGrabSkystone", new ParameterHM(11, ParameterHM.instanceType.distanceInches));// was 9 For forward before Vuforia in 2 stone
-
-        pHM.put("sidePullSkystone", new ParameterHM(8.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab was 6.0
-
-        pHM.put("sideGrab2Skystone", new ParameterHM(7.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab was 6.0
-
-        pHM.put("delayForPark", new ParameterHM(20, ParameterHM.instanceType.distanceInches));// Time to delay for parking program (seconds)
-
-        pHM.put("backTowardsBridge", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// Inches to back up towards bridge (can change for blue or red)
+//        pHM.put("jackPowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.75
+//
+//        pHM.put("slidePowerLimit", new ParameterHM(0.40, ParameterHM.instanceType.powerLimit));// was 0.40
+//
+//        pHM.put("moveTol", new ParameterHM(30, ParameterHM.instanceType.toleranceCounts));// was !! 8 !!
+//
+//        pHM.put("forwardFirstMove", new ParameterHM(21, ParameterHM.instanceType.distanceInches));// was 13 For forward before Vuforia in 2 stone
+//
+//        pHM.put("skystoneExtraBack", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different backup distance to get to second Skystone
+//
+//        pHM.put("doRotateMethod", new ParameterHM(0, ParameterHM.instanceType.toleranceCounts));// set to 1 to use IMURotate at the end of each IMUFwdRight move
+//
+//        pHM.put("skystoneExtraSideways", new ParameterHM(0, ParameterHM.instanceType.distanceInches));//
+//
+//        pHM.put("skystoneExtraStoneGrab", new ParameterHM(-2.0, ParameterHM.instanceType.distanceInches));// was 0 and unused to move more or less when pulling stone out
+//
+//        pHM.put("adjustVuforiaPhone", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different positions of phone to adjust values Vuforia uses to determine Left, Center, or Right
+//
+//        pHM.put("tensorFlowMinimumConfidence", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit));// For adjusting TensorFlow confidence level
+//
+//        pHM.put("sideGrabSkystone", new ParameterHM(11, ParameterHM.instanceType.distanceInches));// was 9 For forward before Vuforia in 2 stone
+//
+//        pHM.put("sidePullSkystone", new ParameterHM(8.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab was 6.0
+//
+//        pHM.put("sideGrab2Skystone", new ParameterHM(7.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab was 6.0
+//
+//        pHM.put("delayForPark", new ParameterHM(20, ParameterHM.instanceType.distanceInches));// Time to delay for parking program (seconds)
+//
+//        pHM.put("backTowardsBridge", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// Inches to back up towards bridge (can change for blue or red)
 
     }// Define initial values for HashMap parameters
 
@@ -199,51 +200,51 @@ public class Constants {
             if(s.equals("teleOpRotatePowerLimit")) {
                 TELEOP_ROTATE_POWER_LIMIT = pHM.get(s).value;
             }
-            if(s.equals("jackPowerLimit")) {
-                JACK_POWER_LIMIT = pHM.get(s).value;
-            }
-            if(s.equals("slidePowerLimit")) {
-                SLIDE_POWER_LIMIT = pHM.get(s).value;
-            }
-            if(s.equals("moveTol")) {
-                MOVE_TOL = pHM.get(s).integerParameter();
-            }
-            if(s.equals("forwardFirstMove")) {
-                forwardFirstMove = pHM.get(s).value;
-            }
-            if(s.equals("skystoneExtraBack")) {
-                skystoneExtraBack = pHM.get(s).value;
-            }
-            if(s.equals("doRotateMethod")) {
-                doRotateMethod = pHM.get(s).value;
-            }
-            if(s.equals("skystoneExtraSideways")) {
-                skystoneExtraSideways = pHM.get(s).value;
-            }
-            if(s.equals("skystoneExtraStoneGrab")) {
-                skystoneExtraStoneGrab = pHM.get(s).value;
-            }
-            if(s.equals("adjustVuforiaPhone")) {
-                adjustVuforiaPhone = pHM.get(s).value;
-            }
-            if(s.equals("tensorFlowMinimumConfidence")) {
-                tensorFlowMinimumConfidence = pHM.get(s).value;
-            }
-            if(s.equals("sideGrabSkystone")) {
-                sideGrabSkystone = pHM.get(s).value;
-            }
-            if(s.equals("sidePullSkystone")) {
-                sidePullSkystone = pHM.get(s).value;
-            }
-            if(s.equals("sideGrab2Skystone")) {
-                sideGrab2Skystone = pHM.get(s).value;
-            }
-            if(s.equals("delayForPark")) {
-                delayForPark = pHM.get(s).value;
-            }
-            if(s.equals("backTowardsBridge")) {
-                backTowardsBridge = pHM.get(s).value;
-            }
+//            if(s.equals("jackPowerLimit")) {
+//                JACK_POWER_LIMIT = pHM.get(s).value;
+//            }
+//            if(s.equals("slidePowerLimit")) {
+//                SLIDE_POWER_LIMIT = pHM.get(s).value;
+//            }
+//            if(s.equals("moveTol")) {
+//                MOVE_TOL = pHM.get(s).integerParameter();
+//            }
+//            if(s.equals("forwardFirstMove")) {
+//                forwardFirstMove = pHM.get(s).value;
+//            }
+//            if(s.equals("skystoneExtraBack")) {
+//                skystoneExtraBack = pHM.get(s).value;
+//            }
+//            if(s.equals("doRotateMethod")) {
+//                doRotateMethod = pHM.get(s).value;
+//            }
+//            if(s.equals("skystoneExtraSideways")) {
+//                skystoneExtraSideways = pHM.get(s).value;
+//            }
+//            if(s.equals("skystoneExtraStoneGrab")) {
+//                skystoneExtraStoneGrab = pHM.get(s).value;
+//            }
+//            if(s.equals("adjustVuforiaPhone")) {
+//                adjustVuforiaPhone = pHM.get(s).value;
+//            }
+//            if(s.equals("tensorFlowMinimumConfidence")) {
+//                tensorFlowMinimumConfidence = pHM.get(s).value;
+//            }
+//            if(s.equals("sideGrabSkystone")) {
+//                sideGrabSkystone = pHM.get(s).value;
+//            }
+//            if(s.equals("sidePullSkystone")) {
+//                sidePullSkystone = pHM.get(s).value;
+//            }
+//            if(s.equals("sideGrab2Skystone")) {
+//                sideGrab2Skystone = pHM.get(s).value;
+//            }
+//            if(s.equals("delayForPark")) {
+//                delayForPark = pHM.get(s).value;
+//            }
+//            if(s.equals("backTowardsBridge")) {
+//                backTowardsBridge = pHM.get(s).value;
+//            }
 
         }
     }

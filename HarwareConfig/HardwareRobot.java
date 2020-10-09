@@ -2,8 +2,6 @@ package UltimateGoal_RobotTeam.HarwareConfig;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //import TestOpModesOffline.BNO055IMU;
 //import TestOpModesOffline.JustLoggingAccelerationIntegrator;
@@ -25,13 +23,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import UltimateGoal_RobotTeam.OpModes.Autonomous.BasicAuto;
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
 import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
-import UltimateGoal_RobotTeam.Parameters.Constants;
 
 /*
 * REVISION HISTORY
-* made this the hardware for "Billy" with everything for lead screw slide and mineral collecting arm
+* made this the hardware for robot with everything for lead screw slide and mineral collecting arm
 */
-public class HardwareBilly
+public class HardwareRobot
 {
     /* Public OpMode members. */
     public DcMotor  frontLeft   = null;
@@ -99,7 +96,7 @@ public class HardwareBilly
     public Orientation angles;
 
     /* Constructor */
-    public HardwareBilly(){
+    public HardwareRobot(){
 
     }
 
@@ -149,7 +146,6 @@ public class HardwareBilly
             servoFoundationR = hwMap.get(Servo.class, "foundation_r_servo");
 
             wobbleGoalServo = hwMap.get(Servo.class, "wobble_goal_servo");
-
 
             rackServoBlue = hwMap.get(Servo.class, "blue_rack_servo");
             rackServoRed = hwMap.get(Servo.class, "red_rack_servo");
@@ -218,7 +214,7 @@ public class HardwareBilly
             backRight = hwMap.get(DcMotor.class, "motor_br");
 
 //            stoneServoArm = hwMap.get(Servo.class, "stone_arm_servo");
-            wobbleGoalServo = hwMap.get(Servo.class, "wobble_goal_servo");
+//            wobbleGoalServo = hwMap.get(Servo.class, "wobble_goal_servo");
 //            armServoRed = hwMap.get(Servo.class, "red_arm_servo");
 
 //            jackStopSensor = hwMap.get(TouchSensor.class, "touch_sensor");
@@ -274,7 +270,7 @@ public class HardwareBilly
     }
 
     //Autonomous
-    public void IMUDriveFwdRight(HardwareBilly.moveDirection moveType, double distanceInch, double targetAngle, String step, BasicAuto om) {
+    public void IMUDriveFwdRight(HardwareRobot.moveDirection moveType, double distanceInch, double targetAngle, String step, BasicAuto om) {
         int countDistance = 0;
         int[] driveDirection = new int[4];
         int[] startPos = new int[4];
@@ -1247,57 +1243,58 @@ public class HardwareBilly
 
     }
 
-    public void jackPower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
-
-        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2) ) * jackDirection * om.cons.JACK_POWER_LIMIT;
-
-        jack.setPower(Range.clip(verticalDirection, -om.cons.JACK_POWER_LIMIT, om.cons.JACK_POWER_LIMIT));
-
-    }
-
-    public void jackPowerEncoderStop(Gamepad g1, Gamepad g2, BasicTeleOp om) {
-
-        double localJackPowerLimit = om.cons.JACK_POWER_LIMIT;
-        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2)) * jackDirection * om.cons.JACK_POWER_LIMIT;
-
-        if (jackDirection < 0) {
-            if (verticalDirection > 0 && jack.getCurrentPosition() > jackDirection * 667) {//was 2000 for original 60:1 motor and 1333 for 40:1
-                localJackPowerLimit = 0.3;
-                if (verticalDirection > 0 && jack.getCurrentPosition() > jackDirection * 334) {// was 1000 for original 60:1 motor and 667 for 40:1
-                    verticalDirection = 0;
-                }
-            }
-
-        }
-        else if (jackDirection > 0) {
-
-            if (verticalDirection < 0 && jack.getCurrentPosition() < jackDirection * 667) {//was 2000 for original 60:1 motor and 1333 for 40:1
-                localJackPowerLimit = 0.3;
-                if (verticalDirection < 0 && jack.getCurrentPosition() < jackDirection * 334) {// was 1000 for original 60:1 motor and 667 for 40:1
-                    verticalDirection = 0;
-                }
-            }
-        }
-        else {
-            localJackPowerLimit = om.cons.JACK_POWER_LIMIT;
-            }
-
-
-//        if(jackStopSensor.isPressed() && verticalDirection < 0 ){
-//            verticalDirection = 0;
+//
+//    public void jackPower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
+//
+//        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2) ) * jackDirection * om.cons.JACK_POWER_LIMIT;
+//
+//        jack.setPower(Range.clip(verticalDirection, -om.cons.JACK_POWER_LIMIT, om.cons.JACK_POWER_LIMIT));
+//
+//    }
+//
+//    public void jackPowerEncoderStop(Gamepad g1, Gamepad g2, BasicTeleOp om) {
+//
+//        double localJackPowerLimit = om.cons.JACK_POWER_LIMIT;
+//        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2)) * jackDirection * om.cons.JACK_POWER_LIMIT;
+//
+//        if (jackDirection < 0) {
+//            if (verticalDirection > 0 && jack.getCurrentPosition() > jackDirection * 667) {//was 2000 for original 60:1 motor and 1333 for 40:1
+//                localJackPowerLimit = 0.3;
+//                if (verticalDirection > 0 && jack.getCurrentPosition() > jackDirection * 334) {// was 1000 for original 60:1 motor and 667 for 40:1
+//                    verticalDirection = 0;
+//                }
+//            }
+//
 //        }
-
-        jack.setPower(Range.clip(verticalDirection, -localJackPowerLimit, localJackPowerLimit));
-
-    }
-
-    public void slidePower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
-
-        slideDirection = (g2.right_stick_y * Math.pow(g2.right_stick_y, 2) ) * om.cons.SLIDE_POWER_LIMIT;
-
-        slide.setPower(Range.clip(slideDirection, -om.cons.SLIDE_POWER_LIMIT, om.cons.SLIDE_POWER_LIMIT));
-
-    }
+//        else if (jackDirection > 0) {
+//
+//            if (verticalDirection < 0 && jack.getCurrentPosition() < jackDirection * 667) {//was 2000 for original 60:1 motor and 1333 for 40:1
+//                localJackPowerLimit = 0.3;
+//                if (verticalDirection < 0 && jack.getCurrentPosition() < jackDirection * 334) {// was 1000 for original 60:1 motor and 667 for 40:1
+//                    verticalDirection = 0;
+//                }
+//            }
+//        }
+//        else {
+//            localJackPowerLimit = om.cons.JACK_POWER_LIMIT;
+//            }
+//
+//
+////        if(jackStopSensor.isPressed() && verticalDirection < 0 ){
+////            verticalDirection = 0;
+////        }
+//
+//        jack.setPower(Range.clip(verticalDirection, -localJackPowerLimit, localJackPowerLimit));
+//
+//    }
+//
+//    public void slidePower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
+//
+//        slideDirection = (g2.right_stick_y * Math.pow(g2.right_stick_y, 2) ) * om.cons.SLIDE_POWER_LIMIT;
+//
+//        slide.setPower(Range.clip(slideDirection, -om.cons.SLIDE_POWER_LIMIT, om.cons.SLIDE_POWER_LIMIT));
+//
+//    }
 
     public void setServoPos(double servoPos) {
 
