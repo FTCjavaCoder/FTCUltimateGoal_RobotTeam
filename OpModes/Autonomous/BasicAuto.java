@@ -278,12 +278,12 @@ public class BasicAuto extends BasicOpMode {
         detectionRotateSpeed = 0.1;
         cons.DEGREES_TO_COUNTS = (1440.0/360.0);
 
-        Billy.stoneArmInitBlue = 1;// for blue oriented servo was 0
-        Billy.stoneArmInitRed = 1;// for red oriented servo
-        stoneArmUnderBridgeBlue = 1;// for blue oriented servo was 0.25
-        stoneArmDownBlue = 0.4;// for blue oriented servo
-        stoneArmUnderBridgeRed = 0.75;// for red oriented servo
-        stoneArmDownRed = 0.3;// for red oriented servo (was 0.5, could adjust servo horn)
+//        Billy.stoneArmInitBlue = 1;// for blue oriented servo was 0
+//        Billy.stoneArmInitRed = 1;// for red oriented servo
+//        stoneArmUnderBridgeBlue = 1;// for blue oriented servo was 0.25
+//        stoneArmDownBlue = 0.4;// for blue oriented servo
+//        stoneArmUnderBridgeRed = 0.75;// for red oriented servo
+//        stoneArmDownRed = 0.3;// for red oriented servo (was 0.5, could adjust servo horn)
 
         Billy.initMiniBot(hardwareMap, testModeActive);
 
@@ -319,24 +319,24 @@ public class BasicAuto extends BasicOpMode {
         Billy.frontRight.setPower(0);
         Billy.backLeft.setPower(0);
         Billy.backRight.setPower(0);
-
-        Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
-//        Billy.armServoRed.setPosition(stoneArmInitRed);
-
-        if (testModeActive) {
-            // DO NOTHING
-        }
-        else {
-
-//            if (targetsSkyStone != null) {
-                targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
-
-                stoneTarget = targetsSkyStone.get(0);
-                stoneTarget.setName("Stone Target");
-
-                allTrackables.add(targetsSkyStone.get(0));
-//            }
-        }
+//
+//        Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
+////        Billy.armServoRed.setPosition(stoneArmInitRed);
+//
+//        if (testModeActive) {
+//            // DO NOTHING
+//        }
+//        else {
+//
+////            if (targetsSkyStone != null) {
+//                targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
+//
+//                stoneTarget = targetsSkyStone.get(0);
+//                stoneTarget.setName("Stone Target");
+//
+//                allTrackables.add(targetsSkyStone.get(0));
+////            }
+//        }
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");
         telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)", Billy.frontLeft.getPower(), Billy.frontRight.getPower(), Billy.backLeft.getPower(), Billy.backRight.getPower());

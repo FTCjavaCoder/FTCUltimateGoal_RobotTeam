@@ -8,7 +8,6 @@ import java.util.prefs.BackingStoreException;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobot;
 
 @Autonomous(name="MiniBot Auto", group="Autonomous")
-@Disabled
 
 public class MiniBotAuto extends BasicAuto {
 

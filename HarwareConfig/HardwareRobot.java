@@ -91,7 +91,8 @@ public class HardwareRobot
     public double stoneArmInitRed = 0.20;// for Red oriented servo is 0
     public double rackInitBlue = 0;//
     public double rackInitRed = 1;//
-
+    // GET RID OF THESE 4 ABOVE
+    // GET RID OF THESE 4 ABOVE
     /* local OpMode members. */
     public Orientation angles;
 
