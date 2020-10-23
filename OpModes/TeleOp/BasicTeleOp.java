@@ -60,51 +60,46 @@ public class BasicTeleOp extends BasicOpMode {
         // define variables for OpMode powers and positions
         // Initialize all powers and variables to zero
 
+        //Motor configuration, recommend Not Changing - Set all motors to forward direction, positive = clockwise when viewed from shaft side
         Billy.frontLeft.setPower(0);
         Billy.frontRight.setPower(0);
         Billy.backLeft.setPower(0);
         Billy.backRight.setPower(0);
-        Billy.jack.setPower(0);
-        Billy.slide.setPower(0);
+        Billy.shooterLeft.setPower(0);
+        Billy.shooterRight.setPower(0);
 
         Billy.frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.backRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        Billy.jack.setDirection(DcMotorSimple.Direction.FORWARD);
-        Billy.slide.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.shooterLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.shooterRight.setDirection(DcMotorSimple.Direction.FORWARD);
 
         Billy.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Billy.jack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Billy.slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.shooterLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        Billy.shooterRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        // Reset all motor encoders
+        //Reset all motor encoders
         Billy.frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Billy.jack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Billy.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.shooterLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.shooterRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        //Set all motors to position mode (assumes that all motors have encoders on them)
         Billy.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Billy.backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Billy.jack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Billy.slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Billy.shooterLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Billy.shooterRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-//        Billy.stoneServoLeft.setPosition(Billy.stoneServoLeft.getPosition());
-//        Billy.stoneServoRight.setPosition(Billy.stoneServoRight.getPosition());
-//        Billy.servoFoundationL.setPosition(0.80);
-//        Billy.servoFoundationR.setPosition(0.20);
-//
-//        Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
-//        Billy.armServoRed.setPosition(Billy.stoneArmInitRed);
-//        Billy.rackServoBlue.setPosition(Billy.rackInitBlue);
-//        Billy.rackServoRed.setPosition(Billy.rackInitRed);
+        Billy.conveyorLeft.setPower(0);
+        Billy.conveyorRight.setPower(0);
 
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");

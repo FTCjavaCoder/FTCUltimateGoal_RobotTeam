@@ -27,6 +27,8 @@ public class ConveyorTest extends BasicTeleOp {
         conveyorLeft.setPower(0);
         conveyorRight.setPower(0);
 
+        telemetry.addLine("Initialized");
+        telemetry.update();
         // Wait for the game to start (driver presses PLAY)
             waitForStart();
             runtime.reset();

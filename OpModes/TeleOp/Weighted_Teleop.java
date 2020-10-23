@@ -1,5 +1,6 @@
 package UltimateGoal_RobotTeam.OpModes.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
@@ -9,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Weighted Power Teleop", group="TeleOp")
-
+@Disabled
 public class Weighted_Teleop extends BasicTeleOp {
 
     @Override

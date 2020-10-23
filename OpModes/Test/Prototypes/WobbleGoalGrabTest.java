@@ -1,12 +1,13 @@
 package UltimateGoal_RobotTeam.OpModes.Test.Prototypes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 
 
 @TeleOp(name="Wobble Goal Grab Test", group="Test")
-
+@Disabled // Initialize Servos properly
 public class WobbleGoalGrabTest extends BasicTeleOp {
 
     double wobbleGoalPos = 0.5;
@@ -16,8 +17,10 @@ public class WobbleGoalGrabTest extends BasicTeleOp {
     @Override
     public void runOpMode() {
 
-            initializeTeleOp();
+//            initializeTeleOp();
 
+        telemetry.addLine("Initialized");
+        telemetry.update();
             // Wait for the game to start (driver presses PLAY)
             waitForStart();
             runtime.reset();

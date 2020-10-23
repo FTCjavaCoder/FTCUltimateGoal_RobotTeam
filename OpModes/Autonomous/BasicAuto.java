@@ -168,15 +168,15 @@ public class BasicAuto extends BasicOpMode {
 
         drivingMiniBot = false;
         //Values For Full Robot
-        detectionRotateSpeed = 0.1 * (40.0/60.0);
+//        detectionRotateSpeed = 0.1 * (40.0/60.0);
         cons.DEGREES_TO_COUNTS = (1440.0/360.0) * (40.0/60.0);
 
-        stoneArmUnderBridgeBlue = 0.85;// for blue oriented servo
-        stoneArmDownBlue = 0.23;// for blue oriented servo was 0.20
-        rackOutBlue = 0.55;// was 0.75
-        stoneArmUnderBridgeRed = 0.20;// for red oriented servo
-        stoneArmDownRed = 0.80;// for red oriented servo untested was 0.77 untested
-        rackOutRed = 0.325;// untested was 0.25 also untested
+//        stoneArmUnderBridgeBlue = 0.85;// for blue oriented servo
+//        stoneArmDownBlue = 0.23;// for blue oriented servo was 0.20
+//        rackOutBlue = 0.55;// was 0.75
+//        stoneArmUnderBridgeRed = 0.20;// for red oriented servo
+//        stoneArmDownRed = 0.80;// for red oriented servo untested was 0.77 untested
+//        rackOutRed = 0.325;// untested was 0.25 also untested
 
         Billy.init(hardwareMap, testModeActive);
 
@@ -185,56 +185,47 @@ public class BasicAuto extends BasicOpMode {
         Billy.frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         Billy.backRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        Billy.jack.setDirection(DcMotorSimple.Direction.FORWARD);
-        Billy.slide.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.shooterLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        Billy.shooterRight.setDirection(DcMotorSimple.Direction.FORWARD);
 
         Billy.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Billy.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Billy.jack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Billy.slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Billy.shooterLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        Billy.shooterRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         //Reset all motor encoders
         Billy.frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Billy.backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Billy.jack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Billy.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.shooterLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Billy.shooterRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Billy.frontLeft.setTargetPosition(0);
         Billy.frontRight.setTargetPosition(0);
         Billy.backLeft.setTargetPosition(0);
-        Billy.backRight.setTargetPosition(0);
-        Billy.jack.setTargetPosition(0);
+        Billy.shooterLeft.setTargetPosition(0);
+        Billy.shooterRight.setTargetPosition(0);
 
         //Set all motors to position mode (assumes that all motors have encoders on them)
         Billy.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Billy.frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Billy.backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Billy.backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Billy.jack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Billy.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Billy.shooterLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Billy.shooterRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         Billy.frontLeft.setPower(0);
         Billy.frontRight.setPower(0);
         Billy.backLeft.setPower(0);
         Billy.backRight.setPower(0);
-        Billy.jack.setPower(0);
-        Billy.slide.setPower(0);
+        Billy.shooterLeft.setPower(0);
+        Billy.shooterRight.setPower(0);
 
-        Billy.servoFoundationL.setPosition(0.80);
-        Billy.servoFoundationR.setPosition(0.20);
-
-        Billy.armServoBlue.setPosition(Billy.stoneArmInitBlue);
-        Billy.rackServoBlue.setPosition(Billy.rackInitBlue);
-
-        Billy.armServoRed.setPosition(Billy.stoneArmInitRed);
-        Billy.rackServoRed.setPosition(Billy.rackInitRed);
-
-        Billy.stoneServoLeft.setPosition(1);
-        Billy.stoneServoRight.setPosition(1);
+        Billy.conveyorLeft.setPower(0);
+        Billy.conveyorRight.setPower(0);
 
         if (testModeActive) {
             // DO NOTHING

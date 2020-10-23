@@ -2,6 +2,7 @@ package UltimateGoal_RobotTeam.HarwareConfig;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //import TestOpModesOffline.BNO055IMU;
 //import TestOpModesOffline.JustLoggingAccelerationIntegrator;
@@ -40,6 +41,8 @@ public class HardwareRobot
     public DcMotor  jack = null;
     public DcMotor  slide       = null;
 
+    public CRServo conveyorLeft = null;
+    public CRServo conveyorRight = null;
     public Servo  servoFoundationL  = null;
     public Servo  servoFoundationR  = null;
     public BNO055IMU imu = null;
@@ -139,22 +142,24 @@ public class HardwareRobot
             backRight = hwMap.get(DcMotor.class, "motor_br");
             shooterLeft = hwMap.get(DcMotor.class, "motor_shooterL");
             shooterRight = hwMap.get(DcMotor.class, "motor_shooterR");
-            jack = hwMap.get(DcMotor.class, "motor_jack");
-            slide = hwMap.get(DcMotor.class, "motor_slide");
 
-            // Define and initialize ALL installed servos.
-            servoFoundationL = hwMap.get(Servo.class, "foundation_l_servo");
-            servoFoundationR = hwMap.get(Servo.class, "foundation_r_servo");
-
+            conveyorLeft = hwMap.get(CRServo.class, "servo_conveyorL");
+            conveyorRight = hwMap.get(CRServo.class, "servo_conveyorR");
             wobbleGoalServo = hwMap.get(Servo.class, "wobble_goal_servo");
 
-            rackServoBlue = hwMap.get(Servo.class, "blue_rack_servo");
-            rackServoRed = hwMap.get(Servo.class, "red_rack_servo");
-            armServoBlue = hwMap.get(Servo.class, "arm_servo_Blue");
-            armServoRed= hwMap.get(Servo.class, "arm_servo_Red");
-            stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
-            stoneServoRight = hwMap.get(Servo.class, "stone_servo_right");
-            servoCapstoneRelease = hwMap.get(Servo.class, "capstone_servo");
+            // Define and initialize ALL installed servos.
+//            servoFoundationL = hwMap.get(Servo.class, "foundation_l_servo");
+//            servoFoundationR = hwMap.get(Servo.class, "foundation_r_servo");
+//
+//            jack = hwMap.get(DcMotor.class, "motor_jack");
+//            slide = hwMap.get(DcMotor.class, "motor_slide");
+//            rackServoBlue = hwMap.get(Servo.class, "blue_rack_servo");
+//            rackServoRed = hwMap.get(Servo.class, "red_rack_servo");
+//            armServoBlue = hwMap.get(Servo.class, "arm_servo_Blue");
+//            armServoRed= hwMap.get(Servo.class, "arm_servo_Red");
+//            stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
+//            stoneServoRight = hwMap.get(Servo.class, "stone_servo_right");
+//            servoCapstoneRelease = hwMap.get(Servo.class, "capstone_servo");
 
             //Define all installed sensors
 

@@ -26,6 +26,8 @@ public class ShooterCalebTest extends BasicTeleOp {
         shooterLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         shooterRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        telemetry.addLine("Initialized");
+        telemetry.update();
         // Wait for the game to start (driver presses PLAY)
             waitForStart();
             runtime.reset();

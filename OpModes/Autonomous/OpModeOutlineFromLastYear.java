@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Double SkyStone Inch DP In Blue", group="Autonomous")
+@Autonomous(name="Unnamed", group="Autonomous")
 @Disabled
-public class DoubleSkyStoneInchDP_InB extends BasicAuto {
+public class OpModeOutlineFromLastYear extends BasicAuto {
 
     @Override
     public void runOpMode() {
