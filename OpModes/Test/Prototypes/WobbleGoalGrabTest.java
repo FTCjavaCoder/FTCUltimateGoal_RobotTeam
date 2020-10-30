@@ -6,13 +6,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 
-
 @TeleOp(name="Wobble Goal Grab Test", group="Test")
-@Disabled // Initialize Servos properly
+
 public class WobbleGoalGrabTest extends BasicTeleOp {
 
     public Servo wobbleGoalServo = null;
-    
+
     double wobbleGoalPos = 0.5;// undecided values
     double wobbleGrabPos= 0.5;
     double wobbleReleasePos= 0;
