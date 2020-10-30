@@ -145,7 +145,7 @@ public class HardwareRobot
 
             conveyorLeft = hwMap.get(CRServo.class, "servo_conveyorL");
             conveyorRight = hwMap.get(CRServo.class, "servo_conveyorR");
-            wobbleGoalServo = hwMap.get(Servo.class, "wobble_goal_servo");
+//            wobbleGoalServo = hwMap.get(Servo.class, "wobble_goal_servo");
 
             // Define and initialize ALL installed servos.
 //            servoFoundationL = hwMap.get(Servo.class, "foundation_l_servo");
