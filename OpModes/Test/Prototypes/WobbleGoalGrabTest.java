@@ -2,6 +2,7 @@ package UltimateGoal_RobotTeam.OpModes.Test.Prototypes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 
@@ -10,14 +11,17 @@ import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 @Disabled // Initialize Servos properly
 public class WobbleGoalGrabTest extends BasicTeleOp {
 
-    double wobbleGoalPos = 0.5;
+    public Servo wobbleGoalServo = null;
+    
+    double wobbleGoalPos = 0.5;// undecided values
     double wobbleGrabPos= 0.5;
-    double wobbleReleasePos= 0.5;
+    double wobbleReleasePos= 0;
 
     @Override
     public void runOpMode() {
 
 //            initializeTeleOp();
+        wobbleGoalServo = hardwareMap.get(Servo.class, "wobble_goal_servo");
 
         telemetry.addLine("Initialized");
         telemetry.update();
@@ -52,7 +56,7 @@ public class WobbleGoalGrabTest extends BasicTeleOp {
 
     public void TestGrabGoal(double armPos) {
 
-        Billy.wobbleGoalServo.setPosition(armPos);// change to wobbleGoalServo
+        wobbleGoalServo.setPosition(armPos);// change to wobbleGoalServo
     }
 
 }
