@@ -2,7 +2,6 @@ package UltimateGoal_RobotTeam.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-//import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 //import com.qualcomm.robotcore.hardware.LightSensor;
@@ -22,7 +21,10 @@ import java.util.List;
 
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobot;
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
-//import TestOpModesOffline.Telemetry;
+//import OfflineCode.OfflineHW.Telemetry;
+import UltimateGoal_RobotTeam.Utilities.PursuitLines;
+import UltimateGoal_RobotTeam.Utilities.PursuitPath;
+import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 @Autonomous(name="BasicAuto", group="Autonomous")
 @Disabled
@@ -111,6 +113,10 @@ public class BasicAuto extends BasicOpMode {
 
  * END EXPERIMENTAL CODE
  * */
+
+    /* Needed for Pure Pursuit */
+    public ArrayList<PursuitPoint> fieldPoints = new ArrayList();
+    public ArrayList<PursuitLines> lines = new ArrayList<>();
 
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
