@@ -13,8 +13,9 @@ public class WobbleGoalGrabTest extends BasicTeleOp {
     public Servo wobbleGoalServo = null;
 
     double wobbleGoalPos = 0.5;// undecided values
-    double wobbleGrabPos= 0.5;
-    double wobbleReleasePos= 0;
+    double wobbleGrabInc = 0.1;
+    double wobbleGrabPos = 0.5;
+    double wobbleReleasePos = 0;
 
     @Override
     public void runOpMode() {
@@ -32,19 +33,17 @@ public class WobbleGoalGrabTest extends BasicTeleOp {
 
             if (gamepad1.y) {
 
-                wobbleGoalPos = wobbleGrabPos;
+                wobbleGoalPos += wobbleGrabInc;
                 TestGrabGoal(wobbleGoalPos);
                 sleep(250);
             }
             if (gamepad1.a) {
 
-                wobbleGoalPos = wobbleReleasePos;
+                wobbleGoalPos -= wobbleGrabInc;
                 TestGrabGoal(wobbleGoalPos);
                 sleep(250);
             }
 
-            telemetry.addLine("For Blue servo Y to increase position and A to decrease position");
-            telemetry.addLine("For Red servo B to increase position and X to decrease position");
             telemetry.addData("Servo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
                     wobbleGrabPos, wobbleReleasePos);
             telemetry.addData("Servo Positions", "Servo Pos (%.2f)",
