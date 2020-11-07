@@ -33,10 +33,6 @@ public class BasicTeleOp extends BasicOpMode {
     public double slidePwr = 0;
     public double setJackHeightPos = 3;
 
-
-    public double shooter_Power = 0;
-    public double conveyor_Power = 0;
-
     public double capstoneServoPosition = 0;
 
     public double manualGripperIncrement = 0.05;// was 0.01 and 0.005

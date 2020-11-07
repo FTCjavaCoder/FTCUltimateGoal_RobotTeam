@@ -314,7 +314,7 @@ public class DriveTrain {
 
     }
 
-    public void robotNavigator(BasicAuto om){
+    public void robotNavigator(BasicOpMode om){
         double factor = 1;
 
         int flCount = frontLeft.getCurrentPosition();
