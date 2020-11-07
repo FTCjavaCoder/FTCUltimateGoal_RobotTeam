@@ -1,27 +1,37 @@
 package UltimateGoal_RobotTeam.OpModes.Test.Prototypes;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 
-@TeleOp(name="Wobble Goal Grab Test", group="Test")
+@TeleOp(name="Wobble Goal Arm and Grab Test", group="Test")
 
-public class WobbleGoalGrabTest extends BasicTeleOp {
+public class WobbleGoalArmGrabTest extends BasicTeleOp {
 
+    public DcMotor wobbleGoalArm = null;
     public Servo wobbleGoalServo = null;
 
     double wobbleGoalPos = 0.5;// undecided values
     double wobbleGrabInc = 0.1;
     double wobbleGrabPos = 0.5;
     double wobbleReleasePos = 0;
+    int wobbleArmTarget = 0;
 
     @Override
     public void runOpMode() {
 
 //            initializeTeleOp();
+        wobbleGoalArm = hardwareMap.get(DcMotor.class, "motor_wobble_goal");
         wobbleGoalServo = hardwareMap.get(Servo.class, "wobble_goal_servo");
+
+        wobbleGoalArm.setPower(0);
+        wobbleGoalArm.setDirection(DcMotorSimple.Direction.FORWARD);
+        wobbleGoalArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wobbleGoalArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wobbleGoalArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         telemetry.addLine("Initialized");
         telemetry.update();
@@ -30,6 +40,22 @@ public class WobbleGoalGrabTest extends BasicTeleOp {
             runtime.reset();
 
         while (opModeIsActive()) {
+
+            if (gamepad1.dpad_up) {
+                wobbleArmTarget += 100;
+                wobbleGoalArm.setTargetPosition(wobbleArmTarget);
+            }
+            if (gamepad1.dpad_down) {
+                wobbleArmTarget -= 100;
+                wobbleGoalArm.setTargetPosition(wobbleArmTarget);
+            }
+
+            if (gamepad1.left_bumper) {
+                wobbleGoalArm.setPower(0);
+            }
+            if (gamepad1.right_bumper) {
+                wobbleGoalArm.setPower(0.1);
+            }
 
             if (gamepad1.y) {
 
@@ -44,9 +70,11 @@ public class WobbleGoalGrabTest extends BasicTeleOp {
                 sleep(250);
             }
 
+            telemetry.addData("Motor Variable", "Goal Arm Target (%.2f)", wobbleArmTarget);
+            telemetry.addData("Motor Position", "Goal Arm Current Pos (%.2f)", wobbleGoalArm.getCurrentPosition());
             telemetry.addData("Servo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
                     wobbleGrabPos, wobbleReleasePos);
-            telemetry.addData("Servo Positions", "Servo Pos (%.2f)",
+            telemetry.addData("Servo Position", "Servo Pos (%.2f)",
                     wobbleGoalPos);
             telemetry.update();
         }
