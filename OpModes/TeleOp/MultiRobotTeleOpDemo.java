@@ -3,12 +3,7 @@ package UltimateGoal_RobotTeam.OpModes.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import java.util.ArrayList;
-
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
-import UltimateGoal_RobotTeam.OpModes.Autonomous.BasicAuto;
-import UltimateGoal_RobotTeam.Utilities.PursuitLines;
-import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 @TeleOp(name="Robot Multi Demo", group="TeleOp")
 
@@ -50,7 +45,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		robotUG.driveTrain.initIMU(this); //confgures IMU and sets initial heading to 0.0 degrees
 		robotUG.driveTrain.robotX = 0;
 		robotUG.driveTrain.robotY = 0;
-		robotUG.driveTrain.robotLocation.setLocation(0,0,0);
+		robotUG.driveTrain.robotLocationV1.setLocation(0,0,0);
 
 		//Indicate initialization complete and provide telemetry
 		telemetry.addData("Status: ", "Initialized");

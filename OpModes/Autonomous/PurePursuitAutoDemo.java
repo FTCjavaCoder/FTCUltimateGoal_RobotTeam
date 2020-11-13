@@ -49,9 +49,9 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		robotUG.driveTrain.initIMU(this); //confgures IMU and sets initial heading to 0.0 degrees
 		robotUG.driveTrain.robotX = 0;
 		robotUG.driveTrain.robotY = 0;
-		robotUG.driveTrain.robotLocation.setLocation(0,0,0);
+		robotUG.driveTrain.robotLocationV1.setLocation(0,0,0);
 		telemetry.addData("STATUS", "MultiRobot Hardware Configured!!");
-		telemetry.addData("Robot Location", "X = %.2f inch, Y = %.2f inch, Theta = %.2f degrees",robotUG.driveTrain.robotLocation.x, robotUG.driveTrain.robotLocation.y, robotUG.driveTrain.robotLocation.theta);
+		telemetry.addData("Robot Location", "X = %.2f inch, Y = %.2f inch, Theta = %.2f degrees",robotUG.driveTrain.robotLocationV1.x, robotUG.driveTrain.robotLocationV1.y, robotUG.driveTrain.robotLocationV1.theta);
 		telemetry.addLine(" ");
 		telemetry.addLine("*********************************************");
 		telemetry.addData("WARNING", "VERIFY THAT DRIVE POWER LIMIT IS LOW FOR INITIAL TESTS");
@@ -70,13 +70,13 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		pathPoints.add(new PursuitPoint(robotUG.driveTrain.robotX ,robotUG.driveTrain.robotY));
 		//Slalom course robot will start moving forward and then turn left
 		pathPoints.add(new PursuitPoint(18,0));
-		pathPoints.add(new PursuitPoint(18,72));
-		pathPoints.add(new PursuitPoint(36,72));
+		pathPoints.add(new PursuitPoint(18,48));
+		pathPoints.add(new PursuitPoint(36,48));
 		pathPoints.add(new PursuitPoint(36,0));
 		pathPoints.add(new PursuitPoint(54, 0));
-		pathPoints.add(new PursuitPoint(54,72));
-		pathPoints.add(new PursuitPoint(72,72));
-		pathPoints.add(new PursuitPoint(72,0));
+		pathPoints.add(new PursuitPoint(54,48));
+		pathPoints.add(new PursuitPoint(58,48));
+		pathPoints.add(new PursuitPoint(58,0));
 
 
 		for(int h=0;h<pathPoints.size()-1;h++) {
