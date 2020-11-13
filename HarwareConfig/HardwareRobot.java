@@ -38,28 +38,15 @@ public class HardwareRobot
     public DcMotor  backRight   = null;
     public DcMotor  shooterLeft = null;
     public DcMotor  shooterRight = null;
-    public DcMotor  jack = null;
-    public DcMotor  slide       = null;
 
     public CRServo conveyorLeft = null;
     public CRServo conveyorRight = null;
-    public Servo  servoFoundationL  = null;
-    public Servo  servoFoundationR  = null;
     public BNO055IMU imu = null;
     public HardwareMap hwMap           =  null;
     public ElapsedTime period  = new ElapsedTime();
 
     public Servo  wobbleGoalServo    = null;
 
-    public Servo  stoneServoLeft    = null;
-    public Servo  stoneServoRight   = null;
-    public Servo  armServoBlue    = null;
-    public Servo  armServoRed   = null;
-    public Servo  rackServoBlue = null;
-    public Servo  rackServoRed = null;
-    public Servo  servoCapstoneRelease   = null;
-
-    public TouchSensor jackStopSensor = null;
 
 //    public ColorSensor lightSensor = null;
 
@@ -70,10 +57,8 @@ public class HardwareRobot
     public double clockwise =0;
     public double forwardDirection =0;
     public double rightDirection =0;
-    public double verticalDirection = 0;
     public double clockwiseDirection =0;
     public double counterclockwiseDirection = 0;
-    public double slideDirection =0;
 
     public double priorAngle = 0;
     public double offset = 0;
@@ -84,18 +69,10 @@ public class HardwareRobot
     public double distanceTraveled = 0;
 
     public double jackDirection = -1; // -1 for 20:1 gear box; +1 for the other gear boxes
-    public int jackZoneCTeleOp =0;
     public int countDistance = 0;
 
     private boolean reduceDrivingPower = false; // << Private property to know if reduced Driving Power should apply
 
-
-    public double stoneArmInitBlue = 0.85;// for blue oriented servo is 1
-    public double stoneArmInitRed = 0.20;// for Red oriented servo is 0
-    public double rackInitBlue = 0;//
-    public double rackInitRed = 1;//
-    // GET RID OF THESE 4 ABOVE
-    // GET RID OF THESE 4 ABOVE
     /* local OpMode members. */
     public Orientation angles;
 
@@ -143,25 +120,10 @@ public class HardwareRobot
             shooterLeft = hwMap.get(DcMotor.class, "motor_shooterL");
             shooterRight = hwMap.get(DcMotor.class, "motor_shooterR");
 
+            //Define all installed sensors
             conveyorLeft = hwMap.get(CRServo.class, "servo_conveyorL");
             conveyorRight = hwMap.get(CRServo.class, "servo_conveyorR");
 //            wobbleGoalServo = hwMap.get(Servo.class, "wobble_goal_servo");
-
-            // Define and initialize ALL installed servos.
-//            servoFoundationL = hwMap.get(Servo.class, "foundation_l_servo");
-//            servoFoundationR = hwMap.get(Servo.class, "foundation_r_servo");
-//
-//            jack = hwMap.get(DcMotor.class, "motor_jack");
-//            slide = hwMap.get(DcMotor.class, "motor_slide");
-//            rackServoBlue = hwMap.get(Servo.class, "blue_rack_servo");
-//            rackServoRed = hwMap.get(Servo.class, "red_rack_servo");
-//            armServoBlue = hwMap.get(Servo.class, "arm_servo_Blue");
-//            armServoRed= hwMap.get(Servo.class, "arm_servo_Red");
-//            stoneServoLeft = hwMap.get(Servo.class, "stone_servo_left");
-//            stoneServoRight = hwMap.get(Servo.class, "stone_servo_right");
-//            servoCapstoneRelease = hwMap.get(Servo.class, "capstone_servo");
-
-            //Define all installed sensors
 
             // Set up the parameters with which we will use our IMU. Note that integration
             // algorithm here just reports accelerations to the logcat log; it doesn't actually
@@ -193,16 +155,12 @@ public class HardwareRobot
 //            frontRight = new DcMotor();
 //            backLeft = new DcMotor();
 //            backRight = new DcMotor();
-//            jack = new DcMotor();
-//            slide = new DcMotor();
-//
-//            // Define and initialize ALL installed servos.
-//            servoFoundationL = new Servo();
-//            servoFoundationR = new Servo();
-//
+
+            // Define and initialize ALL installed servos.
+
 //            stoneServoLeft = new Servo();
 //            stoneServoRight = new Servo();
-////        servoCapstoneRelease = new Servo();
+//            servoCapstoneRelease = new Servo();
 //            stoneServoArm = new Servo();
 //            imu = new TestOpModesOffline.BNO055IMU();
 //            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();//Need help on enclosing class
@@ -218,12 +176,6 @@ public class HardwareRobot
             frontRight = hwMap.get(DcMotor.class, "motor_fr");
             backLeft = hwMap.get(DcMotor.class, "motor_bl");
             backRight = hwMap.get(DcMotor.class, "motor_br");
-
-//            stoneServoArm = hwMap.get(Servo.class, "stone_arm_servo");
-//            wobbleGoalServo = hwMap.get(Servo.class, "wobble_goal_servo");
-//            armServoRed = hwMap.get(Servo.class, "red_arm_servo");
-
-//            jackStopSensor = hwMap.get(TouchSensor.class, "touch_sensor");
 
             // Set up the parameters with which we will use our IMU. Note that integration
             // algorithm here just reports accelerations to the logcat log; it doesn't actually
@@ -936,60 +888,6 @@ public class HardwareRobot
 
     }
 
-    public void moveJack(double height, double jackPowerLimit, String step, BasicOpMode om) {
-//        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * (om.cons.W0 - ( (Math.sqrt(Math.pow(om.cons.W0, 2) - Math.pow(om.DeltaH + om.cons.H0, 2)) / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) ) );
-        int countDistance = (int) -( ((height / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) / om.cons.NUMBER_OF_JACK_STAGES);//!!!!!!!!!!!!!!!!!!! DEGREES_TO_COUNTS for old 60:1 motor gear box
-//        int startPosL;
-//        int startPosR;
-        int jackZoneC;// remove: = countDistance
-
-//        startPosL = jack.getCurrentPosition();
-//        startPosR = jackRight.getCurrentPosition();
-
-        jackPowerLimit = jackPowerLimit * jackDirection;
-
-        jack.setPower(jackPowerLimit);
-        jack.setTargetPosition(countDistance);
-
-        jackZoneC = Math.abs(countDistance - jack.getCurrentPosition() );
-
-        while((jackZoneC > om.cons.MOVE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
-
-            jackZoneC = Math.abs(countDistance - jack.getCurrentPosition() );
-
-            om.telemetry.addData("Jack: ", step);
-            om.telemetry.addData("Motor Commands: ", "Jack (%d)", jack.getTargetPosition());
-            om.telemetry.addData("Motor Counts: ", "Jack (%d)", jack.getCurrentPosition());
-            om.telemetry.addData("Move Tolerance: ", om.cons.MOVE_TOL);
-            om.telemetry.update();
-
-            om.idle();
-        }
-        jack.setPower(0);
-
-        om.telemetry.addLine("Jack Motion Done");
-    }
-
-    public void moveJackTeleOp(double height, double jackPowerLimit, String step, BasicOpMode om) {
-//        int countDistance = (int) (om.cons.NUMBER_OF_JACK_STAGES * (om.cons.W0 - ( (Math.sqrt(Math.pow(om.cons.W0, 2) - Math.pow(om.DeltaH + om.cons.H0, 2)) / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) ) );
-        countDistance = (int) -( ((height / om.cons.MOTOR_DEG_TO_LEAD) * om.cons.DEGREES_TO_COUNTS) / om.cons.NUMBER_OF_JACK_STAGES);//!!!!!!!!!!!!!!!!!!! DEGREES_TO_COUNTS for old 60:1 motor gear box
-
-        jackPowerLimit = jackPowerLimit * jackDirection;
-
-        jack.setPower(jackPowerLimit);
-        jack.setTargetPosition(countDistance);
-
-    }
-
-    public void moveJackInOpMode(BasicOpMode om) {
-
-        jackZoneCTeleOp = Math.abs(countDistance - jack.getCurrentPosition() );
-
-        if (!(jackZoneCTeleOp > om.cons.MOVE_TOL) && (om.opModeIsActive() || om.testModeActive)) {
-            jack.setPower(0);
-        }
-    }
-
     public void driveRotateIMU(double angle, double powerLimit, String step, BasicAuto om) {
 
         double error;
@@ -1085,14 +983,6 @@ public class HardwareRobot
         backRight.setPower(Range.clip(forwardDirection + rightDirection - clockwise, -powerLimit, powerLimit));
         backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -powerLimit, powerLimit));
     }
-
-//    public void rotatePowerRightStick(Gamepad g1, Gamepad g2) {
-//
-//        clockwise = (g1.right_stick_x) * om.cons.TELEOP_ROTATE_POWER_LIMIT;
-//
-//        clockwise = Range.clip(clockwise, -om.cons.TELEOP_ROTATE_POWER_LIMIT, om.cons.TELEOP_ROTATE_POWER_LIMIT);
-//
-//    }
 
     public void drivePowerAllLeftStickScaled(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 
@@ -1249,63 +1139,9 @@ public class HardwareRobot
 
     }
 
-//
-//    public void jackPower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
-//
-//        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2) ) * jackDirection * om.cons.JACK_POWER_LIMIT;
-//
-//        jack.setPower(Range.clip(verticalDirection, -om.cons.JACK_POWER_LIMIT, om.cons.JACK_POWER_LIMIT));
-//
-//    }
-//
-//    public void jackPowerEncoderStop(Gamepad g1, Gamepad g2, BasicTeleOp om) {
-//
-//        double localJackPowerLimit = om.cons.JACK_POWER_LIMIT;
-//        verticalDirection = (-g2.left_stick_y * Math.pow(g2.left_stick_y, 2)) * jackDirection * om.cons.JACK_POWER_LIMIT;
-//
-//        if (jackDirection < 0) {
-//            if (verticalDirection > 0 && jack.getCurrentPosition() > jackDirection * 667) {//was 2000 for original 60:1 motor and 1333 for 40:1
-//                localJackPowerLimit = 0.3;
-//                if (verticalDirection > 0 && jack.getCurrentPosition() > jackDirection * 334) {// was 1000 for original 60:1 motor and 667 for 40:1
-//                    verticalDirection = 0;
-//                }
-//            }
-//
-//        }
-//        else if (jackDirection > 0) {
-//
-//            if (verticalDirection < 0 && jack.getCurrentPosition() < jackDirection * 667) {//was 2000 for original 60:1 motor and 1333 for 40:1
-//                localJackPowerLimit = 0.3;
-//                if (verticalDirection < 0 && jack.getCurrentPosition() < jackDirection * 334) {// was 1000 for original 60:1 motor and 667 for 40:1
-//                    verticalDirection = 0;
-//                }
-//            }
-//        }
-//        else {
-//            localJackPowerLimit = om.cons.JACK_POWER_LIMIT;
-//            }
-//
-//
-////        if(jackStopSensor.isPressed() && verticalDirection < 0 ){
-////            verticalDirection = 0;
-////        }
-//
-//        jack.setPower(Range.clip(verticalDirection, -localJackPowerLimit, localJackPowerLimit));
-//
-//    }
-//
-//    public void slidePower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
-//
-//        slideDirection = (g2.right_stick_y * Math.pow(g2.right_stick_y, 2) ) * om.cons.SLIDE_POWER_LIMIT;
-//
-//        slide.setPower(Range.clip(slideDirection, -om.cons.SLIDE_POWER_LIMIT, om.cons.SLIDE_POWER_LIMIT));
-//
-//    }
+    public void setServoPos(Servo moveServo, double servoPos) {
 
-    public void setServoPos(double servoPos) {
-
-        stoneServoLeft.setPosition(servoPos);
-        stoneServoRight.setPosition(servoPos);
+        moveServo.setPosition(servoPos);
 
     }
 

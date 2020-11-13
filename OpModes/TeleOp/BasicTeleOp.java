@@ -33,10 +33,6 @@ public class BasicTeleOp extends BasicOpMode {
     public double slidePwr = 0;
     public double setJackHeightPos = 3;
 
-
-    public double shooter_Power = 0;
-    public double conveyor_Power = 0;
-
     public double capstoneServoPosition = 0;
 
     public double manualGripperIncrement = 0.05;// was 0.01 and 0.005
@@ -166,20 +162,9 @@ public class BasicTeleOp extends BasicOpMode {
     public void stopMotors() {
 
         Billy.setMotorPower(0);
-        Billy.jack.setPower(0);
-        Billy.slide.setPower(0);
     }
 
     public void initServosAfterStart() {
-
-        Billy.stoneServoLeft.setPosition(Billy.stoneServoLeft.getPosition());
-        Billy.stoneServoRight.setPosition(Billy.stoneServoRight.getPosition());
-        Billy.servoFoundationL.setPosition(0.80);
-        Billy.servoFoundationR.setPosition(0.20);
-
-        Billy.wobbleGoalServo.setPosition(Billy.stoneArmInitBlue);
-        Billy.rackServoBlue.setPosition(Billy.rackInitBlue);
-        Billy.rackServoRed.setPosition(Billy.rackInitRed);
 
     }
 
@@ -196,23 +181,8 @@ public class BasicTeleOp extends BasicOpMode {
                         Billy.backRight.getPower());
 
             case 2 :
-            // Jack and Slide
-                telemetry.addData("Jack Pos", "Center (%d)", Billy.jack.getCurrentPosition());
-                telemetry.addData("Jack TargetPos", "Center (%d)", Billy.jack.getTargetPosition());
-                telemetry.addData("Jack Power Cmd", "Vertical (%.2f)", verticalDirection);
-                telemetry.addData("Jack Motors", "Jack Center (%.2f)", Billy.jack.getPower());
-                telemetry.addData("Slide Pos", "Slide (%d)", Billy.slide.getCurrentPosition());
-                telemetry.addData("Slide TargetPos", "Slide (%d)", Billy.slide.getTargetPosition());
-                telemetry.addData("Slide Power", "Slide (%.2f)", Billy.slide.getPower());
 
             case 3 :
-            // Servos
-                telemetry.addData("Foundation", "Servo Left (%.2f), Servo Right (%.2f)",
-                        Billy.servoFoundationL.getPosition(), Billy.servoFoundationR.getPosition());
-                telemetry.addData("Gripper", "Servo Left (%.2f), Servo Right (%.2f)",
-                        Billy.stoneServoLeft.getPosition(), Billy.stoneServoRight.getPosition());
-                telemetry.addData("Autonomous", "Servo Blue (%.2f), Servo Red (%.2f)",
-                        Billy.wobbleGoalServo.getPosition());
 
             case 4 :
             // Status and Heading
