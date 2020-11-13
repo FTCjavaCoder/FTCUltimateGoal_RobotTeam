@@ -22,7 +22,7 @@ public class SensorREVColorDistance extends LinearOpMode {
         // methods associated with the Rev2mDistanceSensor class.
         Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor)sensorRange;
 
-        telemetry.addData(">>", "Press start to continue");
+        telemetry.addData(">>", "Initialized, Press Start");
         telemetry.update();
 
         waitForStart();
