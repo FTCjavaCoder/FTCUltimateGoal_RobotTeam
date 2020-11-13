@@ -19,6 +19,9 @@ public class WobbleArm {
     public  double wobbleGrabPos = 0.5;
     public double wobbleReleasePos = 0;
     public int wobbleArmTarget = 0;
+    public int armPosInc = 10;
+    public double armPower = 0.25;
+    public double powerInc = 0.05;
 
     public WobbleArm(BasicOpMode om, boolean tm)  {
         if(tm) {
@@ -39,43 +42,64 @@ public class WobbleArm {
         }
     }
 
-public void setWobbleMotorPosition(Gamepad gamepad1, BasicOpMode om) {
+    public void setWobbleMotorPower(Gamepad gamepad1, BasicOpMode om) {
 
-    if (gamepad1.dpad_up) {
-        wobbleArmTarget += 4;
-        wobbleGoalArm.setTargetPosition(wobbleArmTarget);
-        om.sleep(300);
-    }
-    if (gamepad1.dpad_down) {
-        wobbleArmTarget -= 4;
-        wobbleGoalArm.setTargetPosition(wobbleArmTarget);
-        om.sleep(300);
-    }
+        if (gamepad1.left_bumper) {
+            armPower -= powerInc;
+            wobbleGoalArm.setPower(armPower);
+            om.sleep(300);
+        }
+        if (gamepad1.right_bumper) {
+            armPower += powerInc;
+            wobbleGoalArm.setPower(armPower);
+            om.sleep(300);
+        }
 
-    if (gamepad1.left_bumper) {
-        wobbleGoalArm.setPower(0);
-    }
-    if (gamepad1.right_bumper) {
-        wobbleGoalArm.setPower(0.1);
-    }
+        if (gamepad1.b) {
+            armPower = 0;
+            wobbleGoalArm.setPower(armPower);
+            om.sleep(300);
+        }
 
-}
-
-public void setWobbleServoPos(Gamepad gamepad1, BasicOpMode om) {
-
-    if (gamepad1.y) {
-
-        wobbleGoalPos += wobbleGrabInc;
-        wobbleGoalServo.setPosition(wobbleGoalPos);
-        om.sleep(250);
-    }
-    if (gamepad1.a) {
-
-        wobbleGoalPos -= wobbleGrabInc;
-        wobbleGoalServo.setPosition(wobbleGoalPos);
-        om.sleep(250);
     }
 
-}
+    public void changeWobbleMotorVariable(Gamepad gamepad1, BasicOpMode om) {
+
+        if (gamepad1.dpad_up) {
+            wobbleArmTarget += armPosInc;
+            om.sleep(300);
+        }
+        if (gamepad1.dpad_down) {
+            wobbleArmTarget -= armPosInc;
+            om.sleep(300);
+        }
+
+    }
+
+    public void setWobbleMotorPosition(Gamepad gamepad1, BasicOpMode om) {
+
+        if (gamepad1.dpad_right) {
+            wobbleGoalArm.setTargetPosition(wobbleArmTarget);
+            om.sleep(300);
+        }
+
+    }
+
+    public void setWobbleServoPos(Gamepad gamepad1, BasicOpMode om) {
+
+        if (gamepad1.y) {
+
+            wobbleGoalPos += wobbleGrabInc;
+            wobbleGoalServo.setPosition(wobbleGoalPos);
+            om.sleep(250);
+        }
+        if (gamepad1.a) {
+
+            wobbleGoalPos -= wobbleGrabInc;
+            wobbleGoalServo.setPosition(wobbleGoalPos);
+            om.sleep(250);
+        }
+
+    }
 
 }
