@@ -51,7 +51,7 @@ public class ConveyorShooterDrive extends BasicTeleOp {
         robotUG.driveTrain.initIMU(this); //confgures IMU and sets initial heading to 0.0 degrees
         robotUG.driveTrain.robotX = 0;
         robotUG.driveTrain.robotY = 0;
-        robotUG.driveTrain.robotLocation.setLocation(0,0,0);
+        robotUG.driveTrain.robotLocationV1.setLocation(0,0,0);
 
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");

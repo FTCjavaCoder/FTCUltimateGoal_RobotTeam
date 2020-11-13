@@ -380,7 +380,7 @@ public class DriveTrain {
         brPrevious = brCount;
         blPrevious = blCount;
     }
-    public void robotNavigatorV2(BasicAuto om){
+    public void robotNavigatorV2(BasicOpMode om){
         double factor = 1;
 
         int flCount = frontLeft.getCurrentPosition();

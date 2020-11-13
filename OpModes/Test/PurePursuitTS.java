@@ -26,6 +26,8 @@ public class PurePursuitTS extends BasicTeleOp {
 
             robotUG.driveTrain.robotNavigator(this);
 
+            robotUG.driveTrain.robotNavigatorV2(this);
+
             telemetry.addData("Status", "Run Time: ",runtime.toString());
 //			multiTelemetry(telemetryOption);
             telemetry.addData("Robot Heading", "( %.2f )", robotUG.driveTrain.robotHeading);
@@ -39,9 +41,13 @@ public class PurePursuitTS extends BasicTeleOp {
             telemetry.addData("Robot Y", "Variable: Robot Y (%.2f)", robotUG.driveTrain.robotY);
             telemetry.addData("Robot Angle", "Variable: Robot Angle (%.2f)", robotUG.driveTrain.robotAngle);
 
-            telemetry.addData("Field X", "Variable: Field X (%.2f)", robotUG.driveTrain.fieldX);
-            telemetry.addData("Field Y", "Variable: Field Y (%.2f)", robotUG.driveTrain.fieldY);
-            telemetry.addData("Field Angle", "Variable: Field Angle (%.2f)", robotUG.driveTrain.fieldAngle);
+            telemetry.addData("Field X V1", "Variable: Field X V1 (%.2f)", robotUG.driveTrain.fieldX);
+            telemetry.addData("Field Y V1", "Variable: Field Y V1 (%.2f)", robotUG.driveTrain.fieldY);
+            telemetry.addData("Field Angle V1", "Variable: Field Angle V1 (%.2f)", robotUG.driveTrain.fieldAngle);
+
+            telemetry.addData("Field X V2", "Variable: Field X V2 (%.2f)", robotUG.driveTrain.robotFieldLoctaionV2.x);
+            telemetry.addData("Field Y V2", "Variable: Field Y V2 (%.2f)", robotUG.driveTrain.robotFieldLoctaionV2.y);
+            telemetry.addData("Field Angle V2", "Variable: Field Angle V2 (%.2f)", robotUG.driveTrain.robotFieldLoctaionV2.theta);
 
             telemetry.update();
 
@@ -76,7 +82,7 @@ public class PurePursuitTS extends BasicTeleOp {
         robotUG.driveTrain.initIMU(this); //confgures IMU and sets initial heading to 0.0 degrees
         robotUG.driveTrain.robotX = 0;
         robotUG.driveTrain.robotY = 0;
-        robotUG.driveTrain.robotLocation.setLocation(0,0,0);
+        robotUG.driveTrain.robotLocationV1.setLocation(0,0,0);
 
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");
