@@ -16,7 +16,7 @@ public class WobbleArm {
 
     public double wobbleGoalPos = 0.5;// undecided values
     public double wobbleGrabInc = 0.1;
-    public  double wobbleGrabPos = 0.5;
+    public double wobbleGrabPos = 0.5;
     public double wobbleReleasePos = 0;
     public int wobbleArmTarget = 0;
     public int armPosInc = 10;

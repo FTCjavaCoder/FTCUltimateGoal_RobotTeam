@@ -60,7 +60,7 @@ public class WobbleGoalArmGrabTest2 extends BasicTeleOp {
 
             robotUG.wobbleArm.setWobbleServoPos(gamepad1,this);
 
-            telemetry.addData("Motor Variables", "Goal Arm Power (%d), Goal Arm Target (%d)", robotUG.wobbleArm.armPower, robotUG.wobbleArm.wobbleArmTarget);
+            telemetry.addData("Motor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d)", robotUG.wobbleArm.armPower, robotUG.wobbleArm.wobbleArmTarget);
             telemetry.addData("Motor Position", "Goal Arm Current Pos (%d)", robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
             telemetry.addData("Servo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
                     robotUG.wobbleArm.wobbleGrabPos, robotUG.wobbleArm.wobbleReleasePos);
