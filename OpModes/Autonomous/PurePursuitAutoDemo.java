@@ -47,8 +47,8 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		readOrWriteHashMap();
 		// Tel the robot that it's starting at (0,0) field center and angle is zero - facing EAST - Right
 		robotUG.driveTrain.initIMU(this); //confgures IMU and sets initial heading to 0.0 degrees
-		robotUG.driveTrain.robotX = 0;
-		robotUG.driveTrain.robotY = 0;
+		robotUG.driveTrain.robotX1 = 0;
+		robotUG.driveTrain.robotY1 = 0;
 		robotUG.driveTrain.robotLocationV1.setLocation(0,0,0);
 		telemetry.addData("STATUS", "MultiRobot Hardware Configured!!");
 		telemetry.addData("Robot Location", "X = %.2f inch, Y = %.2f inch, Theta = %.2f degrees",robotUG.driveTrain.robotLocationV1.x, robotUG.driveTrain.robotLocationV1.y, robotUG.driveTrain.robotLocationV1.theta);
@@ -67,7 +67,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		ArrayList<PursuitPoint> pathPoints = new ArrayList<>();
 		pathPoints= fieldPoints;
 		// Always start path with where robot is
-		pathPoints.add(new PursuitPoint(robotUG.driveTrain.robotX ,robotUG.driveTrain.robotY));
+		pathPoints.add(new PursuitPoint(robotUG.driveTrain.robotX1 ,robotUG.driveTrain.robotY1));
 		//Slalom course robot will start moving forward and then turn left
 		pathPoints.add(new PursuitPoint(18,0));
 		pathPoints.add(new PursuitPoint(18,48));

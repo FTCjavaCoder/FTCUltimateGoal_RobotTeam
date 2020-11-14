@@ -65,14 +65,21 @@ public class DriveTrain {
     /** items below are for pure pursuit and robot navigator
      *
      */
-    public int flPrevious;
-    public int frPrevious;
-    public int brPrevious;
-    public int blPrevious;
+    public int flPrevious1;
+    public int frPrevious1;
+    public int brPrevious1;
+    public int blPrevious1;
+    public int flPrevious2;
+    public int frPrevious2;
+    public int brPrevious2;
+    public int blPrevious2;
 
-    public double robotAngle;
-    public double robotX;
-    public double robotY;
+    public double robotAngle1;
+    public double robotX1;
+    public double robotY1;
+    public double robotAngle2;
+    public double robotX2;
+    public double robotY2;
     public double fieldX;
     public double fieldY;
     public double fieldAngle;
@@ -320,32 +327,32 @@ public class DriveTrain {
     public void robotNavigator(BasicOpMode om){
         double factor = 1;
 
-        int flCount = frontLeft.getCurrentPosition();
-        int frCount = frontRight.getCurrentPosition();
-        int brCount = backRight.getCurrentPosition();
-        int blCount = backLeft.getCurrentPosition();
+        int flCount1 = frontLeft.getCurrentPosition();
+        int frCount1 = frontRight.getCurrentPosition();
+        int brCount1 = backRight.getCurrentPosition();
+        int blCount1 = backLeft.getCurrentPosition();
 
-        int deltaFL = flCount - flPrevious;
-        int deltaFR = frCount - frPrevious;
-        int deltaBR = brCount - brPrevious;
-        int deltaBL = blCount - blPrevious;
+        int deltaFL1 = flCount1 - flPrevious1;
+        int deltaFR1 = frCount1 - frPrevious1;
+        int deltaBR1 = brCount1 - brPrevious1;
+        int deltaBL1 = blCount1 - blPrevious1;
 
 
         //drive motor calculations
 
-        int deltaSum = (deltaFL  + deltaFR  + deltaBR  + deltaBL)/4;
-        robotAngle += deltaSum / (om.cons.DEGREES_TO_COUNTS * om.cons.ROBOT_INCH_TO_MOTOR_DEG *
+        int deltaSum = (deltaFL1  + deltaFR1  + deltaBR1  + deltaBL1)/4;
+        robotAngle1 += deltaSum / (om.cons.DEGREES_TO_COUNTS * om.cons.ROBOT_INCH_TO_MOTOR_DEG *
                 om.cons.ROBOT_DEG_TO_WHEEL_INCH * om.cons.adjRotate);
         //The sign of this angle will match what the IMU returns which should be opposite the CW = + convention
         // Updated 11/1/20 t be "-=" rather than "+=" and then flipped sign for field angle but this made robot reverse
 
-        double robotFLBRCount = 0.707* Math.signum(deltaBR)*(Math.abs(deltaBR-deltaSum) + Math.abs(deltaFL-deltaSum))/2;
-        double robotFRBLCount = 0.707* Math.signum(deltaFR)*(Math.abs(deltaFR-deltaSum) + Math.abs(deltaBL-deltaSum))/2;
+        double robotFLBRCount = 0.707* Math.signum(deltaBR1)*(Math.abs(deltaBR1-deltaSum) + Math.abs(deltaFL1-deltaSum))/2;
+        double robotFRBLCount = 0.707* Math.signum(deltaFR1)*(Math.abs(deltaFR1-deltaSum) + Math.abs(deltaBL1-deltaSum))/2;
 
-        if(Math.signum(deltaFL)== Math.signum(deltaFR) && Math.signum(deltaFL)!= Math.signum(deltaBL)){
+        if(Math.signum(deltaFL1)== Math.signum(deltaFR1) && Math.signum(deltaFL1)!= Math.signum(deltaBL1)){
             factor = 1/om.cons.adjRight;
         }
-        else if(Math.signum(deltaFL)== Math.signum(deltaFR) && Math.signum(deltaFL)== Math.signum(deltaBL)) {
+        else if(Math.signum(deltaFL1)== Math.signum(deltaFR1) && Math.signum(deltaFL1)== Math.signum(deltaBL1)) {
             factor = 1 / om.cons.adjRotate;
         }
         else {
@@ -354,50 +361,50 @@ public class DriveTrain {
         }
 
 //Coordinate transformation to take motor drive coordinates to robot body reference frame - fixed 45 deg rotation
-        double robotXInc = factor* ((robotFRBLCount*0.707) + (robotFLBRCount*0.707))/
+        double robotXInc1 = factor* ((robotFRBLCount*0.707) + (robotFLBRCount*0.707))/
                 (om.cons.DEGREES_TO_COUNTS*om.cons.ROBOT_INCH_TO_MOTOR_DEG);
-        double robotYInc = -factor* ((-robotFRBLCount*0.707) + (robotFLBRCount*0.707))/
+        double robotYInc1 = -factor* ((-robotFRBLCount*0.707) + (robotFLBRCount*0.707))/
                 (om.cons.DEGREES_TO_COUNTS*om.cons.ROBOT_INCH_TO_MOTOR_DEG);
-        robotX += robotXInc;
-        robotY += robotYInc;
+        robotX1 += robotXInc1;
+        robotY1 += robotYInc1;
 
 //Coordinate transformation to take robot body coordinates to field reference frame - depends on IMU angle
 //Angle reference from field to robot is negative angle in CW = + robot frame, uses + = CCW {IMU frame & field frame}
 
-        double fieldXInc = (robotXInc*Math.cos(Math.toRadians(robotAngle))) -
-                (robotYInc*Math.sin(Math.toRadians(robotAngle)));//flipped sign on Ry term
-        double fieldYInc = (robotXInc*Math.sin(Math.toRadians(robotAngle))) +
-                (robotYInc*Math.cos(Math.toRadians(robotAngle)));//flipped sign on Rx term
-        fieldX += fieldXInc;
-        fieldY += fieldYInc;
-        fieldAngle = -robotAngle;//IMU field angle should be same sign as used for theta in rotation matrix, why returning "-"
+        double fieldXInc1 = (robotXInc1*Math.cos(Math.toRadians(robotAngle1))) -
+                (robotYInc1*Math.sin(Math.toRadians(robotAngle1)));//flipped sign on Ry term
+        double fieldYInc1 = (robotXInc1*Math.sin(Math.toRadians(robotAngle1))) +
+                (robotYInc1*Math.cos(Math.toRadians(robotAngle1)));//flipped sign on Rx term
+        fieldX += fieldXInc1;
+        fieldY += fieldYInc1;
+        fieldAngle = -robotAngle1;//IMU field angle should be same sign as used for theta in rotation matrix, why returning "-"
 
         //Update robot FieldLocation for X,Y, angle
         robotLocationV1.setLocation(fieldX,fieldY,fieldAngle);
 
-        flPrevious = flCount;
-        frPrevious = frCount;
-        brPrevious = brCount;
-        blPrevious = blCount;
+        flPrevious1 = flCount1;
+        frPrevious1 = frCount1;
+        brPrevious1 = brCount1;
+        blPrevious1 = blCount1;
     }
     public void robotNavigatorV2(BasicOpMode om){
         double factor = 1;
 
-        int flCount = frontLeft.getCurrentPosition();
-        int frCount = frontRight.getCurrentPosition();
-        int brCount = backRight.getCurrentPosition();
-        int blCount = backLeft.getCurrentPosition();
+        int flCount2 = frontLeft.getCurrentPosition();
+        int frCount2 = frontRight.getCurrentPosition();
+        int brCount2 = backRight.getCurrentPosition();
+        int blCount2 = backLeft.getCurrentPosition();
 
-        int deltaFL = flCount - flPrevious;
-        int deltaFR = frCount - frPrevious;
-        int deltaBR = brCount - brPrevious;
-        int deltaBL = blCount - blPrevious;
+        int deltaFL2 = flCount2 - flPrevious2;
+        int deltaFR2 = frCount2 - frPrevious2;
+        int deltaBR2 = brCount2 - brPrevious2;
+        int deltaBL2 = blCount2 - blPrevious2;
 
 
         //drive motor calculations
         // Use the IMU calculated angles for the robot
         angleUnWrap();
-        robotAngle = robotHeading;
+        robotAngle2 = robotHeading;
         //Need to check all navigation and pursuit path calcs to see that the calcs are done in "FIELD" coordinates (-robotAngle) or fieldAngle
 //
 //        double robotFLBRCount = 0.707* Math.signum(deltaBR)*(Math.abs(deltaBR-deltaSum) + Math.abs(deltaFL-deltaSum))/2;
@@ -416,31 +423,31 @@ public class DriveTrain {
 
 //Coordinate transformation to take motor drive coordinates to robot body reference frame - fixed 45 deg rotation
         // Made much simpler than before - just need to take wheel distance as in direction normal to rollers and transform to robot X, Y
-        double robotXInc = 0.707* ((((-1)*deltaFL+(1)*deltaBR)/2+((1)*deltaFR+(-1)*deltaBL))/2)/
+        double robotXInc2 = 0.707* ((((-1)*deltaFL2+(1)*deltaBR2)/2+((1)*deltaFR2+(-1)*deltaBL2))/2)/
                 (om.cons.DEGREES_TO_COUNTS*om.cons.ROBOT_INCH_TO_MOTOR_DEG*om.cons.adjForward);//RobotX always uses forward
-        double robotYInc = 0.707* (((-1)*deltaFL+(1)*deltaBR)/2+((-1)*deltaFR+(1)*deltaBL)/2)/
+        double robotYInc2 = 0.707* (((-1)*deltaFL2+(1)*deltaBR2)/2+((-1)*deltaFR2+(1)*deltaBL2)/2)/
                 (om.cons.DEGREES_TO_COUNTS*om.cons.ROBOT_INCH_TO_MOTOR_DEG*om.cons.adjRight);//RobotY always uses right
-        robotX += robotXInc;
-        robotY += robotYInc;
+        robotX2 += robotXInc2;
+        robotY2 += robotYInc2;
 
 //Coordinate transformation to take robot body coordinates to field reference frame - depends on IMU angle
 //Angle reference from field to robot is negative angle in CW = + robot frame, uses + = CCW {IMU frame & field frame}
-        robotFieldLoctaionV2.theta = -robotAngle;//IMU field angle should be same sign as used for theta in rotation matrix, why returning "-"
+        robotFieldLoctaionV2.theta = -robotAngle2;//IMU field angle should be same sign as used for theta in rotation matrix, why returning "-"
 
-        double fieldXInc = (robotXInc*Math.cos(Math.toRadians(fieldAngle))) -
-                (robotYInc*Math.sin(Math.toRadians(fieldAngle)));//rotation matrix = [cos - sin; sin cos]
-        double fieldYInc = (robotXInc*Math.sin(Math.toRadians(fieldAngle))) +
-                (robotYInc*Math.cos(Math.toRadians(fieldAngle)));//rotation matrix = [cos - sin; sin cos]
-        robotFieldLoctaionV2.x += fieldXInc;
-        robotFieldLoctaionV2.y += fieldYInc;
+        double fieldXInc2 = (robotXInc2*Math.cos(Math.toRadians(fieldAngle))) -
+                (robotYInc2*Math.sin(Math.toRadians(fieldAngle)));//rotation matrix = [cos - sin; sin cos]
+        double fieldYInc2 = (robotXInc2*Math.sin(Math.toRadians(fieldAngle))) +
+                (robotYInc2*Math.cos(Math.toRadians(fieldAngle)));//rotation matrix = [cos - sin; sin cos]
+        robotFieldLoctaionV2.x += fieldXInc2;
+        robotFieldLoctaionV2.y += fieldYInc2;
 
         //Update robot FieldLocation for X,Y, angle
 //        robotFieldLocation.setLocation(fieldX,fieldY,fieldAngle);// eliminated duplicate fieldX,Y Angle variables
 
-        flPrevious = flCount;
-        frPrevious = frCount;
-        brPrevious = brCount;
-        blPrevious = blCount;
+        flPrevious2 = flCount2;
+        frPrevious2 = frCount2;
+        brPrevious2 = brCount2;
+        blPrevious2 = blCount2;
     }
     /**
      * METHODS BELOW MOVED FROM pursuitMath and pursuitPath
@@ -1034,12 +1041,12 @@ public class DriveTrain {
 //                        targetPoint.x,targetPoint.y, robotLocation.x, robotLocation.y,imu.robotOnField.x,imu.robotOnField.y);
             }
             else {
-                om.telemetry.addData("Robot Heading", " Desired: %.2f, RobotNav: %.2f, FieldNav: %.2f, RobotHeading: %.2f", targetHeading, robotAngle, fieldAngle, robotHeading);
+                om.telemetry.addData("Robot Heading", " Desired: %.2f, RobotNav: %.2f, FieldNav: %.2f, RobotHeading: %.2f", targetHeading, robotAngle1, fieldAngle, robotHeading);
                 om.telemetry.addData("Robot Location", " Desired(X,Y): (%.2f,%.2f), Actual(X,Y): (%.2f,%.2f)",
                         targetPoint.x,targetPoint.y, robotLocationV1.x, robotLocationV1.y);
                 }
             om.telemetry.addData("Motor Counts", "FL (%d) FR (%d) BR (%d) BL (%d)",
-                    flPrevious, frPrevious, brPrevious, blPrevious);
+                    flPrevious1, frPrevious1, brPrevious1, blPrevious1);
             om.telemetry.addData("Motor Power", "FL (%.2f) FR (%.2f) BR (%.2f) BL (%.2f)",
                     setPower[0], setPower[1], setPower[2], setPower[3]);
             om.telemetry.addData("Steering", "Power: %.3f, Gain: %.3f, LimitedPower: %s", steeringPower, om.cons.STEERING_POWER_GAIN,limitedPower);

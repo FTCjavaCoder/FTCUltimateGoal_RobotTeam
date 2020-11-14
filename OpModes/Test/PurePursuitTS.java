@@ -37,13 +37,17 @@ public class PurePursuitTS extends BasicTeleOp {
                     robotUG.driveTrain.frontLeft.getPower(), robotUG.driveTrain.frontRight.getPower(), robotUG.driveTrain.backLeft.getPower(),
                     robotUG.driveTrain.backRight.getPower());
 
-            telemetry.addData("Robot X", "Variable: Robot X (%.2f)", robotUG.driveTrain.robotX);
-            telemetry.addData("Robot Y", "Variable: Robot Y (%.2f)", robotUG.driveTrain.robotY);
-            telemetry.addData("Robot Angle", "Variable: Robot Angle (%.2f)", robotUG.driveTrain.robotAngle);
+            telemetry.addData("Robot X V1", "Variable: Robot X V1 (%.2f)", robotUG.driveTrain.robotX1);
+            telemetry.addData("Robot Y V1", "Variable: Robot Y V1 (%.2f)", robotUG.driveTrain.robotY1);
+            telemetry.addData("Robot Angle V1", "Variable: Robot Angle V1 (%.2f)", robotUG.driveTrain.robotAngle1);
 
-            telemetry.addData("Field X V1", "Variable: Field X V1 (%.2f)", robotUG.driveTrain.fieldX);
-            telemetry.addData("Field Y V1", "Variable: Field Y V1 (%.2f)", robotUG.driveTrain.fieldY);
-            telemetry.addData("Field Angle V1", "Variable: Field Angle V1 (%.2f)", robotUG.driveTrain.fieldAngle);
+            telemetry.addData("Robot X V2", "Variable: Robot X V2 (%.2f)", robotUG.driveTrain.robotX2);
+            telemetry.addData("Robot Y V2", "Variable: Robot Y V2 (%.2f)", robotUG.driveTrain.robotY2);
+            telemetry.addData("Robot Angle V2", "Variable: Robot Angle V2 (%.2f)", robotUG.driveTrain.robotAngle2);
+
+            telemetry.addData("Field X V1", "Variable: Field X V1 (%.2f)", robotUG.driveTrain.robotLocationV1.x);
+            telemetry.addData("Field Y V1", "Variable: Field Y V1 (%.2f)", robotUG.driveTrain.robotLocationV1.y);
+            telemetry.addData("Field Angle V1", "Variable: Field Angle V1 (%.2f)", robotUG.driveTrain.robotLocationV1.theta);
 
             telemetry.addData("Field X V2", "Variable: Field X V2 (%.2f)", robotUG.driveTrain.robotFieldLoctaionV2.x);
             telemetry.addData("Field Y V2", "Variable: Field Y V2 (%.2f)", robotUG.driveTrain.robotFieldLoctaionV2.y);
@@ -80,9 +84,12 @@ public class PurePursuitTS extends BasicTeleOp {
         readOrWriteHashMap();
         // Tel the robot that it's starting at (0,0) field center and angle is zero - facing EAST - Right
         robotUG.driveTrain.initIMU(this); //confgures IMU and sets initial heading to 0.0 degrees
-        robotUG.driveTrain.robotX = 0;
-        robotUG.driveTrain.robotY = 0;
+        robotUG.driveTrain.robotX1 = 0;
+        robotUG.driveTrain.robotY1 = 0;
+        robotUG.driveTrain.robotX2 = 0;
+        robotUG.driveTrain.robotY2 = 0;
         robotUG.driveTrain.robotLocationV1.setLocation(0,0,0);
+        robotUG.driveTrain.robotFieldLoctaionV2.setLocation(0,0,0);
 
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "Initialized");
