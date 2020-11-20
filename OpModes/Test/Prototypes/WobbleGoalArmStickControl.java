@@ -49,7 +49,7 @@ public class WobbleGoalArmStickControl extends BasicTeleOp {
 
         while (opModeIsActive()) {
 
-            robotUG.wobbleArm.wobbleArmStickControl(gamepad2,this);
+//            robotUG.wobbleArm.wobbleArmStickControl(gamepad2,this);
 
             robotUG.wobbleArm.setWobbleServoPos(gamepad2,this);
 

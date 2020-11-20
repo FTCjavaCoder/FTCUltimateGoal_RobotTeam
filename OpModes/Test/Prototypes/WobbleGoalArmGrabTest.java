@@ -52,14 +52,17 @@ public class WobbleGoalArmGrabTest extends BasicTeleOp {
 
         while (opModeIsActive()) {
 
-            robotUG.wobbleArm.setWobbleMotorPower(gamepad1, this);
+            robotUG.wobbleArm.setWobbleMotorPower(gamepad2, this);
 
-            robotUG.wobbleArm.changeWobbleMotorVariable(gamepad1, this);
+            robotUG.wobbleArm.changeWobbleMotorVariable(gamepad2, this);
 
-            robotUG.wobbleArm.setWobbleMotorPosition(gamepad1,this);
+            robotUG.wobbleArm.setWobbleMotorPosition(gamepad2,this);
 
-            robotUG.wobbleArm.setWobbleServoPos(gamepad1,this);
+            robotUG.wobbleArm.setWobbleServoPos(gamepad2,this);
 
+            telemetry.addData("Arm Target", "Goal Arm Target Angle (%d)", robotUG.wobbleArm.wobbleArmTargetAngle);
+            telemetry.addData("Arm Angle", "Goal Arm Current Angle (%.2f)",
+                    (robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition() / (cons.DEGREES_TO_COUNTS_60_1 * robotUG.wobbleArm.armGearRatio)));
             telemetry.addData("Motor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d)", robotUG.wobbleArm.armPower, robotUG.wobbleArm.wobbleArmTarget);
             telemetry.addData("Motor Position", "Goal Arm Current Pos (%d)", robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
             telemetry.addData("Servo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",

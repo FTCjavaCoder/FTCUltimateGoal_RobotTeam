@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import UltimateGoal_RobotTeam.Parameters.Constants;
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
 
 public class WobbleArm {
@@ -14,16 +15,19 @@ public class WobbleArm {
     public DcMotor wobbleGoalArm    = null;
     public Servo   wobbleGoalServo  = null;
 
+    Constants cons = new Constants();
+
     public double wobbleGoalPos = 0.5;// undecided values
     public double wobbleGrabInc = 0.1;
     public double wobbleGrabPos = 0.5;
     public double wobbleReleasePos = 0;
     public int wobbleArmTarget = 0;
-    public int armPosInc = 10;
+    public int wobbleArmTargetAngle = 0;
+    public int armDegInc = 1;
     public double armPower = 0.25;
     public double powerInc = 0.05;
-    public double wobbleArmPower = 0;
     public double armPowerHold = 0.7;
+    public double armGearRatio = 0.5;
 
     public WobbleArm(BasicOpMode om, boolean tm)  {
         if(tm) {
@@ -45,64 +49,47 @@ public class WobbleArm {
         }
     }
 
-    public void setWobbleMotorPower(Gamepad gamepad1, BasicOpMode om) {
+    public void setWobbleMotorPower(Gamepad gamepad2, BasicOpMode om) {
 
-        if (gamepad1.left_bumper) {
+        if (gamepad2.left_bumper) {
             armPower -= powerInc;
             wobbleGoalArm.setPower(armPower);
             om.sleep(300);
         }
-        if (gamepad1.right_bumper) {
+        if (gamepad2.right_bumper) {
             armPower += powerInc;
             wobbleGoalArm.setPower(armPower);
             om.sleep(300);
         }
 
-        if (gamepad1.b) {
-            armPower = 0;
+        if (gamepad2.b) {
+            armPower = 0.0;
             wobbleGoalArm.setPower(armPower);
             om.sleep(300);
         }
 
     }
 
-    public void changeWobbleMotorVariable(Gamepad gamepad1, BasicOpMode om) {
+    public void changeWobbleMotorVariable(Gamepad gamepad2, BasicOpMode om) {
 
-        if (gamepad1.dpad_up) {
-            wobbleArmTarget += armPosInc;
+        if (gamepad2.dpad_up) {
+            wobbleArmTargetAngle += armDegInc;
+            wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (cons.DEGREES_TO_COUNTS_60_1 * armGearRatio));
             om.sleep(300);
         }
-        if (gamepad1.dpad_down) {
-            wobbleArmTarget -= armPosInc;
+        if (gamepad2.dpad_down) {
+            wobbleArmTargetAngle -= armDegInc;
+            wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (cons.DEGREES_TO_COUNTS_60_1 * armGearRatio));
             om.sleep(300);
         }
 
     }
 
-    public void setWobbleMotorPosition(Gamepad gamepad1, BasicOpMode om) {
+    public void setWobbleMotorPosition(Gamepad gamepad2, BasicOpMode om) {
 
-        if (gamepad1.dpad_right) {
+        if (gamepad2.dpad_right) {
             wobbleGoalArm.setTargetPosition(wobbleArmTarget);
             om.sleep(300);
-        }
-
-    }
-
-    public void wobbleArmStickControl(Gamepad gamepad2, BasicOpMode om) {
-
-        if(gamepad2.left_stick_y != 0) {
-
-            wobbleGoalArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            wobbleArmPower = -gamepad2.left_stick_y;
-            wobbleGoalArm.setPower(wobbleArmPower);
-        }
-        else {
-//            wobbleGoalArm.setPower(0);
-//            wobbleGoalArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//            wobbleArmTarget = wobbleGoalArm.getCurrentPosition();
-//            wobbleGoalArm.setTargetPosition(wobbleArmTarget);
-//            wobbleGoalArm.setPower(armPowerHold);
         }
 
     }
