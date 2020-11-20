@@ -5,84 +5,70 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 
-@TeleOp(name="Wobble Goal Arm and Grab Test", group="Test")
+@TeleOp(name="Wobble Goal Arm and Grab Test ONLY", group="Test")
 
 public class WobbleGoalArmGrabTest extends BasicTeleOp {
 
-    public DcMotor wobbleGoalArm = null;
-    public Servo wobbleGoalServo = null;
-
-    double wobbleGoalPos = 0.5;// undecided values
-    double wobbleGrabInc = 0.1;
-    double wobbleGrabPos = 0.5;
-    double wobbleReleasePos = 0;
-    int wobbleArmTarget = 0;
-
     @Override
     public void runOpMode() {
-
-//            initializeTeleOp();
-        wobbleGoalArm = hardwareMap.get(DcMotor.class, "motor_wobble_goal");
-        wobbleGoalServo = hardwareMap.get(Servo.class, "wobble_goal_servo");
-
-        wobbleGoalArm.setPower(0);
-        wobbleGoalArm.setDirection(DcMotorSimple.Direction.FORWARD);
-        wobbleGoalArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        wobbleGoalArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wobbleGoalArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        telemetry.addLine("Initialized");
+        runtime.reset();
+        telemetry.addLine("NOT READY DON'T PRESS PLAY");
         telemetry.update();
-            // Wait for the game to start (driver presses PLAY)
-            waitForStart();
-            runtime.reset();
+
+        // configure the robot needed - for this demo only need DriveTrain
+        // configArray has True or False values for each subsystem HW element
+        //
+        /** configArray is arranged as
+         * [0] = DriveTrain
+         * [1] = Shooter
+         * [2] = Conveyor
+         * [3] = WobbleArm
+         * [4] = Collector
+         * items that are 1 = true will be configured to the robot
+         */
+        // HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector
+        boolean[] configArray = new boolean[]{false, 	false, 	 false, 	true, 	    false};
+
+        robotUG = new HardwareRobotMulti(this, configArray,testModeActive);
+
+        telemetry.addData("STATUS", "MultiRobot Hardware Configured!!");
+        telemetry.addData("Motor Variable", "Goal Arm Target (%d)", robotUG.wobbleArm.wobbleArmTarget);
+        telemetry.addData("Motor Position", "Goal Arm Current Pos (%d)", robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
+        telemetry.addData("Servo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
+                robotUG.wobbleArm.wobbleGrabPos, robotUG.wobbleArm.wobbleReleasePos);
+        telemetry.addData("Servo Position", "Servo Pos (%.2f)",
+                robotUG.wobbleArm.wobbleGoalPos);
+        telemetry.addLine(" ");
+        telemetry.addData(">", "Press Play to start");
+        // READ HASHMAP FILE
+        readOrWriteHashMap();
+        telemetry.update();
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+        runtime.reset();
 
         while (opModeIsActive()) {
 
-            if (gamepad1.dpad_up) {
-                wobbleArmTarget += 100;
-                wobbleGoalArm.setTargetPosition(wobbleArmTarget);
-            }
-            if (gamepad1.dpad_down) {
-                wobbleArmTarget -= 100;
-                wobbleGoalArm.setTargetPosition(wobbleArmTarget);
-            }
+            robotUG.wobbleArm.setWobbleMotorPower(gamepad1, this);
 
-            if (gamepad1.left_bumper) {
-                wobbleGoalArm.setPower(0);
-            }
-            if (gamepad1.right_bumper) {
-                wobbleGoalArm.setPower(0.1);
-            }
+            robotUG.wobbleArm.changeWobbleMotorVariable(gamepad1, this);
 
-            if (gamepad1.y) {
+            robotUG.wobbleArm.setWobbleMotorPosition(gamepad1,this);
 
-                wobbleGoalPos += wobbleGrabInc;
-                TestGrabGoal(wobbleGoalPos);
-                sleep(250);
-            }
-            if (gamepad1.a) {
+            robotUG.wobbleArm.setWobbleServoPos(gamepad1,this);
 
-                wobbleGoalPos -= wobbleGrabInc;
-                TestGrabGoal(wobbleGoalPos);
-                sleep(250);
-            }
-
-            telemetry.addData("Motor Variable", "Goal Arm Target (%.2f)", wobbleArmTarget);
-            telemetry.addData("Motor Position", "Goal Arm Current Pos (%.2f)", wobbleGoalArm.getCurrentPosition());
+            telemetry.addData("Motor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d)", robotUG.wobbleArm.armPower, robotUG.wobbleArm.wobbleArmTarget);
+            telemetry.addData("Motor Position", "Goal Arm Current Pos (%d)", robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
             telemetry.addData("Servo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
-                    wobbleGrabPos, wobbleReleasePos);
+                    robotUG.wobbleArm.wobbleGrabPos, robotUG.wobbleArm.wobbleReleasePos);
             telemetry.addData("Servo Position", "Servo Pos (%.2f)",
-                    wobbleGoalPos);
+                    robotUG.wobbleArm.wobbleGoalPos);
             telemetry.update();
         }
-    }
 
-    public void TestGrabGoal(double armPos) {
-
-        wobbleGoalServo.setPosition(armPos);// change to wobbleGoalServo
     }
 
 }

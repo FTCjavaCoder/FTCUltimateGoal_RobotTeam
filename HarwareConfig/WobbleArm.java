@@ -22,6 +22,8 @@ public class WobbleArm {
     public int armPosInc = 10;
     public double armPower = 0.25;
     public double powerInc = 0.05;
+    public double wobbleArmPower = 0;
+    public double armPowerHold = 0.7;
 
     public WobbleArm(BasicOpMode om, boolean tm)  {
         if(tm) {
@@ -35,6 +37,7 @@ public class WobbleArm {
 
             wobbleGoalArm.setPower(0);
             wobbleGoalArm.setDirection(DcMotorSimple.Direction.FORWARD);
+            wobbleGoalArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             wobbleGoalArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             wobbleGoalArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             wobbleGoalArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -85,15 +88,34 @@ public class WobbleArm {
 
     }
 
-    public void setWobbleServoPos(Gamepad gamepad1, BasicOpMode om) {
+    public void wobbleArmStickControl(Gamepad gamepad2, BasicOpMode om) {
 
-        if (gamepad1.y) {
+        if(gamepad2.left_stick_y != 0) {
+
+            wobbleGoalArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            wobbleArmPower = -gamepad2.left_stick_y;
+            wobbleGoalArm.setPower(wobbleArmPower);
+        }
+        else {
+//            wobbleGoalArm.setPower(0);
+//            wobbleGoalArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            wobbleArmTarget = wobbleGoalArm.getCurrentPosition();
+//            wobbleGoalArm.setTargetPosition(wobbleArmTarget);
+//            wobbleGoalArm.setPower(armPowerHold);
+        }
+
+    }
+
+    public void setWobbleServoPos(Gamepad gamepad2, BasicOpMode om) {
+
+        if (gamepad2.y) {
 
             wobbleGoalPos += wobbleGrabInc;
             wobbleGoalServo.setPosition(wobbleGoalPos);
             om.sleep(250);
         }
-        if (gamepad1.a) {
+        if (gamepad2.a) {
 
             wobbleGoalPos -= wobbleGrabInc;
             wobbleGoalServo.setPosition(wobbleGoalPos);

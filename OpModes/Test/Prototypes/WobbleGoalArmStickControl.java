@@ -1,16 +1,13 @@
 package UltimateGoal_RobotTeam.OpModes.Test.Prototypes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 
-@TeleOp(name="Wobble Goal Arm and Grab Test TWO", group="Test")
+@TeleOp(name="Wobble Goal Arm Stick Control", group="Test")
 
-public class WobbleGoalArmGrabTest2 extends BasicTeleOp {
+public class WobbleGoalArmStickControl extends BasicTeleOp {
 
     @Override
     public void runOpMode() {
@@ -52,13 +49,9 @@ public class WobbleGoalArmGrabTest2 extends BasicTeleOp {
 
         while (opModeIsActive()) {
 
-            robotUG.wobbleArm.setWobbleMotorPower(gamepad1, this);
+            robotUG.wobbleArm.wobbleArmStickControl(gamepad2,this);
 
-            robotUG.wobbleArm.changeWobbleMotorVariable(gamepad1, this);
-
-            robotUG.wobbleArm.setWobbleMotorPosition(gamepad1,this);
-
-            robotUG.wobbleArm.setWobbleServoPos(gamepad1,this);
+            robotUG.wobbleArm.setWobbleServoPos(gamepad2,this);
 
             telemetry.addData("Motor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d)", robotUG.wobbleArm.armPower, robotUG.wobbleArm.wobbleArmTarget);
             telemetry.addData("Motor Position", "Goal Arm Current Pos (%d)", robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
