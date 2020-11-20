@@ -24,7 +24,7 @@ public class WobbleArm {
     public int wobbleArmTarget = 0;
     public int wobbleArmTargetAngle = 0;
     public int armDegInc = 1;
-    public int armDegIncBig = 15;
+    public int armDegIncBig = 25;
     public double armPower = 0.25;
     public double powerInc = 0.05;
     public double armPowerHold = 0.7;
