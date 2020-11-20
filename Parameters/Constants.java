@@ -41,8 +41,10 @@ public class Constants {
     public double TELEOP_DRIVE_POWER_LIMIT = 1.0;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
     public double TELEOP_ROTATE_POWER_LIMIT = 1.0;//chassis drive wheel (FR, FL, BR, BL) Motor power/speed limit for teleop
 
+    //new Ultimate Goal variables
+    public double PURSUIT_RADIUS = 6.0;
+
     //Old Skystone variables
-//    public double JACK_POWER_LIMIT = 1.0;
 //    public double SLIDE_POWER_LIMIT = 0.40;// was 0.6
 //
 //    public final double TURN_POWER =  0.40;
@@ -75,7 +77,9 @@ public class Constants {
     // DERIVATION alpha = 2*AL/D; AL = arc length = wheel travel in inches, D = wheel diameter, alpha = wheel angle in radians
     // AL is input so conversion = 2/D * 180/pi (convert to degrees
     // alpha = AL * (360 / (D*pi))
-    public double DEGREES_TO_COUNTS = (1440.0/360.0) * (40.0/60.0); // units counts/degree - based on 1440 per 1 revolution
+    public double DEGREES_TO_COUNTS_40_1 = (1440.0/360.0) * (40.0/60.0); // units counts/degree - based on 1440 per 1 revolution
+    public double DEGREES_TO_COUNTS_60_1 = 1440.0/360.0;
+
     public final double ROBOT_DEG_TO_WHEEL_INCH = 16.904807 * 3.14159 / 360;//NR wheel center to center 16.904807// units of inch/degree -- Robot rotation circumference [(wheel base (diagonal)] * pi/360 deg
     // DERIVATION AL = theta * RTD/2; AL = arc length = wheel travel in inches, RTD = robot turning diameter, theta = robot angle in radians
     // theta is input so conversion = RTD/2 * pi/180 (convert input in degrees to radians)
@@ -128,7 +132,7 @@ public class Constants {
 
         pHM.put("teleOpRotatePowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.40
 
-//        pHM.put("jackPowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.75
+        pHM.put("pursuitRadius", new ParameterHM(6.0, ParameterHM.instanceType.distanceInches));
 //
 //        pHM.put("slidePowerLimit", new ParameterHM(0.40, ParameterHM.instanceType.powerLimit));// was 0.40
 //
@@ -200,9 +204,9 @@ public class Constants {
             if(s.equals("teleOpRotatePowerLimit")) {
                 TELEOP_ROTATE_POWER_LIMIT = pHM.get(s).value;
             }
-//            if(s.equals("jackPowerLimit")) {
-//                JACK_POWER_LIMIT = pHM.get(s).value;
-//            }
+            if(s.equals("pursuitRadius")) {
+                PURSUIT_RADIUS = pHM.get(s).value;
+            }
 //            if(s.equals("slidePowerLimit")) {
 //                SLIDE_POWER_LIMIT = pHM.get(s).value;
 //            }

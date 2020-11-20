@@ -11,7 +11,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -501,12 +500,12 @@ public class HardwareRobot
 
         incrementalDistance = ((deltaPos[0] * driveDirection[0]) + (deltaPos[1] * driveDirection[1]) + (deltaPos[2] * driveDirection[2]) + (deltaPos[3] * driveDirection[3])) / 4;
 
-        distanceTraveled += incrementalDistance / om.cons.DEGREES_TO_COUNTS / om.cons.ROBOT_INCH_TO_MOTOR_DEG;
+        distanceTraveled += incrementalDistance / om.cons.DEGREES_TO_COUNTS_40_1 / om.cons.ROBOT_INCH_TO_MOTOR_DEG;
 
         priorPos = currentPos;
 
         om.telemetry.addData("Motor Movement", "FL (%d) FR (%d) BR (%d) BL (%d)", deltaPos[0], deltaPos[1], deltaPos[2], deltaPos[3]);
-        om.telemetry.addData("Robot Movement", "Incremental: (%.2f) Total: (%.2f)", incrementalDistance / om.cons.DEGREES_TO_COUNTS / om.cons.ROBOT_INCH_TO_MOTOR_DEG, distanceTraveled);
+        om.telemetry.addData("Robot Movement", "Incremental: (%.2f) Total: (%.2f)", incrementalDistance / om.cons.DEGREES_TO_COUNTS_40_1 / om.cons.ROBOT_INCH_TO_MOTOR_DEG, distanceTraveled);
         om.telemetry.update();
 
     }

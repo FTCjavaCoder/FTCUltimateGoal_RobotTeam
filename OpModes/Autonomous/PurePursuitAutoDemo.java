@@ -47,11 +47,11 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		readOrWriteHashMap();
 		// Tel the robot that it's starting at (0,0) field center and angle is zero - facing EAST - Right
 		robotUG.driveTrain.initIMU(this); //confgures IMU and sets initial heading to 0.0 degrees
-		robotUG.driveTrain.robotX1 = 0;
-		robotUG.driveTrain.robotY1 = 0;
-		robotUG.driveTrain.robotLocationV1.setLocation(0,0,0);
+
+		robotUG.driveTrain.robotFieldLocation.setLocation(0,0,0);
+
 		telemetry.addData("STATUS", "MultiRobot Hardware Configured!!");
-		telemetry.addData("Robot Location", "X = %.2f inch, Y = %.2f inch, Theta = %.2f degrees",robotUG.driveTrain.robotLocationV1.x, robotUG.driveTrain.robotLocationV1.y, robotUG.driveTrain.robotLocationV1.theta);
+		telemetry.addData("Robot Field Location", "X = %.2f inch, Y = %.2f inch, Theta = %.2f degrees",robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y, robotUG.driveTrain.robotFieldLocation.theta);
 		telemetry.addLine(" ");
 		telemetry.addLine("*********************************************");
 		telemetry.addData("WARNING", "VERIFY THAT DRIVE POWER LIMIT IS LOW FOR INITIAL TESTS");
@@ -64,33 +64,53 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 	@Override
 	public void runCode() {
 
+		// for tests and smaller field trials the robot is initialized to (0,0) and 0.0 degrees
+		robotUG.driveTrain.robotX = 0;
+		robotUG.driveTrain.robotY = 0;
+
 		ArrayList<PursuitPoint> pathPoints = new ArrayList<>();
 		pathPoints= fieldPoints;
-		// Always start path with where robot is
-		pathPoints.add(new PursuitPoint(robotUG.driveTrain.robotX1 ,robotUG.driveTrain.robotY1));
-		//Slalom course robot will start moving forward and then turn left
-		pathPoints.add(new PursuitPoint(18,0));
-		pathPoints.add(new PursuitPoint(18,48));
-		pathPoints.add(new PursuitPoint(36,48));
-		pathPoints.add(new PursuitPoint(36,0));
-		pathPoints.add(new PursuitPoint(54, 0));
-		pathPoints.add(new PursuitPoint(54,48));
-		pathPoints.add(new PursuitPoint(58,48));
-		pathPoints.add(new PursuitPoint(58,0));
-
+//
+		pathPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
+		// Simple set of points - diamond or square
+//		pathPoints.add(new PursuitPoint(60,0));
+//		pathPoints.add(new PursuitPoint(60,60));
+//		pathPoints.add(new PursuitPoint(0,60));
+//		pathPoints.add(new PursuitPoint(0,12));
+		// Slalom course - doesn't get to 180 so should be good
+                pathPoints.add(new PursuitPoint(12,0));
+                pathPoints.add(new PursuitPoint(12,60));
+                pathPoints.add(new PursuitPoint(24,60));
+                pathPoints.add(new PursuitPoint(24,0));
+                pathPoints.add(new PursuitPoint(36, 0));
+                pathPoints.add(new PursuitPoint(36,60));
+                pathPoints.add(new PursuitPoint(48,60));
+                pathPoints.add(new PursuitPoint(48,0));
+                pathPoints.add(new PursuitPoint(60, 0));
+                pathPoints.add(new PursuitPoint(60,60));
 
 		for(int h=0;h<pathPoints.size()-1;h++) {
 			lines.add(new PursuitLines(pathPoints.get(h).x, pathPoints.get(h).y, pathPoints.get(h+1).x, pathPoints.get(h+1).y));
 		}
 
-		// Set low speed for initial demo - USE THE EDIT HASHMAP
-//		cons.DRIVE_POWER_LIMIT = 0.3;
-//		cons.STEERING_POWER_LIMIT = cons.DRIVE_POWER_LIMIT  * 1.0;// scale back power limits as necessary
-//		cons.STEERING_POWER_GAIN = 0.1;
-
 		// DON'T LOOP -- run through path 1 time
 		robotUG.driveTrain.drivePursuit(pathPoints, this, "Drive multi-lines");
 
+
+		telemetry.addData("Driving Completed", "...successfully?!?");
+
+		telemetry.addLine("----------------------------------");
+
+		telemetry.addData("Robot Heading", " Desired: %.2f, FieldNav: %.2f, RobotHeading: %.2f", robotUG.driveTrain.targetHeading, robotUG.driveTrain.robotFieldLocation.theta, robotUG.driveTrain.robotHeading);
+		telemetry.addData("Robot Location", " Desired(X,Y): (%.2f,%.2f), Navigator(X,Y): (%.2f,%.2f)",
+				robotUG.driveTrain.targetPoint.x,robotUG.driveTrain.targetPoint.y, robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
+
+		telemetry.addData("Motor Counts", "FL (%d) FR (%d) BR (%d) BL (%d)",
+				robotUG.driveTrain.flPrevious, robotUG.driveTrain.frPrevious, robotUG.driveTrain.brPrevious, robotUG.driveTrain.blPrevious);
+
+		telemetry.addData("Final Point", " (%.2f, %.2f)", pathPoints.get(pathPoints.size()-1).x,pathPoints.get(pathPoints.size()-1).y);
+		telemetry.addLine("----------------------------------");
+		telemetry.update();
 	}
 
 }

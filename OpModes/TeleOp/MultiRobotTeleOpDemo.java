@@ -43,8 +43,6 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 		readOrWriteHashMap();
 		// Tel the robot that it's starting at (0,0) field center and angle is zero - facing EAST - Right
 		robotUG.driveTrain.initIMU(this); //confgures IMU and sets initial heading to 0.0 degrees
-		robotUG.driveTrain.robotX1 = 0;
-		robotUG.driveTrain.robotY1 = 0;
 		robotUG.driveTrain.robotLocationV1.setLocation(0,0,0);
 
 		//Indicate initialization complete and provide telemetry
