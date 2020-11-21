@@ -28,7 +28,7 @@ public class WobbleArm {
     public double armPower = 0.25;
     public double powerInc = 0.05;
     public double armPowerHold = 0.7;
-    public double armGearRatio = 0.5;
+    public double armGearRatio = 2;
 
     public WobbleArm(BasicOpMode om, boolean tm)  {
         if(tm) {
@@ -41,10 +41,11 @@ public class WobbleArm {
             wobbleGoalServo = om.hardwareMap.get(Servo.class, "wobble_goal_servo");
 
             wobbleGoalArm.setPower(0);
+            wobbleGoalArm.setTargetPosition(0);
             wobbleGoalArm.setDirection(DcMotorSimple.Direction.FORWARD);
             wobbleGoalArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             wobbleGoalArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            wobbleGoalArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            wobbleGoalArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             wobbleGoalArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         }

@@ -83,7 +83,6 @@ public class EverythingDrive extends BasicTeleOp {
             robotUG.wobbleArm.setWobbleServoPos(gamepad2,this);
 
             robotUG.collector.collectorControl(gamepad2,  this);
-            
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());
 //			multiTelemetry(telemetryOption);
