@@ -898,8 +898,8 @@ public class DriveTrain {
         double powerLimit = om.cons.DRIVE_POWER_LIMIT;
         double radius = om.cons.PURSUIT_RADIUS;
 
-//        fieldX = robotFieldLocation.x;
-//        fieldY = robotFieldLocation.y;
+        fieldX = robotFieldLocation.x;
+        fieldY = robotFieldLocation.y;
 
         robotNavigator(om);
         om.updateIMU();
