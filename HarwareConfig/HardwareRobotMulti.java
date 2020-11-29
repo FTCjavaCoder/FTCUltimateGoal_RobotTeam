@@ -31,7 +31,7 @@ public class HardwareRobotMulti
     public Conveyor conveyor   = null;
     public WobbleArm wobbleArm   = null;
     public Collector collector   = null;
-
+    public ImageRecog imageRecog   = null;
     /* Deleting unused items - HardwareMap is in OpMode and is passed anyways, period isn't used
     public HardwareMap hwMap           =  null;
     public ElapsedTime period  = new ElapsedTime();
@@ -48,6 +48,7 @@ public class HardwareRobotMulti
      * [2] = Conveyor
      * [3] = WobbleArm
      * [4] = Collector
+     * [5] = ImageRecog
      *  items that are 1 = true will be configured to the robot
      *
      * @param tm : boolean for whether testModeActive is true or false - true calls the testmode version of the constructor
@@ -61,6 +62,8 @@ public class HardwareRobotMulti
         boolean trueConveyor= configArray[2];
         boolean trueWobbleArm = configArray[3];
         boolean trueCollector = configArray[4];
+        boolean trueImageRecog = configArray[5];
+
 
         if (trueDriveTrain) {
             driveTrain = new DriveTrain(om,tm);
@@ -76,6 +79,9 @@ public class HardwareRobotMulti
         }
         if (trueCollector) {
             collector = new Collector(om,tm);
+        }
+        if (trueImageRecog) {
+            imageRecog = new ImageRecog(om,tm);
         }
 
     }

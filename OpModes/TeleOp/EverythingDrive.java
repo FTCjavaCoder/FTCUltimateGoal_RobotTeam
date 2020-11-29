@@ -38,10 +38,11 @@ public class EverythingDrive extends BasicTeleOp {
          * [2] = Conveyor
          * [3] = WobbleArm
          * [4] = Collector
+         * [5] = ImageRecog
          * items that are 1 = true will be configured to the robot
          */
-        // HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector
-        boolean[] configArray = new boolean[]{ true, 	true, 	true, 		true, 		true};
+        // HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector   ImageRecog
+        boolean[] configArray = new boolean[]{ true, 	true, 	true, 		true, 		true,       true};
 
         robotUG = new HardwareRobotMulti(this, configArray,false);
         // READ HASHMAP FILE

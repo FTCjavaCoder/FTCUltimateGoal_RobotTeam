@@ -34,10 +34,11 @@ import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 		 * [2] = Conveyor
 		 * [3] = WobbleArm
 		 * [4] = Collector
+		 * [5] = ImageRecog
 		 * items that are 1 = true will be configured to the robot
 		 */
-		// HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector
-		boolean[] configArray = new boolean[]{ false, 	false, 	false, 		false, 		true};
+		// HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector	ImageRecog
+		boolean[] configArray = new boolean[]{ false, 	false, 	false, 		false, 		true,		false};
 
 		robotUG = new HardwareRobotMulti(this, configArray,false);
 		// READ HASHMAP FILE

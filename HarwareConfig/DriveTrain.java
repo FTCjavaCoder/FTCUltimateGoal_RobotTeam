@@ -199,6 +199,17 @@ public class DriveTrain {
 
         om.sleep(100);
     }
+    public void initIMUtoAngle(BasicOpMode om, double initAngle) {
+
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//This line calls the angles from the IMU
+
+        offset = angles.firstAngle - initAngle; //Determine initial angle offset 
+        priorAngle = angles.firstAngle; //set prior angle for unwrap to be initial angle 
+        robotHeading = angles.firstAngle - offset; //robotHeading to be set at 0 degrees to start 
+
+//        om.sleep(100);
+    }
+
     /** METHODS TO COMPELTE CALCULATIONS NEEDED FOR OTHER DRIVIGN METHODS
      *
      */
@@ -226,6 +237,14 @@ public class DriveTrain {
         double steerPower = (angleWanted - robotHeading) * om.cons.STEERING_POWER_GAIN;
 
         double clippedSteering = -1.0 * (Range.clip(steerPower, -om.cons.STEERING_POWER_LIMIT, om.cons.STEERING_POWER_LIMIT) );
+
+        return clippedSteering;
+    }
+    public double calcSteeringPowerNav(double angleWanted, double angle, BasicOpMode om) {
+
+        double steerPower = (angleWanted - angle) * om.cons.STEERING_POWER_GAIN;
+
+        double clippedSteering = -1.0 * (Range.clip(steerPower, -om.cons.STEERING_POWER_LIMIT, om.cons.STEERING_POWER_LIMIT) );// -1.0 due to motors must turn neagtive direction for CW rotation (+ rotation)
 
         return clippedSteering;
     }
@@ -260,6 +279,7 @@ public class DriveTrain {
         om.telemetry.update();
 
     }
+
     public int[] getMotorPosArray() {
 
         int[] currentPos = new int[4];
@@ -327,10 +347,42 @@ public class DriveTrain {
         int deltaFR = frCount - frPrevious;
         int deltaBR = brCount - brPrevious;
         int deltaBL = blCount - blPrevious;
+/** deltaPos can be array and calculated locally from passed in previous and current values
+ * can be local and exist only in the method
+ */
 
+        //drive motor calculations
+//
+//        int deltaSum = (deltaFL  + deltaFR  + deltaBR  + deltaBL)/4;
+//        robotAngle -= deltaSum / (om.cons.DEGREES_TO_COUNTS * om.cons.ROBOT_INCH_TO_MOTOR_DEG *
+//                om.cons.ROBOT_DEG_TO_WHEEL_INCH );
 
-        // Update to use IMU angle so "robotHeading" is used to update fieldAngle
+        // Update to use IMU angle
+        angleUnWrap();// update heading info
 
+        robotAngle = robotHeading;
+        /** robotAngle is not needed
+         * can be ignored because navigator only needs to track robot on field in field coordinates
+         */
+
+        //The sign of this angle will match what the IMU returns which should be opposite the CW = + convention
+        // Updated 11/1/20 t be "-=" rather than "+=" and then flipped sign for field angle but this made robot reverse
+
+//        double robotFLBRCount = 0.707* Math.signum(deltaBR)*(Math.abs(deltaBR-deltaSum) + Math.abs(deltaFL-deltaSum))/2;
+//        double robotFRBLCount = 0.707* Math.signum(deltaFR)*(Math.abs(deltaFR-deltaSum) + Math.abs(deltaBL-deltaSum))/2;
+//
+//        if(Math.signum(deltaFL)== Math.signum(deltaFR) && Math.signum(deltaFL)!= Math.signum(deltaBL)){
+//            factor = 1/om.cons.adjRight;
+//        }
+//        else if(Math.signum(deltaFL)== Math.signum(deltaFR) && Math.signum(deltaFL)== Math.signum(deltaBL)) {
+//            factor = 1 / om.cons.adjRotate;
+//        }
+//        else {
+//
+//            factor = 1;
+//        }
+
+//Coordinate transformation to take motor drive coordinates to robot body reference frame - fixed 45 deg rotation
         // Simplify by averaging all distance in correct frame
         double robotXInc = ((-deltaFL + deltaFR + deltaBR - deltaBL)/4)/
                 (om.cons.DEGREES_TO_COUNTS_60_1*om.cons.ROBOT_INCH_TO_MOTOR_DEG*om.cons.adjForward);
@@ -343,14 +395,16 @@ public class DriveTrain {
 //Coordinate transformation to take robot body coordinates to field reference frame - depends on IMU angle
 //Angle reference from field to robot is negative angle in CW = + robot frame, uses + = CCW {IMU frame & field frame}
         fieldAngle = -robotHeading;//IMU field angle should be same sign as used for theta in rotation matrix, why returning "-"
-
+/** fieldAngle can be deleted - can return direct to robotFieldLocation
+ */
         double fieldXInc = (robotXInc*Math.cos(Math.toRadians(fieldAngle))) -
                 (robotYInc*Math.sin(Math.toRadians(fieldAngle)));//flipped sign on Ry term
         double fieldYInc = (robotXInc*Math.sin(Math.toRadians(fieldAngle))) +
                 (robotYInc*Math.cos(Math.toRadians(fieldAngle)));//flipped sign on Rx term
         fieldX += fieldXInc;
         fieldY += fieldYInc;
-
+/** fieldX & fieldY can be deleted - can return direct to robotFieldLocation
+ */
         //Update robot FieldLocation for X,Y, angle
         robotFieldLocation.setLocation(fieldX,fieldY,fieldAngle);
         /** should robotFieldLocation be returned or should deltas and angle be returned??
@@ -363,7 +417,6 @@ public class DriveTrain {
         brPrevious = brCount;
         blPrevious = blCount;
     }
-
     /**
      * METHODS BELOW MOVED FROM pursuitMath and pursuitPath
      */
@@ -894,7 +947,7 @@ public class DriveTrain {
         double minFWDPower = om.cons.DRIVE_POWER_LIMIT*0.05;
         double ratio = (om.cons.DRIVE_POWER_LIMIT - minFWDPower) / (om.cons.STEERING_POWER_LIMIT - steerThreshold);
 
-        boolean atEnd = false;
+//        boolean atEnd = false;
         double powerLimit = om.cons.DRIVE_POWER_LIMIT;
         double radius = om.cons.PURSUIT_RADIUS;
 
@@ -912,16 +965,17 @@ public class DriveTrain {
         distanceToTarget = findDistance(new PursuitPoint(robotFieldLocation.x,robotFieldLocation.y),pathPoints.get(pathPoints.size()-1));
 
         while((distanceToTarget > radius) && (om.opModeIsActive() || om.testModeActive)) {
-            angleUnWrap();//added for runnign on real hardware
-            robotNavigator(om);
+
             om.updateIMU();
+            robotNavigator(om);
+
 
             targetPoint = findPursuitPoint(pathPoints, robotFieldLocation, radius);//robotLocation used is
 
-
             //navigator calculates its own angle, compare to IMU for accuracy?
             setTargetAngle(targetPoint,  robotFieldLocation);// calculates the angle to the target point - updates "targetHeading"
-            steeringPower = calcSteeringPowerIMU(targetHeading,om);// "targetHeading" used for steering power calculation
+            steeringPower = calcSteeringPowerNav(targetHeading,robotHeading,om);// "targetHeading" used for steering power calculation
+            //calcSteeringPower contains angleUnwrap that updates the robotHeading for the robotNavigator in next loop iteration
 
             /**
              * needed ELSE to reset the powerLimit
