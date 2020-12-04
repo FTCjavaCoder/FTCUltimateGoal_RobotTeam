@@ -97,6 +97,21 @@ public class WobbleArm {
 
     }
 
+    public void autoWobbleMotorVariable(Gamepad gamepad, BasicOpMode om) {
+
+        if (gamepad.y) {
+            wobbleArmTargetAngle = 130;
+            wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (cons.DEGREES_TO_COUNTS_60_1 * armGearRatio));
+            om.sleep(300);
+        }
+        if (gamepad.a) {
+            wobbleArmTargetAngle = 70;
+            wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (cons.DEGREES_TO_COUNTS_60_1 * armGearRatio));
+            om.sleep(300);
+        }
+
+    }
+
     public void setWobbleMotorPosition(Gamepad gamepad, BasicOpMode om) {
 
         if (gamepad.dpad_right) {
