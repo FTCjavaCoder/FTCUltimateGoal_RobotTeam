@@ -354,7 +354,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void forwardToViewRings() {
         // move forward ~18 inches
-        robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack,18,0,"Forward to rings",this);
+        robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack,30,0,"Forward to rings",this);
 
 //        // move forward ~18 inches pure pursuit
 //        fieldPoints.add(new PursuitPoint(00,00));// no point yet
