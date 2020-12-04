@@ -132,10 +132,10 @@ public class ImageRecog {
                         imageType = ringRecognitions.get(0).getLabel();// only update the value to the label if there's a single image
                     }
                     else if (ringRecognitions.size() == 0){
-                        imageType = "none";
+                        imageType = "None";
                     }
                     else {
-                        imageType = "multiple";
+                        imageType = "Multiple";
                     }
                     if (prevSize == ringRecognitions.size()){
                         loops++; // if we've been seeing the same number of images then keep counting the loops

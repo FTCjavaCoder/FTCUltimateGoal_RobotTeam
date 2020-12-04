@@ -1,12 +1,9 @@
 package UltimateGoal_RobotTeam.OpModes.Autonomous;
 
-import android.widget.Switch;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-//import com.qualcomm.robotcore.hardware.LightSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -16,8 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.util.ArrayList;
 import java.util.List;
 
-import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
-import UltimateGoal_RobotTeam.HarwareConfig.ImageRecog;
+import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
 //import OfflineCode.OfflineHW.Telemetry;
 import UltimateGoal_RobotTeam.Utilities.PursuitLines;
@@ -38,8 +34,6 @@ public class BasicAuto extends BasicOpMode {
      */
     // HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector   ImageRecog
     boolean[] configArray = new boolean[]{true, 	true, 	 true, 		true, 		true,       true};
-
-    HardwareRobotMulti robotUG = new HardwareRobotMulti(this, configArray,false);
 
     // motor position must be integer number of counts
     public int forwardPosition = 0;//Target position in forward direction for drive motors
@@ -360,42 +354,45 @@ public class BasicAuto extends BasicOpMode {
 
     public void forwardToViewRings() {
         // move forward ~18 inches
-        fieldPoints.add(new PursuitPoint(00,00));// no point yet
-        robotUG.driveTrain.drivePursuit(fieldPoints,this,"Forward to rings");
+        robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack,18,0,"Forward to rings",this);
+
+//        // move forward ~18 inches pure pursuit
+//        fieldPoints.add(new PursuitPoint(00,00));// no point yet
+//        robotUG.driveTrain.drivePursuit(fieldPoints,this,"Forward to rings");
 
     }
 
     public void decideWobbleGoalZone() {
-        String ringsViewed = "none";
-        ringsViewed =  robotUG.imageRecog.viewRings(this, 100);
+        String ringsViewed = robotUG.imageRecog.viewRings(this, 100);
 
         switch(ringsViewed) {
 
-            case "none" :
+            case "None" :
                 // Zone A pursuit points
-                fieldPoints.add(new PursuitPoint(00,00));
-                fieldPoints.add(new PursuitPoint(00,00));
-                fieldPoints.add(new PursuitPoint(00,00));
-                fieldPoints.add(new PursuitPoint(00,00));
+                fieldPoints.add(new PursuitPoint(-60,-18));
+                fieldPoints.add(new PursuitPoint(-60,0));
 
-            case "single" :
+            case "Single" :
                 // Zone B pursuit points
-                fieldPoints.add(new PursuitPoint(00,00));
-                fieldPoints.add(new PursuitPoint(00,00));
-                fieldPoints.add(new PursuitPoint(00,00));
-                fieldPoints.add(new PursuitPoint(00,00));
+                fieldPoints.add(new PursuitPoint(-12,-18));
+                fieldPoints.add(new PursuitPoint(-12,-12));
+                fieldPoints.add(new PursuitPoint(-36,24));
 
-            case "quad" :
+            case "Quad" :
                 // Zone C pursuit points
-                fieldPoints.add(new PursuitPoint(00,00));
-                fieldPoints.add(new PursuitPoint(00,00));
-                fieldPoints.add(new PursuitPoint(00,00));
-                fieldPoints.add(new PursuitPoint(00,00));
+                fieldPoints.add(new PursuitPoint(-60,-18));
+                fieldPoints.add(new PursuitPoint(-60,48));
 
-            case "multiple" :
+            case "Multiple" :
                 //el problemo
 
         }
+
+    }
+
+    public void driveToWobbleGoalZone() {
+        // move forward to wobble goal zone with pure pursuit
+        robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
 
     }
 
