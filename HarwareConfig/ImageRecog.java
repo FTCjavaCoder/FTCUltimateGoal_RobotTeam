@@ -173,6 +173,7 @@ public class ImageRecog {
             om.telemetry.addData("Image Type Returned", imageType);
             om.telemetry.addData("Loop counter", loops);
         }
+
         return imageType;
     }
 

@@ -59,7 +59,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		readOrWriteHashMap();
 		// Tell the robot where it's starting location and orientation on the field is
 
-		robotUG.driveTrain.robotFieldLocation.setLocation(-24,-63,90);
+		robotUG.driveTrain.robotFieldLocation.setLocation(-36,-63,90);
 		robotUG.driveTrain.initIMUtoAngle(this,-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
 		robotUG.driveTrain.robotX = 0;// robot local coordinates always start at 0
 		robotUG.driveTrain.robotY = 0;
@@ -84,9 +84,23 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 		forwardToViewRings();
 
-		decideWobbleGoalZone();
+		fieldPoints.add(new PursuitPoint(-36, -43));
 
-		driveToWobbleGoalZone();
+		String ringsViewed = robotUG.imageRecog.viewRings(this, 100);
+		robotUG.imageRecog.shutdown();
+
+		telemetry.addData("String Value: ", ringsViewed);
+		pressAToContinue();
+
+		decideWobbleGoalZone(ringsViewed);
+
+		// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
+		for(int h=0;h<fieldPoints.size();h++) {
+			telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
+		}
+		pressAToContinue();
+
+		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
 
 		//Telemetry output after driving completed
 		telemetry.addData("Driving Completed", "...successfully?!?");
