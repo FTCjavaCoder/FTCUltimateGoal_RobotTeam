@@ -23,7 +23,8 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 @Disabled
 public class BasicAuto extends BasicOpMode {
 
-    /** configArray is arranged as
+    /**
+     * configArray is arranged as
      * [0] = DriveTrain
      * [1] = Shooter
      * [2] = Conveyor
@@ -33,7 +34,7 @@ public class BasicAuto extends BasicOpMode {
      * items that are 1 = true will be configured to the robot
      */
     // HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector   ImageRecog
-    boolean[] configArray = new boolean[]{true, 	true, 	 true, 		true, 		true,       true};
+    boolean[] configArray = new boolean[]{true, true, true, true, true, true};
 
     // motor position must be integer number of counts
     public int forwardPosition = 0;//Target position in forward direction for drive motors
@@ -43,7 +44,7 @@ public class BasicAuto extends BasicOpMode {
 
     public double extraFwd = 0;
     public double stoneSideways = 0;
-//    public double sideGrabStone = 11;// was 9 |||| was 18 {} decide how to make robo tmove forward and still grab stones
+    //    public double sideGrabStone = 11;// was 9 |||| was 18 {} decide how to make robo tmove forward and still grab stones
     public double foundationPosChange = 0;// 26 for unmoved Foundation, 0 for moved Foundation
     public double insideOutside = 0;// 0 for Inside, 24 for Outside
     public double foundationInOut = 0;// 0 for Inside, 26 for Outside
@@ -56,14 +57,14 @@ public class BasicAuto extends BasicOpMode {
 
     public enum autoChoice {SkyStoneOutside, SkyStoneInside, SkyStoneOutsideUnmoved, SkyStoneInsideUnmoved}
 
-    private static final float mmPerInch        = 25.4f;
+    private static final float mmPerInch = 25.4f;
 
     public double stoneYLocation;
 
     //Define all double variables
     public double start = 0;//timer variable to use for setting waits in the code
     public float hsvValues[] = {0F, 0F, 0F};
-//    public String stonePos = "Unknown";
+    //    public String stonePos = "Unknown";
 //
 //    public boolean skystoneFound = false;
 //
@@ -99,25 +100,26 @@ public class BasicAuto extends BasicOpMode {
     public boolean haveBlueWobble2 = false;
     public boolean haveRedWobble1 = false;
     public boolean haveRedWobble2 = false;
-/** COMMENTED OUT FOR EXPERIMENTAL CODE
-
- //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
-    public FieldConfiguration fc = new FieldConfiguration();
-    boolean writeBF = false;
-    boolean writeRF = false;
-    boolean writeBS1 = false;
-    boolean writeBS2 = false;
-    boolean writeRS1 = false;
-    boolean writeRS2 = false;
-
-    boolean robotSeeStone = false;
-
-    public int IMUCounter =0;
-    public int size = 300;
- //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
-
- * END EXPERIMENTAL CODE
- * */
+    /**
+     * COMMENTED OUT FOR EXPERIMENTAL CODE
+     * <p>
+     * //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
+     * public FieldConfiguration fc = new FieldConfiguration();
+     * boolean writeBF = false;
+     * boolean writeRF = false;
+     * boolean writeBS1 = false;
+     * boolean writeBS2 = false;
+     * boolean writeRS1 = false;
+     * boolean writeRS2 = false;
+     * <p>
+     * boolean robotSeeStone = false;
+     * <p>
+     * public int IMUCounter =0;
+     * public int size = 300;
+     * //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
+     * <p>
+     * END EXPERIMENTAL CODE
+     */
 
     /* Needed for Pure Pursuit */
     public ArrayList<PursuitPoint> fieldPoints = new ArrayList();
@@ -156,6 +158,7 @@ public class BasicAuto extends BasicOpMode {
 
 
     }
+
     public void runCode() {
 
 
@@ -171,8 +174,7 @@ public class BasicAuto extends BasicOpMode {
         if (testModeActive) {
 
             readOrWriteHashMapOffline();
-        }
-        else {
+        } else {
 
             readOrWriteHashMap();
         }
@@ -180,7 +182,7 @@ public class BasicAuto extends BasicOpMode {
         drivingMiniBot = false;
         //Values For Full Robot
 //        detectionRotateSpeed = 0.1 * (40.0/60.0);
-        cons.DEGREES_TO_COUNTS_40_1 = (1440.0/360.0) * (40.0/60.0);
+        cons.DEGREES_TO_COUNTS_40_1 = (1440.0 / 360.0) * (40.0 / 60.0);
 
 //        stoneArmUnderBridgeBlue = 0.85;// for blue oriented servo
 //        stoneArmDownBlue = 0.23;// for blue oriented servo was 0.20
@@ -240,8 +242,7 @@ public class BasicAuto extends BasicOpMode {
 
         if (testModeActive) {
             // DO NOTHING
-        }
-        else {
+        } else {
 
             targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
 
@@ -269,8 +270,7 @@ public class BasicAuto extends BasicOpMode {
         if (testModeActive) {
 
             readOrWriteHashMapOffline();
-        }
-        else{
+        } else {
 
             readOrWriteHashMap();
         }
@@ -278,7 +278,7 @@ public class BasicAuto extends BasicOpMode {
         drivingMiniBot = true;
         //Values For Mini Robot
         detectionRotateSpeed = 0.1;
-        cons.DEGREES_TO_COUNTS_40_1 = (1440.0/360.0);
+        cons.DEGREES_TO_COUNTS_40_1 = (1440.0 / 360.0);
 
 //        Billy.stoneArmInitBlue = 1;// for blue oriented servo was 0
 //        Billy.stoneArmInitRed = 1;// for red oriented servo
@@ -354,7 +354,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void forwardToViewRings() {
         // move forward ~18 inches
-        robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack,30,0,"Forward to rings",this);
+        robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 30, 0, "Forward to rings", this);
 
 //        // move forward ~18 inches pure pursuit
 //        fieldPoints.add(new PursuitPoint(00,00));// no point yet
@@ -365,25 +365,25 @@ public class BasicAuto extends BasicOpMode {
     public void decideWobbleGoalZone() {
         String ringsViewed = robotUG.imageRecog.viewRings(this, 100);
 
-        switch(ringsViewed) {
+        switch (ringsViewed) {
 
-            case "None" :
+            case "None":
                 // Zone A pursuit points
-                fieldPoints.add(new PursuitPoint(-60,-18));
-                fieldPoints.add(new PursuitPoint(-60,0));
+                fieldPoints.add(new PursuitPoint(-60, -18));
+                fieldPoints.add(new PursuitPoint(-60, 0));
 
-            case "Single" :
+            case "Single":
                 // Zone B pursuit points
-                fieldPoints.add(new PursuitPoint(-12,-18));
-                fieldPoints.add(new PursuitPoint(-12,-12));
-                fieldPoints.add(new PursuitPoint(-36,24));
+                fieldPoints.add(new PursuitPoint(-12, -18));
+                fieldPoints.add(new PursuitPoint(-12, -12));
+                fieldPoints.add(new PursuitPoint(-36, 24));
 
-            case "Quad" :
+            case "Quad":
                 // Zone C pursuit points
-                fieldPoints.add(new PursuitPoint(-60,-18));
-                fieldPoints.add(new PursuitPoint(-60,48));
+                fieldPoints.add(new PursuitPoint(-60, -18));
+                fieldPoints.add(new PursuitPoint(-60, 48));
 
-            case "Multiple" :
+            case "Multiple":
                 //el problemo
 
         }
@@ -392,7 +392,7 @@ public class BasicAuto extends BasicOpMode {
 
     public void driveToWobbleGoalZone() {
         // move forward to wobble goal zone with pure pursuit
-        robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
+        robotUG.driveTrain.drivePursuit(fieldPoints, this, "To Wobble Goal drop zone");
 
     }
 

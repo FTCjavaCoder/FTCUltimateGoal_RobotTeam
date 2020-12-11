@@ -30,6 +30,8 @@ public class WobbleArm {
     public double armPowerHold = 0.7;
     public double armGearRatio = 2;
 
+    public int c = 0; //temporary variable use to prevent us from choosing how we want to progress before we drop the wobble goal
+
     public WobbleArm(BasicOpMode om, boolean tm)  {
         if(tm) {
 //            wobbleGoalServo = new Servo();
@@ -100,7 +102,7 @@ public class WobbleArm {
     public void autoWobbleMotorVariable(Gamepad gamepad, BasicOpMode om) {
 
         if (gamepad.y) {
-            wobbleArmTargetAngle = 130;
+            wobbleArmTargetAngle = 110;
             wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (cons.DEGREES_TO_COUNTS_60_1 * armGearRatio));
             om.sleep(300);
         }
@@ -109,6 +111,8 @@ public class WobbleArm {
             wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (cons.DEGREES_TO_COUNTS_60_1 * armGearRatio));
             om.sleep(300);
         }
+
+        c = 1;
 
     }
 

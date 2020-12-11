@@ -385,9 +385,9 @@ public class DriveTrain {
 //Coordinate transformation to take motor drive coordinates to robot body reference frame - fixed 45 deg rotation
         // Simplify by averaging all distance in correct frame
         double robotXInc = ((-deltaFL + deltaFR + deltaBR - deltaBL)/4)/
-                (om.cons.DEGREES_TO_COUNTS_60_1*om.cons.ROBOT_INCH_TO_MOTOR_DEG*om.cons.adjForward);
+                (om.cons.DEGREES_TO_COUNTS_40_1*om.cons.ROBOT_INCH_TO_MOTOR_DEG*om.cons.adjForward); //Changed from 60:1 to 40:1
         double robotYInc = -((-deltaFL - deltaFR + deltaBR + deltaBL)/4)/
-                (om.cons.DEGREES_TO_COUNTS_60_1*om.cons.ROBOT_INCH_TO_MOTOR_DEG*om.cons.adjRight);
+                (om.cons.DEGREES_TO_COUNTS_40_1*om.cons.ROBOT_INCH_TO_MOTOR_DEG*om.cons.adjRight); //Changed from 60:1 to 40:1
         robotX += robotXInc;
         robotY += robotYInc;
 /** robotX & robotY are not used else where - navigator tracks field coordinates

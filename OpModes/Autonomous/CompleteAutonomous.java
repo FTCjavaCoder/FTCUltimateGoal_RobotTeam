@@ -7,7 +7,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 @Autonomous(name="Wobble Zone Drive Pure Pursuit", group="Autonomous")
 
- public class WobbleZoneDrivePurePursuit extends BasicAuto {
+ public class CompleteAutonomous extends BasicAuto {
 	@Override
 	public void runOpMode() {
 
@@ -87,6 +87,25 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		decideWobbleGoalZone();
 
 		driveToWobbleGoalZone();
+
+		pressAToContinue();
+
+		robotUG.wobbleArm.autoWobbleMotorVariable(gamepad1, this);
+
+		pressAToContinue();
+
+		if (gamepad1.x & robotUG.wobbleArm.c == 1) {
+
+
+			robotUG.wobbleArm.c = 0;
+		}
+
+		if (gamepad1.b & robotUG.wobbleArm.c == 1) {
+
+
+
+			robotUG.wobbleArm.c = 0;
+		}
 
 		//Telemetry output after driving completed
 		telemetry.addData("Driving Completed", "...successfully?!?");

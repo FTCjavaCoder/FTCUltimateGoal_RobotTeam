@@ -85,16 +85,16 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		// Add points for Pure Pursuit motion - always start with where the robot was initialized to be on the field
 		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
 		// simple drive forward
-		fieldPoints.add(new PursuitPoint(-24,-60));
-		fieldPoints.add(new PursuitPoint(-24,-55));
-		fieldPoints.add(new PursuitPoint(-24,-50));
-		fieldPoints.add(new PursuitPoint(-24,-45));
+//		fieldPoints.add(new PursuitPoint(-24,-60));
+////		fieldPoints.add(new PursuitPoint(-24,-55));
+////		fieldPoints.add(new PursuitPoint(-24,-50));
+////		fieldPoints.add(new PursuitPoint(-24,-45));
 		// William's points
-//		fieldPoints.add(new PursuitPoint(-24,-24));
-//		fieldPoints.add(new PursuitPoint(-44,-24));
-//		fieldPoints.add(new PursuitPoint(-44,-12));
-//		fieldPoints.add(new PursuitPoint(-60,-12));
-//		fieldPoints.add(new PursuitPoint(-60, 1));
+		fieldPoints.add(new PursuitPoint(-24,-24));
+		fieldPoints.add(new PursuitPoint(-44,-24));
+		fieldPoints.add(new PursuitPoint(-44,-12));
+		fieldPoints.add(new PursuitPoint(-60,-12));
+		fieldPoints.add(new PursuitPoint(-60,1));
 
 		// add lines for Visualization only on offline - comment out for real robot
 //		for(int h=0;h<fieldPoints.size()-1;h++) {
