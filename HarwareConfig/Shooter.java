@@ -43,22 +43,22 @@ public class Shooter {
         }
     }
 
-    public void ShooterControl(Gamepad g1, BasicOpMode om) {
+    public void ShooterControl(Gamepad gamepad, BasicOpMode om) {
 
-        if (g1.dpad_left) {
+        if (gamepad.dpad_left) {
             shooter_Power = 0;
             shooterLeft.setPower(shooter_Power);
             shooterRight.setPower(shooter_Power);
             om.sleep(300);
         }
 
-        if (g1.dpad_up) {
+        if (gamepad.dpad_up) {
             shooter_Power -= 0.05;
             shooterLeft.setPower(shooter_Power);
             shooterRight.setPower(-shooter_Power);
             om.sleep(300);
         }
-        if (g1.dpad_down) {
+        if (gamepad.dpad_down) {
             shooter_Power += 0.05;
             shooterLeft.setPower(shooter_Power);
             shooterRight.setPower(-shooter_Power);

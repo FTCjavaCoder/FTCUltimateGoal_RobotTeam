@@ -80,6 +80,8 @@ public class DriveTrain {
 
     public double targetHeading;
 
+    public double gearRatioDegToCounts = 40;// for 40 to 1
+
     public int countDistance = 0;
 
     public FieldLocation robotLocationV1 = new FieldLocation(0,0,0);
@@ -229,6 +231,20 @@ public class DriveTrain {
         }
         priorAngle = angles.firstAngle;//Update the latest measurement to be //priorAngle for the next time we call the method
 
+    }
+
+    public void setGearRatio(double gearRatioChoice) {
+
+        if(gearRatioChoice == 40) {
+            gearRatioDegToCounts = (1440.0/360.0) * (40.0/60.0);
+            // 40 to 1 gear ratio
+        }
+
+        if(gearRatioChoice == 60) {
+            gearRatioDegToCounts = 1440.0/360.0;
+            // 60 to 1 gear ratio
+        }
+        
     }
 
     public double calcSteeringPowerIMU(double angleWanted, BasicAuto om) {
