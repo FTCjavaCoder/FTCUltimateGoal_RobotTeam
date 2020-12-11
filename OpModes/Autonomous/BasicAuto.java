@@ -354,7 +354,8 @@ public class BasicAuto extends BasicOpMode {
 
     public void forwardToViewRings() {
         // move forward ~18 inches
-        robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 30, 0, "Forward to rings", this);
+
+        robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack,20,-90,"Forward to rings",this);
 
 //        // move forward ~18 inches pure pursuit
 //        fieldPoints.add(new PursuitPoint(00,00));// no point yet
@@ -362,38 +363,40 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
-    public void decideWobbleGoalZone() {
-        String ringsViewed = robotUG.imageRecog.viewRings(this, 100);
+
+    public void decideWobbleGoalZone(String ringsViewed) {
 
         switch (ringsViewed) {
 
             case "None":
                 // Zone A pursuit points
-                fieldPoints.add(new PursuitPoint(-60, -18));
-                fieldPoints.add(new PursuitPoint(-60, 0));
+
+                fieldPoints.add(new PursuitPoint(-60,-18));
+                fieldPoints.add(new PursuitPoint(-60,0));
+            break;
 
             case "Single":
                 // Zone B pursuit points
-                fieldPoints.add(new PursuitPoint(-12, -18));
-                fieldPoints.add(new PursuitPoint(-12, -12));
-                fieldPoints.add(new PursuitPoint(-36, 24));
+
+                fieldPoints.add(new PursuitPoint(-12,-18));
+                fieldPoints.add(new PursuitPoint(-12,-12));
+                fieldPoints.add(new PursuitPoint(-36,24));
+            break;
 
             case "Quad":
                 // Zone C pursuit points
-                fieldPoints.add(new PursuitPoint(-60, -18));
-                fieldPoints.add(new PursuitPoint(-60, 48));
+
+                fieldPoints.add(new PursuitPoint(-60,-18));
+                fieldPoints.add(new PursuitPoint(-60,48));
+            break;
 
             case "Multiple":
                 //el problemo
+            break;
 
         }
 
     }
 
-    public void driveToWobbleGoalZone() {
-        // move forward to wobble goal zone with pure pursuit
-        robotUG.driveTrain.drivePursuit(fieldPoints, this, "To Wobble Goal drop zone");
-
-    }
 
 }
