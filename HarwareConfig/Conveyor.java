@@ -30,21 +30,21 @@ public class Conveyor {
         }
     }
 
-    public void ConveyorControl(Gamepad g1, BasicTeleOp om) {
+    public void ConveyorControl(Gamepad gamepad, BasicTeleOp om) {
 
-        if (g1.x) {
+        if (gamepad.x) {
             conveyor_Power = 1;
             conveyorLeft.setPower(conveyor_Power);
             conveyorRight.setPower(-conveyor_Power);
             om.sleep(300);
         }
-        if (g1.y) {
+        if (gamepad.y) {
             conveyor_Power = -1;
             conveyorLeft.setPower(conveyor_Power);
             conveyorRight.setPower(-conveyor_Power);
             om.sleep(300);
         }
-        if (g1.b) {
+        if (gamepad.b) {
             conveyor_Power = 0;
             conveyorLeft.setPower(conveyor_Power);
             conveyorRight.setPower(conveyor_Power);
