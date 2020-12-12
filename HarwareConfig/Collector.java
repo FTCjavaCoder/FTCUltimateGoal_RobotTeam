@@ -32,20 +32,20 @@ public class Collector {
 
     }
 
-    public void collectorControl(Gamepad g, BasicOpMode om) {
+    public void collectorControl(Gamepad gamepad, BasicOpMode om) {
 
-        if (g.dpad_left) {
+        if (gamepad.dpad_left) {
             collectorPower = 0.0;
             collectorWheel.setPower(collectorPower);
             om.sleep(300);
         }
 
-        if (g.dpad_up) {
+        if (gamepad.dpad_up) {
             collectorPower += 0.10;
             collectorWheel.setPower(collectorPower);
             om.sleep(300);
         }
-        if (g.dpad_down) {
+        if (gamepad.dpad_down) {
             collectorPower -= 0.10;
             collectorWheel.setPower(collectorPower);
             om.sleep(300);

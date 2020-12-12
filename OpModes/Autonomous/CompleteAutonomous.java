@@ -2,6 +2,7 @@ package UltimateGoal_RobotTeam.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
@@ -52,7 +53,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		 * items that are 1 = true will be configured to the robot
 		 */
 		// HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector	ImageRecog
-		boolean[] configArray = new boolean[]{ true, 	false, 	false, 		false, 		false,		true};/// for MiniBot
+		boolean[] configArray = new boolean[]{ true, 	false, 	false, 		true, 		false,		true};/// for MiniBot
 
 		robotUG = new HardwareRobotMulti(this, configArray,testModeActive);
 		// READ HASHMAP FILE
@@ -82,44 +83,71 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		// Add points for Pure Pursuit motion - always start with where the robot was initialized to be on the field
 		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
 
-		forwardToViewRings();
-
 		fieldPoints.add(new PursuitPoint(-36, -43));
-
-		String ringsViewed = robotUG.imageRecog.viewRings(this, 100);
-		robotUG.imageRecog.shutdown();
-
-		telemetry.addData("String Value: ", ringsViewed);
-		pressAToContinue();
-
-		decideWobbleGoalZone(ringsViewed);
 
 		// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
 		for(int h=0;h<fieldPoints.size();h++) {
 			telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
 		}
+
+		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To The Wobble Goal");
+
+		String ringsViewed = robotUG.imageRecog.viewRings(this, 100);
+		robotUG.imageRecog.shutdown();
+
+		telemetry.addData("String Value: ", ringsViewed);
+
+		decideWobbleGoalZone(ringsViewed);
+
+		for(int h=0;h<fieldPoints.size();h++) {
+			telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
+		}
+
 		pressAToContinue();
 
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
 
 		pressAToContinue();
 
-		robotUG.wobbleArm.autoWobbleMotorVariable(gamepad1, this);
+		robotUG.driveTrain.IMUDriveRotate(90, "Rotate 180*", this);
+
+		robotUG.wobbleArm.dropWobble(this);
 
 		pressAToContinue();
 
-		if (gamepad1.x & robotUG.wobbleArm.c == 1) {
+		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate 180*", this);
 
+		pressAToContinue();
 
-			robotUG.wobbleArm.c = 0;
-		}
+//		if (gamepad1.x & robotUG.wobbleArm.c == 1) {
+//
+//			robotUG.wobbleArm.c = 0;
 
-		if (gamepad1.b & robotUG.wobbleArm.c == 1) {
+			fieldPoints.add(new PursuitPoint(-20, 0));
 
+			robotUG.driveTrain.drivePursuit(fieldPoints,this,"To PowerShot Shooting Position");
+//		}
 
+//		if (gamepad1.b & robotUG.wobbleArm.c == 1) {
+//
+//			robotUG.wobbleArm.c = 0;
+//
+//			robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 40, -90, "Move Right 40 inch to shot", this);
+//
+//		}
 
-			robotUG.wobbleArm.c = 0;
-		}
+		pressAToContinue();
+
+		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Right 7.5 inch to shot", this);
+
+		pressAToContinue();
+
+		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Right 7.5 inch to shot", this);
+
+//		// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
+//		for(int h=0;h<fieldPoints.size();h++) {
+//			telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
+//		}
 
 		//Telemetry output after driving completed
 		telemetry.addData("Driving Completed", "...successfully?!?");

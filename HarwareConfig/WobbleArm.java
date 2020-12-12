@@ -142,4 +142,19 @@ public class WobbleArm {
 
     }
 
+    public void dropWobble(BasicOpMode om) {
+
+        wobbleArmTargetAngle = 30;
+        wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (cons.DEGREES_TO_COUNTS_60_1 * armGearRatio));
+        wobbleGoalArm.setTargetPosition(wobbleArmTarget);
+
+        wobbleGoalServo.setPosition(0.5);
+
+        wobbleArmTargetAngle = 100;
+        wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (cons.DEGREES_TO_COUNTS_60_1 * armGearRatio));
+        wobbleGoalArm.setTargetPosition(wobbleArmTarget);
+
+        wobbleGoalServo.setPosition(0);
+
+    }
 }

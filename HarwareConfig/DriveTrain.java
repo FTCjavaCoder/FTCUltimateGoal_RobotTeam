@@ -1006,7 +1006,7 @@ public class DriveTrain {
 
             for (int i = 0; i < 4; i++) {
 //                setPower[i] = Math.signum(prePower[i]) * Range.clip(Math.abs(prePower[i] / max), DRIVE_POWER_MINIMUM, DRIVE_POWER_LIMIT);// prior
-                setPower[i] = Math.signum(prePower[i]) * Range.clip(Math.abs(prePower[i] / max), 0, om.cons.DRIVE_POWER_LIMIT);
+                setPower[i] = Math.signum(prePower[i]) * Range.clip(Math.abs(prePower[i] / max), 0, om.cons.DRIVE_POWER_LIMIT/2);
 
             }
             setMotorPowerArray(setPower);
