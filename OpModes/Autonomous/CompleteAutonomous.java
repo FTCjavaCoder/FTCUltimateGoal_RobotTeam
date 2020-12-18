@@ -53,7 +53,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		 * items that are 1 = true will be configured to the robot
 		 */
 		// HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector	ImageRecog
-		boolean[] configArray = new boolean[]{ true, 	false, 	false, 		true, 		false,		true};/// for MiniBot
+		boolean[] configArray = new boolean[]{ true, 	false, 	false, 		true, 		false,		true};
 
 		robotUG = new HardwareRobotMulti(this, configArray,testModeActive);
 		// READ HASHMAP FILE
