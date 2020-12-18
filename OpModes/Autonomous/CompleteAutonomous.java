@@ -81,73 +81,75 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 	public void runCode() {
 
 		// Add points for Pure Pursuit motion - always start with where the robot was initialized to be on the field
-		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
 
-		fieldPoints.add(new PursuitPoint(-36, -43));
+		/** Drive to Wobble Goal and Scan the Number of Rings*/
+			fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
+
+			fieldPoints.add(new PursuitPoint(-36, -43));
 
 		// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
-		for(int h=0;h<fieldPoints.size();h++) {
+			for(int h=0;h<fieldPoints.size();h++) {
 			telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
 		}
 
-		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To The Wobble Goal");
+			robotUG.driveTrain.drivePursuit(fieldPoints,this,"To The Wobble Goal");
 
-		String ringsViewed = robotUG.imageRecog.viewRings(this, 100);
-		robotUG.imageRecog.shutdown();
+			String ringsViewed = robotUG.imageRecog.viewRings(this, 100);
+			robotUG.imageRecog.shutdown();
 
-		telemetry.addData("String Value: ", ringsViewed);
+			telemetry.addData("String Value: ", ringsViewed);
 
-		decideWobbleGoalZone(ringsViewed);
+		/** Choose Where to go Next and Pick up Wobble Goal */
+			decideWobbleGoalZone(ringsViewed);
 
-		for(int h=0;h<fieldPoints.size();h++) {
+			for(int h=0;h<fieldPoints.size();h++) {
 			telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
 		}
 
-		pressAToContinue();
+			//pick up wobble goal
 
-		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
+			pressAToContinue();
 
-		pressAToContinue();
+			robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
 
-		robotUG.driveTrain.IMUDriveRotate(90, "Rotate 180*", this);
+			pressAToContinue();
 
-		robotUG.wobbleArm.dropWobble(this);
+		/** Rotate 180*, Drop the Wobble Goal and Rotation 180 */
+			robotUG.driveTrain.IMUDriveRotate(90, "Rotate 180*", this);
 
-		pressAToContinue();
+			pressAToContinue();
 
-		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate 180*", this);
+			robotUG.wobbleArm.dropWobble(this);
 
-		pressAToContinue();
+			pressAToContinue();
 
-//		if (gamepad1.x & robotUG.wobbleArm.c == 1) {
-//
-//			robotUG.wobbleArm.c = 0;
+			robotUG.driveTrain.IMUDriveRotate(-90, "Rotate 180*", this);
 
 			fieldPoints.add(new PursuitPoint(-20, 0));
 
+			pressAToContinue();
+
+		/** Drive to and Shoot the Powershots */
 			robotUG.driveTrain.drivePursuit(fieldPoints,this,"To PowerShot Shooting Position");
-//		}
 
-//		if (gamepad1.b & robotUG.wobbleArm.c == 1) {
-//
-//			robotUG.wobbleArm.c = 0;
-//
-//			robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 40, -90, "Move Right 40 inch to shot", this);
-//
-//		}
+			// make sure you at -90 angle
+			// shoot powershot
 
-		pressAToContinue();
+			pressAToContinue();
 
-		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Right 7.5 inch to shot", this);
+			robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Right 7.5 inch to shot", this);
 
-		pressAToContinue();
+			//shoot powershot
 
-		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Right 7.5 inch to shot", this);
+			pressAToContinue();
 
-//		// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
-//		for(int h=0;h<fieldPoints.size();h++) {
-//			telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
-//		}
+			robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Right 7.5 inch to shot", this);
+
+			//shoot powershot
+
+			pressAToContinue();
+
+			robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 6, -90, "Move Fwd ~6 in. to score points", this);
 
 		//Telemetry output after driving completed
 		telemetry.addData("Driving Completed", "...successfully?!?");
