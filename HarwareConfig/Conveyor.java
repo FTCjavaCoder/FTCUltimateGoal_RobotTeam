@@ -32,7 +32,7 @@ public class Conveyor {
 
     public void ConveyorControl(Gamepad gamepad, BasicTeleOp om) {
 
-        if (gamepad.x) {
+        if (gamepad.a) {
             conveyor_Power = 1;
             conveyorLeft.setPower(conveyor_Power);
             conveyorRight.setPower(-conveyor_Power);
