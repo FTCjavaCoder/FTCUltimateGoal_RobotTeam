@@ -1,6 +1,7 @@
 package UltimateGoal_RobotTeam.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobot;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
@@ -29,6 +30,8 @@ public class BasicOpMode extends LinearOpMode {
     public double currentH = 0;
 
     public boolean testModeActive = false;
+
+    public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
 
 //    public Telemetry telemetry = new Telemetry();
 

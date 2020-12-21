@@ -92,7 +92,10 @@ public class BasicAuto extends BasicOpMode {
 
     public double detectionRotateSpeed = 0.1;
 
-    public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
+    /* Coach Note: moved runTime to BasicOpMode so it would be available for all methods receiving om
+     *
+     */
+//    public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
 
     public boolean haveBlueRing = false;
     public boolean haveRedRing = false;

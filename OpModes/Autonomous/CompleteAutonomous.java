@@ -39,6 +39,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		runtime.reset();
 		telemetry.addLine("NOT READY DON'T PRESS PLAY");
 		telemetry.update();
+		telemetry.setAutoClear(false);//allow all the lines of telemetry to remain during initialization
 
 		// configure the robot needed - for this demo only need DriveTrain
 		// configArray has True or False values for each subsystem HW element
@@ -67,6 +68,9 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 		// Update telemetry to tell driver than robot is ready
 		telemetry.addData("STATUS", "MultiRobot Hardware Configured!!");
+		for(int j=0;j<configArray.length;j++) {
+			telemetry.addData("ConfigArray Index", "%d with Value: %s", j, configArray[j]);
+		}
 		telemetry.addData("Robot Field Location", "X = %.2f inch, Y = %.2f inch, Theta = %.2f degrees",robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y, robotUG.driveTrain.robotFieldLocation.theta);
 		telemetry.addLine(" ");
 		telemetry.addLine("*********************************************");
@@ -75,6 +79,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		telemetry.addLine(" ");
 		telemetry.addData(">", "Press Play to start");
 		telemetry.update();
+		telemetry.setAutoClear(true);//revert back to telemetry.update clearing prior display
 	}
 
 	@Override
@@ -83,73 +88,126 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		// Add points for Pure Pursuit motion - always start with where the robot was initialized to be on the field
 
 		/** Drive to Wobble Goal and Scan the Number of Rings*/
-			fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
+		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
 
-			fieldPoints.add(new PursuitPoint(-36, -43));
+		fieldPoints.add(new PursuitPoint(-36, -43));
 
-		// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
-			for(int h=0;h<fieldPoints.size();h++) {
-			telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
+	// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
+		for(int h=0;h<fieldPoints.size();h++) {
+		telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
 		}
 
-			robotUG.driveTrain.drivePursuit(fieldPoints,this,"To The Wobble Goal");
+		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To View the Rings");
+		/* -- COACH NOTE: for IMAGE RECOGNITION developed timed method and ran several times counting loops
+		 *   - 2.0s yields 2000 to 9000 loops in timed method
+		 *   - 2.0s is not enough time for tensor flow to recognize if the rings have been switch if moved during that time
+		 *   - either method works if the image is stable BEFORE looping
+		 *   - best approach may be to add a sleep BEFORE starting the method to make sure that robot is stopped and settled
+		 *   - see addition below which allows OpMode to Exit and provides info during wait/sleep
+		 *   - Add telemetry before every "pressAToContinue" to provide updates on the robot's progress
+		 */
 
-			String ringsViewed = robotUG.imageRecog.viewRings(this, 100);
-			robotUG.imageRecog.shutdown();
+		double start = runtime.time();
+		while ((runtime.time() - start) < 2.0){
+			// Do nothing but report TM for counter and wait for robot to settle before looking at rings
+			telemetry.addLine("Waiting for robot to stabilize...");
+			telemetry.addData("Timer: ", "%1.3fs",runtime.time() - start);
+			telemetry.update();
+		}
+		String ringsViewed = robotUG.imageRecog.viewRings(this, 100);//baseline method that runs for set number of loops
+//		String ringsViewed = robotUG.imageRecog.viewRingsTimed(this, 2.0);// ALTERNATE method that runs based on time
 
-			telemetry.addData("String Value: ", ringsViewed);
+		/* COACH NOTE: imageRecog methods end with telemetry being added but waiting for a telemetry.update()
+		 * -- expect an update in the main OpMode or a pressAToContinue method to follow
+		 *   -
+		 */
+		telemetry.addLine("------------------------------------");
+		telemetry.addData("Image Recognition Completed", "String Value: %s", ringsViewed);
+		pressAToContinue();
 
-		/** Choose Where to go Next and Pick up Wobble Goal */
-			decideWobbleGoalZone(ringsViewed);
 
-			for(int h=0;h<fieldPoints.size();h++) {
-			telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
+		robotUG.imageRecog.shutdown();//shutdown after pressA to allow the driver to observe screen before moving on
+
+	/** Choose Where to go Next and Pick up Wobble Goal */
+		decideWobbleGoalZone(ringsViewed);
+
+		for(int h=0;h<fieldPoints.size();h++) {
+		telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
 		}
 
-			//pick up wobble goal
+		pressAToContinue();// review the Pursuit Points
 
-			pressAToContinue();
+		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
 
-			robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
+		/* COACH ADDITIONS: added helpful temetry
+		 *  - Add telemetry before every "pressAToContinue" to provide updates on the robot's progress
+		 *  - Report the step complete, robot position, arm position, etc.
+		 */
 
-			pressAToContinue();
+		telemetry.addLine("Drive to Wobble Goal Drop Zone Completed");
+		telemetry.addData("Desired Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.targetPoint.x, robotUG.driveTrain.targetPoint.y);
+		telemetry.addData("Robot Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
+		telemetry.addData("Robot Angles", " \t Desired: %1.1f, \t Actual: %1.1f", robotUG.driveTrain.targetHeading, robotUG.driveTrain.robotHeading);
+		pressAToContinue();// Review robot's motion
 
-		/** Rotate 180*, Drop the Wobble Goal and Rotation 180 */
-			robotUG.driveTrain.IMUDriveRotate(90, "Rotate 180*", this);
+	/** Rotate 180*, Drop the Wobble Goal and Rotation 180 */
+		robotUG.driveTrain.IMUDriveRotate(90, "Rotate 180*", this);
 
-			pressAToContinue();
+		telemetry.addLine("Rotate to Drop Goal");
+		telemetry.addData("Desired Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.targetPoint.x, robotUG.driveTrain.targetPoint.y);
+		telemetry.addData("Robot Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
+		telemetry.addData("Robot Angles", " \t Desired: %1.1f, \t Actual: %1.1f", 90.0, robotUG.driveTrain.robotHeading);
 
-			robotUG.wobbleArm.dropWobble(this);
+		pressAToContinue();// Review rotation
 
-			pressAToContinue();
+		robotUG.wobbleArm.dropWobble(this);
 
-			robotUG.driveTrain.IMUDriveRotate(-90, "Rotate 180*", this);
+		telemetry.addLine("Drop Goal");
+		telemetry.addData("Wobble Goal Arm", " Command: %1.2f, Actual: %1.2f", robotUG.wobbleArm.wobbleArmTargetAngle, robotUG.wobbleArm.wobbleArmTarget);
+		telemetry.addData("Wobble Goal Servo", " \t Desired: %1.1f, \t Actual: %1.1f", 90.0, robotUG.driveTrain.robotHeading);
+		telemetry.addLine("Check that Wobble Goal Has Been Dropped ...");
 
-			fieldPoints.add(new PursuitPoint(-20, 0));
+		pressAToContinue();//Review wobble goal drop
 
-			pressAToContinue();
+	/** Coach Note: don't need to return to the original position as long as Navigator is called in IMUDriveRotate
+	 * see changed lines below to face the next point
+	 * Alternatively the prior points can be cleared before the new point is added and robot won't need to rotate
+	 * (without clearing points robot will go back the way it came)
+	 */
+		robotUG.driveTrain.IMUDriveRotate(0, "Rotate 90 deg CCW", this);/* COACH CHANGED */
 
-		/** Drive to and Shoot the Powershots */
-			robotUG.driveTrain.drivePursuit(fieldPoints,this,"To PowerShot Shooting Position");
+		fieldPoints.add(new PursuitPoint(-14, 0));/* COACH CHANGED - need to go further - robot radius end condition*/
 
-			// make sure you at -90 angle
-			// shoot powershot
+		pressAToContinue();
 
-			pressAToContinue();
+	/** Drive to and Shoot the Powershots */
+		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To PowerShot Shooting Position");
 
-			robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Right 7.5 inch to shot", this);
+	/** Coach Note: need to rotate to face the PowerShot targets
+	 * see added lines below
+	 */
 
-			//shoot powershot
 
-			pressAToContinue();
+	robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);/* COACH ADDED */
 
-			robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Right 7.5 inch to shot", this);
+	// make sure you at -90 angle
+		// shoot powershot
 
-			//shoot powershot
+		pressAToContinue();
 
-			pressAToContinue();
+		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Right 7.5 inch to shot", this);
 
-			robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 6, -90, "Move Fwd ~6 in. to score points", this);
+		//shoot powershot
+
+		pressAToContinue();
+
+		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Right 7.5 inch to shot", this);
+
+		//shoot powershot
+
+		pressAToContinue();
+
+		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 6, -90, "Move Fwd ~6 in. to score points", this);
 
 		//Telemetry output after driving completed
 		telemetry.addData("Driving Completed", "...successfully?!?");

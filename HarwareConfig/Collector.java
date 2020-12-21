@@ -19,15 +19,22 @@ public class Collector {
         if(tm) {
 //            wobbleGoalServo = new Servo();
             om.telemetry.addData("ERROR: ", "Initializing Collector in TestMode...");
-
+            om.telemetry.update();
         }
         else {
+            om.telemetry.addLine("... ");//add line space
+            om.telemetry.addData("Status: ", "Initializing Collector ...");
+            om.telemetry.update();
+
             collectorWheel = om.hardwareMap.get(DcMotor.class, "motor_collector");
 
             collectorWheel.setPower(0);
             collectorWheel.setDirection(DcMotorSimple.Direction.FORWARD);
             collectorWheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+            om.telemetry.addLine(" ");//blank line space
+            om.telemetry.addData("Status: ", "Collector Initialized");
+            om.telemetry.update();
         }
 
     }
@@ -53,4 +60,11 @@ public class Collector {
         }
 
     }
+    /* -- COACH NOTE: made a shutdown method for all hardware
+     *
+     */
+    public void shutdown(){
+        collectorWheel.setPower(0.0);
+    }
+
 }

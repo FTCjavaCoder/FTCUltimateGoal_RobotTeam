@@ -24,6 +24,8 @@ import UltimateGoal_RobotTeam.Utilities.FieldLocation;
 import UltimateGoal_RobotTeam.Utilities.PursuitLines;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
+import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.FLOAT;
+
 public class DriveTrain {
 
     /**
@@ -80,7 +82,7 @@ public class DriveTrain {
 
     public double targetHeading;
 
-    public double gearRatioDegToCounts = 40;// for 40 to 1
+    public double gearRatioDegToCounts = 40;// for 40 to 1 {Coach Note -- needs to be ratio not gear ratio, define in constructor}
 
     public int countDistance = 0;
 
@@ -103,12 +105,12 @@ public class DriveTrain {
      * @param tm: this is the testMode boolean, if in testMode (Offline) then need to create new instances
      *          if NOT in testMode (real robot) need to map null objects
      * Believe this can be made such that testMode robot is constructed on it's own and eliminates this boolean
-     * implementint testMode as a separate constructor
+     * implement in testMode as a separate constructor
      */
     public DriveTrain(BasicOpMode om, boolean tm) {
         if(tm) {
             om.telemetry.addData("ERROR: ", "Initializing DriveTrain in TestMode...");
-
+            om.telemetry.update();
             /** ONLY USED IN OFFLINE TEST MODE
              *
              */
@@ -124,7 +126,10 @@ public class DriveTrain {
 //            imu.initialize(parameters);
         }
         else {
+            om.telemetry.addLine("... ");//add line space
             om.telemetry.addData("Status: ", "Initializing DriveTrain ...");
+            om.telemetry.update();
+
             // Define and Initialize Motors
             frontLeft = om.hardwareMap.get(DcMotor.class, "motor_fl");
             frontRight = om.hardwareMap.get(DcMotor.class, "motor_fr");
@@ -178,14 +183,20 @@ public class DriveTrain {
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+/* COACH UPDATE: define default condition for gear ratio in constructor
+* in case gear ratio method not called by user in OpMode
+*/
+            setGearRatio(40.0, om);
             //Indicate initialization complete and provide telemetry
+            om.telemetry.addLine(" ");//blank line space
             om.telemetry.addData("Status: ", "Drive Train Initialized");
+            om.telemetry.update();
 
         }
 
     }
 
-    /** METHODS TO INITIALIZE SPECIFIC HW
+    /** METHODS TO INITIALIZE UPDATE or SHUTDOWN SPECIFIC HW
      *
      * @param om: specific OpMode calling the function - only needed for the sleep which seems out of place
      */
@@ -211,8 +222,53 @@ public class DriveTrain {
 
 //        om.sleep(100);
     }
+    /* -- COACH NOTE: setGearRatio was never being called and results weren't used in robotNavigator
+     *  -- method "setGearRatio" should only select existing constants, not recalculate them
+     *  -- See correction below using om.cons
+     *  -- also need a default setting - see modifications to the constructor
+     *  -- replaced "om.cons.DEGREES_TO_COUNTS_40_1" throughout with "gearRatioDegToCounts"
+     *  -- moved several methods to HW initialization, update, shutdown method section
+     *
+     *  - made a shutdown method for all hardware
+     *
+     */
+    public void shutdown(){
+        // stops motors from driving, should they coast or hold?  currently set to hold
+//        frontLeft.setZeroPowerBehavior(FLOAT);
+//        frontRight.setZeroPowerBehavior(FLOAT);
+//        backLeft.setZeroPowerBehavior(FLOAT);
+//        backRight.setZeroPowerBehavior(FLOAT);
+        setMotorPower(0.0);
+    }
+    public void setGearRatio(double gearRatioChoice, BasicOpMode om) {
 
-    /** METHODS TO COMPELTE CALCULATIONS NEEDED FOR OTHER DRIVIGN METHODS
+        if(gearRatioChoice == 40) {
+            gearRatioDegToCounts = om.cons.DEGREES_TO_COUNTS_40_1; // 40 to 1 gear ratio
+        }
+
+        if(gearRatioChoice == 60) {
+            gearRatioDegToCounts = om.cons.DEGREES_TO_COUNTS_60_1;// 60 to 1 gear ratio
+        }
+
+    }
+    public void setMotorPower(double power) {
+
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+        backRight.setPower(power);
+        backLeft.setPower(power);
+
+    }
+
+    public void setMotorPowerArray(double[] power) {
+
+        frontLeft.setPower(power[0]);
+        frontRight.setPower(power[1]);
+        backRight.setPower(power[2]);
+        backLeft.setPower(power[3]);
+
+    }
+    /** METHODS TO COMPLETE CALCULATIONS NEEDED FOR OTHER DRIVING METHODS
      *
      */
 
@@ -233,20 +289,11 @@ public class DriveTrain {
 
     }
 
-    public void setGearRatio(double gearRatioChoice) {
 
-        if(gearRatioChoice == 40) {
-            gearRatioDegToCounts = (1440.0/360.0) * (40.0/60.0);
-            // 40 to 1 gear ratio
-        }
-
-        if(gearRatioChoice == 60) {
-            gearRatioDegToCounts = 1440.0/360.0;
-            // 60 to 1 gear ratio
-        }
-        
-    }
-
+/* -- COACH NOTE: calcSteeringPowerIMU calls angleUnwrap
+ * -- robotNavigator also calls angleUnwrap so calcSteeringPowerNav takes the latest angle
+ * -- of the robot as an input (really matter for offline simulation and using updateIMU
+ */
     public double calcSteeringPowerIMU(double angleWanted, BasicAuto om) {
 
         angleUnWrap();
@@ -286,12 +333,12 @@ public class DriveTrain {
 
         incrementalDistance = ((deltaPos[0] * driveDirection[0]) + (deltaPos[1] * driveDirection[1]) + (deltaPos[2] * driveDirection[2]) + (deltaPos[3] * driveDirection[3])) / 4;
 
-        distanceTraveled += incrementalDistance / om.cons.DEGREES_TO_COUNTS_40_1 / om.cons.ROBOT_INCH_TO_MOTOR_DEG;//adjForward & adjRight used in the desired distance calculation
+        distanceTraveled += incrementalDistance / gearRatioDegToCounts / om.cons.ROBOT_INCH_TO_MOTOR_DEG;//adjForward & adjRight used in the desired distance calculation
         //remove global variable by returning distance traveled from method, pass in current distance, retrun distance + increment
         priorPos = currentPos;
 
         om.telemetry.addData("Motor Movement", "FL (%d) FR (%d) BR (%d) BL (%d)", deltaPos[0], deltaPos[1], deltaPos[2], deltaPos[3]);
-        om.telemetry.addData("Robot Movement", "Incremental: (%.2f) Total: (%.2f)", incrementalDistance / om.cons.DEGREES_TO_COUNTS_40_1 / om.cons.ROBOT_INCH_TO_MOTOR_DEG, distanceTraveled);
+        om.telemetry.addData("Robot Movement", "Incremental: (%.2f) Total: (%.2f)", incrementalDistance / gearRatioDegToCounts / om.cons.ROBOT_INCH_TO_MOTOR_DEG, distanceTraveled);
         om.telemetry.update();
 
     }
@@ -308,23 +355,7 @@ public class DriveTrain {
         return currentPos;
     }
 
-    public void setMotorPower(double power) {
 
-        frontLeft.setPower(power);
-        frontRight.setPower(power);
-        backRight.setPower(power);
-        backLeft.setPower(power);
-
-    }
-
-    public void setMotorPowerArray(double[] power) {
-
-        frontLeft.setPower(power[0]);
-        frontRight.setPower(power[1]);
-        backRight.setPower(power[2]);
-        backLeft.setPower(power[3]);
-
-    }
 
     public boolean targetPosTolerence(BasicAuto om) {
 
@@ -365,12 +396,14 @@ public class DriveTrain {
         int deltaBL = blCount - blPrevious;
 /** deltaPos can be array and calculated locally from passed in previous and current values
  * can be local and exist only in the method
+ * Coach Note: have had issues with making changes suggested so missing somethign in code - leave as is
+ *   -- commented section below can be deleted
  */
 
         //drive motor calculations
 //
 //        int deltaSum = (deltaFL  + deltaFR  + deltaBR  + deltaBL)/4;
-//        robotAngle -= deltaSum / (om.cons.DEGREES_TO_COUNTS * om.cons.ROBOT_INCH_TO_MOTOR_DEG *
+//        robotAngle -= deltaSum / (gearRatioDegToCounts * om.cons.ROBOT_INCH_TO_MOTOR_DEG *
 //                om.cons.ROBOT_DEG_TO_WHEEL_INCH );
 
         // Update to use IMU angle
@@ -401,9 +434,9 @@ public class DriveTrain {
 //Coordinate transformation to take motor drive coordinates to robot body reference frame - fixed 45 deg rotation
         // Simplify by averaging all distance in correct frame
         double robotXInc = ((-deltaFL + deltaFR + deltaBR - deltaBL)/4)/
-                (om.cons.DEGREES_TO_COUNTS_40_1*om.cons.ROBOT_INCH_TO_MOTOR_DEG*om.cons.adjForward); //Changed from 60:1 to 40:1
+                (gearRatioDegToCounts*om.cons.ROBOT_INCH_TO_MOTOR_DEG*om.cons.adjForward); //Changed from 60:1 to 40:1
         double robotYInc = -((-deltaFL - deltaFR + deltaBR + deltaBL)/4)/
-                (om.cons.DEGREES_TO_COUNTS_40_1*om.cons.ROBOT_INCH_TO_MOTOR_DEG*om.cons.adjRight); //Changed from 60:1 to 40:1
+                (gearRatioDegToCounts*om.cons.ROBOT_INCH_TO_MOTOR_DEG*om.cons.adjRight); //Changed from 60:1 to 40:1
         robotX += robotXInc;
         robotY += robotYInc;
 /** robotX & robotY are not used else where - navigator tracks field coordinates
@@ -634,19 +667,24 @@ public class DriveTrain {
         /** negative sign for the change in rotation sign convention + = CW for steering
          * NOTE SIGN CONVENTION
          */
+        targetHeading = angle;
+        /* -- COACH NOTE: leave commented portion in case of need to revert
+         * -- believe updates are good and prevent robot from rotating 360 to find correct point
+         * -- method could be used to return the angle and targetHeading wouldn't need to be global
+        */
 
 //Need to maintain unwrapped target angle ... unwraps delta angle - an issue if the target changes by 180?0
-        double deltaAngle = angle - targetHeading;// difference between robot center to target point and robot heading
-        if (deltaAngle > 180) {//This is IF/THEN for the unwrap routine
-            targetHeading += deltaAngle - 360;//Decrease angle for negative direction //rotation
-        } else if (deltaAngle < -180) {
-            targetHeading += deltaAngle + 360;//increase angle for positive direction //rotation 
-        } else {
-            targetHeading += deltaAngle;//No wrap happened, don't add any extra rotation
-        }
+//        double deltaAngle = angle - targetHeading;// difference between robot center to target point and robot heading
+//        if (deltaAngle > 180) {//This is IF/THEN for the unwrap routine
+//            targetHeading += deltaAngle - 360;//Decrease angle for negative direction //rotation
+//        } else if (deltaAngle < -180) {
+//            targetHeading += deltaAngle + 360;//increase angle for positive direction //rotation 
+//        } else {
+//            targetHeading += deltaAngle;//No wrap happened, don't add any extra rotation
+//        }
     }
 
-    /** METHODS FOR AUTONOMOIUS DRIVING
+    /** METHODS FOR AUTONOMOUS DRIVING
      *
      */
 
@@ -892,6 +930,10 @@ public class DriveTrain {
 
     }
 
+    /* -- Coach's Note: can driveRotateIMU (below)be deleted?
+     * -- Archived in last year's code, not being used
+    */
+
 //    public void driveRotateIMU(double angle, double powerLimit, String step, BasicAuto om) {
 //
 //        double error;
@@ -943,7 +985,12 @@ public class DriveTrain {
 //
 //    }
 
-
+    /* -- Coach's Note: drivePursuit has an end condition of being within the radius of the robot to the last point
+     * therefore if radius is 6" robot may not get to closer then 6" of last point
+     * depends on how quickly calculations update and how fast robot is moving
+     * Also zero power behavior and stop methods can impact the final position
+     * Plan to extend last point for moves as necessary, test on field
+     */
     public void drivePursuit(ArrayList<PursuitPoint> pathPoints, BasicAuto om, String step){
         double distanceToTarget = 100;
         double steeringPower;
@@ -1056,6 +1103,9 @@ public class DriveTrain {
     }
     /** METHODS FOR TELEOP DRIVING
      *
+     */
+     /* -- COACH NOTE: do we need all these driving methods?  they are archived in last year's code
+     * -- select the ones you like best and remove others - reduce clutter
      */
     public void drivePower(Gamepad g1, Gamepad g2, BasicTeleOp om) {
 

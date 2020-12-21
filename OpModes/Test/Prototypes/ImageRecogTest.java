@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package UltimateGoal_RobotTeam.OpModes.Test;
+package UltimateGoal_RobotTeam.OpModes.Test.Prototypes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -75,6 +75,8 @@ public class ImageRecogTest extends BasicTeleOp {
         runtime.reset();
         telemetry.addLine("NOT READY DON'T PRESS PLAY");
         telemetry.update();
+        telemetry.setAutoClear(false);//allow all the lines of telemetry to remain during initialization
+
         // configure the robot needed - for this demo only need DriveTrain
         // configArray has True or False values for each subsystem HW element
         //
@@ -98,21 +100,69 @@ public class ImageRecogTest extends BasicTeleOp {
         telemetry.addData("Status: ", "Initialized");
         telemetry.addData(">", "Press Play to start");
         telemetry.update();
+
+        telemetry.setAutoClear(true);//revert back to telemetry.update clearing prior display
+
     }
     public void runCode() {
 // run until the end of the match (driver presses STOP)
+        int methodSelect = 0;
         while (opModeIsActive()) {
+            while (methodSelect == 0 && opModeIsActive()) {
 
-            // Set wheel Motor Power
-            String ringType = robotUG.imageRecog.viewRings(this, 100);
-            telemetry.addLine("------------------------------------");
-            telemetry.addData("Loop Completed", "Review data and repeat?");
+                // Run image recognition number of loops, show results, determine to continue
+                String ringType = robotUG.imageRecog.viewRings(this, 100);
+                telemetry.addLine("------------------------------------");
+                telemetry.addData("Loop Completed", "Review data and repeat?");
 
-            pressAToContinue();
+                pressAToContinue();
 
-            idle();
+                methodSelect = switchMethod(methodSelect);
+
+                idle();
+            }
+            while (methodSelect == 1 && opModeIsActive()) {
+
+                // Run image recognition timed loops, show results, determine to continue
+                String ringType = robotUG.imageRecog.viewRingsTimed(this, 2.0);
+                telemetry.addLine("------------------------------------");
+                telemetry.addData("Loop Completed", "Review data and repeat?");
+
+                pressAToContinue();
+
+                methodSelect = switchMethod(methodSelect);
+
+                idle();
+            }
         }
         robotUG.imageRecog.shutdown();
+    }
+    public int switchMethod(int mSelect){
+        while ((!gamepad1.x && !gamepad1.y)  && opModeIsActive()){
+            telemetry.addLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+            telemetry.addData("Method Select", "Press 'X' to run same, Press 'Y' to change");
+            telemetry.addLine("%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+            telemetry.update();
+        }
+        if(gamepad1.y){
+            if(mSelect>0){
+                mSelect -=1;
+            }
+            else {
+                mSelect +=1;
 
+            }
+            telemetry.addLine(" ");
+            telemetry.addData("Method Changed", "Method Select value = %d", mSelect);
+            telemetry.update();
+        }
+        else {
+            telemetry.addLine(" ");
+            telemetry.addData("Method NOT Changed", "Method Select value = %d", mSelect);
+            telemetry.update();
+        }
+        sleep(2000);//wait so screen can be read
+
+        return mSelect;
     }
 }

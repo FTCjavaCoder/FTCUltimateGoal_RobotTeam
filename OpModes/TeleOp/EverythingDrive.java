@@ -12,9 +12,6 @@ public class EverythingDrive extends BasicTeleOp {
     @Override
     public void runOpMode() {
 
-        telemetry.addLine("NOT READY DON'T PRESS PLAY");
-        telemetry.update();
-
         initializeTeleOp();
 
         // Wait for the game to start (driver presses PLAY)
@@ -29,7 +26,9 @@ public class EverythingDrive extends BasicTeleOp {
         runtime.reset();
         telemetry.addLine("NOT READY DON'T PRESS PLAY");
         telemetry.update();
-        // configure the robot needed - for this demo only need DriveTrain
+        telemetry.setAutoClear(false);//allow all the lines of telemetry to remain during initialization
+
+        // configure the robot needed
         // configArray has True or False values for each subsystem HW element
         //
         /** configArray is arranged as
@@ -43,21 +42,34 @@ public class EverythingDrive extends BasicTeleOp {
          */
         // HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector   ImageRecog
         boolean[] configArray = new boolean[]{ true, 	true, 	true, 		true, 		true,       false};
+        for(int j=0;j<configArray.length;j++) {
+            telemetry.addData("ConfigArray Index", "%d with Value: %s", j, configArray[j]);
+        }
+        telemetry.update(); // report values of configArray
 
         robotUG = new HardwareRobotMulti(this, configArray,false);
         // READ HASHMAP FILE
         readOrWriteHashMap();
-        // Tel the robot that it's starting at (0,0) field center and angle is zero - facing EAST - Right
-        robotUG.driveTrain.initIMU(this); //configures IMU and sets initial heading to 0.0 degrees
-
+        // Tell the robot that it's starting at (0,0) field center and angle is zero - facing EAST - Right
         robotUG.driveTrain.robotFieldLocation.setLocation(0,0,0);
 
+        robotUG.driveTrain.initIMUtoAngle(this,-robotUG.driveTrain.robotFieldLocation.theta);// set IMU to desired robotHeading
+
+        //Coach Note: Need to set GearRatio
+        robotUG.driveTrain.setGearRatio(40.0, this);
+
+
         //Indicate initialization complete and provide telemetry
-        telemetry.addData("Status: ", "Initialized");
+        telemetry.addLine(" ");// blank line
+        telemetry.addData("Status: ", "Robot & OpMode Initialized");
+        telemetry.addLine(" ");// blank line
+
         telemetry.addData("Commands", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)", forwardDirection, rightDirection, clockwise);
         telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)", robotUG.driveTrain.frontLeft.getPower(), robotUG.driveTrain.frontRight.getPower(), robotUG.driveTrain.backLeft.getPower(), robotUG.driveTrain.backRight.getPower());
         telemetry.addData(">", "Press Play to start");
         telemetry.update();
+        telemetry.setAutoClear(true);//revert back to telemetry.update clearing prior display
+
     }
 
 //    @Override
@@ -69,7 +81,11 @@ public class EverythingDrive extends BasicTeleOp {
             // Set Drive Motor Power
             robotUG.driveTrain.drivePowerAllLeftStickScaled(gamepad1, gamepad2, this);
 
-            robotUG.driveTrain.angleUnWrap();
+            /* -- COACH SUGGESTION: replace angleUnwrap with robotNavigator
+             * -- robotNavigator calls angleUnwrap and allows navigation telemetry to be acesses
+             */
+//            robotUG.driveTrain.angleUnWrap();
+            robotUG.driveTrain.robotNavigator(this);
 
             robotUG.conveyor.ConveyorControl(gamepad1, this);
 
@@ -85,39 +101,63 @@ public class EverythingDrive extends BasicTeleOp {
 
             robotUG.collector.collectorControl(gamepad2,  this);
 
-            telemetry.addData("Status", "Run Time: ",runtime.toString());
-//			multiTelemetry(telemetryOption);
-            telemetry.addData("Robot Heading", "( %.2f )", robotUG.driveTrain.robotHeading);
-            telemetry.addData("Arm Target", "Goal Arm Target Angle (%d)", robotUG.wobbleArm.wobbleArmTargetAngle);
-            telemetry.addData("Arm Angle", "Goal Arm Current Angle (%.2f)",
-                    (robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition() / (cons.DEGREES_TO_COUNTS_60_1 * robotUG.wobbleArm.armGearRatio)));
-            telemetry.addData("Motor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d)", robotUG.wobbleArm.armPower, robotUG.wobbleArm.wobbleArmTarget);
-            telemetry.addData("Motor Position", "Goal Arm Current Pos (%d)", robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
-            telemetry.addData("Servo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
-                    robotUG.wobbleArm.wobbleGrabPos, robotUG.wobbleArm.wobbleReleasePos);
-            telemetry.addData("Servo Position", "Servo Pos (%.2f)",
-                    robotUG.wobbleArm.wobbleGoalPos);
+            /* --Coach Note: add selectable telemetry so based on what's going on we can set TM output
+            * -- Are there buttons left to select TM?
+            * -- If not selectable then format to easier to read - spacing, tabs, line separators
+            */
 
-            telemetry.addData("Commands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
-                    forwardDirection, rightDirection, clockwise);
-            telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
-                    robotUG.driveTrain.frontLeft.getPower(), robotUG.driveTrain.frontRight.getPower(), robotUG.driveTrain.backLeft.getPower(),
-                    robotUG.driveTrain.backRight.getPower());
-            telemetry.addData("Motor Power", "Right Power (%.2f), Left Power (%.2f)", robotUG.shooter.shooterRight.getPower(), robotUG.shooter.shooterLeft.getPower());
-            telemetry.addData("Shooter Power Variable", "Variable: Shooter Power (%.2f)", robotUG.shooter.shooter_Power);
-            telemetry.addData("Servo Power", "Right Power (%.2f), Left Power (%.2f)", robotUG.conveyor.conveyorRight.getPower(), robotUG.conveyor.conveyorLeft.getPower());
-            telemetry.addData("Conveyor Power Variable", "Variable: Shooter Power (%.2f)", robotUG.conveyor.conveyor_Power);
-            telemetry.addData("Commands", "collectorPower (%.2f), collectorWheel Power (%.2f)", robotUG.collector.collectorPower, robotUG.collector.collectorWheel.getPower());
-            telemetry.update();
+            telemetry.addData("Status", "Run Time: ",runtime.toString());
+			multiTelemetry();// COACH implemented multiTelemetry
+
+//            telemetry.addLine("ROBOT GAMEPAD COMMANDS ...");
+//            telemetry.addData("\tCommands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
+//                    forwardDirection, rightDirection, clockwise);
+//            telemetry.addData("\tDrive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
+//                    robotUG.driveTrain.frontLeft.getPower(), robotUG.driveTrain.frontRight.getPower(), robotUG.driveTrain.backLeft.getPower(),
+//                    robotUG.driveTrain.backRight.getPower());
+//
+//            telemetry.addLine("ROBOT LOCATION ...");
+//            telemetry.addData("\tRobot Field Position (X, Y)", " ( %1.1f, %1.1f)", robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
+//            telemetry.addData("\tRobot Angles", " \t Heading: %1.1f, \t Field: %1.1f", robotUG.driveTrain.robotHeading, robotUG.driveTrain.robotFieldLocation.theta);
+//
+//            telemetry.addLine("WOBBLE GOAL ...");
+//            telemetry.addData("\tArm Target", "Goal Arm Target Angle (%d) degrees", robotUG.wobbleArm.wobbleArmTargetAngle);
+////            telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",
+////                    (robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition() / (cons.DEGREES_TO_COUNTS_60_1 * robotUG.wobbleArm.ARM_GEAR_RATIO)));
+//            telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",robotUG.wobbleArm.getArmAngleDegrees());
+//            // Coach Note: for above line make a method in wobbleArm to return the arm position in degrees to make telemetry at this level easier (done!)
+//            telemetry.addData("\tMotor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d) counts", robotUG.wobbleArm.armPower, robotUG.wobbleArm.wobbleGoalArm.getTargetPosition());
+//            telemetry.addData("\tMotor Position", "Goal Arm Current Pos (%d) counts", robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
+//            telemetry.addData("\tServo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
+//                    robotUG.wobbleArm.wobbleGrabPos, robotUG.wobbleArm.wobbleReleasePos);
+//            telemetry.addData("\tServo Position", "Servo Pos (%.2f)",robotUG.wobbleArm.wobbleGoalServo.getPosition());
+//
+//            telemetry.addLine("SHOOTER ...");
+//            telemetry.addData("\tMotor Power", "Right Power (%.2f), Left Power (%.2f)", robotUG.shooter.shooterRight.getPower(), robotUG.shooter.shooterLeft.getPower());
+//            telemetry.addData("\tShooter Power Variable", "Variable: Shooter Power (%.2f)", robotUG.shooter.shooter_Power);
+//
+//            telemetry.addLine("CONVEYOR ...");
+//            telemetry.addData("\tServo Power", "Right Power (%.2f), Left Power (%.2f)", robotUG.conveyor.conveyorRight.getPower(), robotUG.conveyor.conveyorLeft.getPower());
+//            telemetry.addData("\tConveyor Power Variable", "Variable: Conveyor Power (%.2f)", robotUG.conveyor.conveyor_Power);
+//
+//            telemetry.addLine("COLLECTOR ...");
+//            telemetry.addData("\tCommands", "collectorPower (%.2f), collectorWheel Power (%.2f)", robotUG.collector.collectorPower, robotUG.collector.collectorWheel.getPower());
+//            telemetry.update();
 
             idle();
         }
 
-        robotUG.driveTrain.setMotorPower(0.0);
-        robotUG.conveyor.conveyorLeft.setPower(0.0);
-        robotUG.conveyor.conveyorRight.setPower(0.0);
-        robotUG.wobbleArm.wobbleGoalArm.setPower(0.0);
-        robotUG.collector.collectorWheel.setPower(0.0);
+        /* -- COACH SUGGESTION: create a shutdown or allStop method in robotUG than contains the stop methods
+         * -- method would be required to run through only the existing hardware as configured and call the stop methods for each
+         * -- stop methods would shutdown all motors/servos
+         * -- does the same thing as below but does it simply in the OpMode and is flexible for any HW config
+         */
+//        robotUG.driveTrain.setMotorPower(0.0);
+//        robotUG.conveyor.conveyorLeft.setPower(0.0);
+//        robotUG.conveyor.conveyorRight.setPower(0.0);
+//        robotUG.wobbleArm.wobbleGoalArm.setPower(0.0);
+//        robotUG.collector.collectorWheel.setPower(0.0);
+        robotUG.shutdownAll();
 
     }
 

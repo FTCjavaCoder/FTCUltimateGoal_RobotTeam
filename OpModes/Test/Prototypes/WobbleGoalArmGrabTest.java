@@ -1,9 +1,6 @@
 package UltimateGoal_RobotTeam.OpModes.Test.Prototypes;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
@@ -63,7 +60,7 @@ public class WobbleGoalArmGrabTest extends BasicTeleOp {
 
             telemetry.addData("Arm Target", "Goal Arm Target Angle (%d)", robotUG.wobbleArm.wobbleArmTargetAngle);
             telemetry.addData("Arm Angle", "Goal Arm Current Angle (%.2f)",
-                    (robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition() / (cons.DEGREES_TO_COUNTS_60_1 * robotUG.wobbleArm.armGearRatio)));
+                    (robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition() / (cons.DEGREES_TO_COUNTS_60_1 * robotUG.wobbleArm.ARM_GEAR_RATIO)));
             telemetry.addData("Motor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d)", robotUG.wobbleArm.armPower, robotUG.wobbleArm.wobbleArmTarget);
             telemetry.addData("Motor Position", "Goal Arm Current Pos (%d)", robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
             telemetry.addData("Servo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",

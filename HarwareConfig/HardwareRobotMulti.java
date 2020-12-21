@@ -36,7 +36,8 @@ public class HardwareRobotMulti
     public HardwareMap hwMap           =  null;
     public ElapsedTime period  = new ElapsedTime();
     */ // End Delete
-
+// HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector	ImageRecog
+    boolean[] configArrayHW = new boolean[]{ false, 	false, 	false, 		false, 		false,		true};//all defaults to false
 
     /** Constructor
      * This constructs the robot needed for each OpMode and can be called in that OpMode to complete the null robotUG
@@ -56,7 +57,7 @@ public class HardwareRobotMulti
     public HardwareRobotMulti(BasicOpMode om, boolean[] configArray, boolean tm){
         //configArray has True or False values for each subsystem HW element
         // Use the array to make it easy to pass values bu then values are decoded in constructor for ease of understanding
-
+        configArrayHW = configArray;
         boolean trueDriveTrain = configArray[0];
         boolean trueShooter = configArray[1];
         boolean trueConveyor= configArray[2];
@@ -87,5 +88,24 @@ public class HardwareRobotMulti
     }
 
     /* Methods */
-
+    public void shutdownAll(){
+        if (configArrayHW[0]) {
+            driveTrain.shutdown();
+        }
+        if (configArrayHW[1]) {
+            shooter.shutdown();
+        }
+        if (configArrayHW[2]) {
+            conveyor.shutdown();
+        }
+        if (configArrayHW[3]) {
+            wobbleArm.shutdown();
+        }
+        if (configArrayHW[4]) {
+            collector.shutdown();
+        }
+        if (configArrayHW[5]) {
+            imageRecog.shutdown();
+        }
+    }
 }

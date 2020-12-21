@@ -8,7 +8,7 @@ import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
 
 public class Shooter {
 
-    public double shooter_Power = 0;
+    public double shooter_Power = 0;//KS can be private - not accessed outside class
 
     /* Public OpMode members. */
     public DcMotor shooterLeft = null;
@@ -33,13 +33,21 @@ public class Shooter {
 
 //            shooterLeft = new DcMotor();
 //            shooterRight = new DcMotor();
-            om.telemetry.addData("ERROR: ", "Initializing DriveTrain in TestMode...");
+            om.telemetry.addData("ERROR: ", "Initializing Shooter in TestMode...");
+            om.telemetry.update();
 
         }
         else {
+            om.telemetry.addLine("... ");//add line space
+            om.telemetry.addData("Status: ", "Shooter Initializing ...");
+            om.telemetry.update();
 
             shooterLeft =om.hardwareMap.get(DcMotor .class,"motor_shooterL");
             shooterRight =om.hardwareMap.get(DcMotor .class,"motor_shooterR");
+
+            om.telemetry.addLine(" ");//blank line space
+            om.telemetry.addData("Status: ", "Shooter Initialized");
+            om.telemetry.update();
         }
     }
 
@@ -65,5 +73,15 @@ public class Shooter {
             om.sleep(300);
         }
 
+    }
+    /* -- COACH NOTE: need to add method for autonomous shooter control
+     *  - method required to set power like "dpad" button
+     *  - also need a stop method to shutdown after 3 shots
+     *  - made a shutdown method for all hardware
+     *
+     */
+    public void shutdown(){
+        shooterLeft.setPower(0.0);
+        shooterRight.setPower(0.0);
     }
 }
