@@ -38,15 +38,13 @@ public class Shooter {
 
         }
         else {
-            om.telemetry.addLine("... ");//add line space
-            om.telemetry.addData("Status: ", "Shooter Initializing ...");
+            om.telemetry.addData("Shooter", " Initializing ...");
             om.telemetry.update();
 
             shooterLeft =om.hardwareMap.get(DcMotor .class,"motor_shooterL");
             shooterRight =om.hardwareMap.get(DcMotor .class,"motor_shooterR");
 
-            om.telemetry.addLine(" ");//blank line space
-            om.telemetry.addData("Status: ", "Shooter Initialized");
+            om.telemetry.addLine("\t\t... Initialization COMPLETE");
             om.telemetry.update();
         }
     }

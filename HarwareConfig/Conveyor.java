@@ -25,14 +25,12 @@ public class Conveyor {
 
         }
         else{
-            om.telemetry.addLine("... ");//add line space
-            om.telemetry.addData("Status: ", "Initializing Conveyor ...");
+            om.telemetry.addData("Conveyor", " Initializing  ...");
             om.telemetry.update();
             conveyorLeft = om.hardwareMap.get(CRServo.class, "servo_conveyorL");
             conveyorRight = om.hardwareMap.get(CRServo.class, "servo_conveyorR");
 
-            om.telemetry.addLine(" ");//blank line space
-            om.telemetry.addData("Status: ", "Conveyor Initialized");
+            om.telemetry.addLine("\t\t... Initialization COMPLETE");
             om.telemetry.update();
 
         }

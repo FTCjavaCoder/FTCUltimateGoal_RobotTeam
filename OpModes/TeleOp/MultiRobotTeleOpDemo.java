@@ -24,6 +24,8 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 		runtime.reset();
 		telemetry.addLine("NOT READY DON'T PRESS PLAY");
 		telemetry.update();
+		telemetry.setAutoClear(false);//allow all the lines of telemetry to remain during initialization
+
 		// configure the robot needed - for this demo only need DriveTrain
 		// configArray has True or False values for each subsystem HW element
 		//
@@ -46,12 +48,17 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 		robotUG.driveTrain.initIMU(this); //confgures IMU and sets initial heading to 0.0 degrees
 		robotUG.driveTrain.robotLocationV1.setLocation(0,0,0);
 
+		//Coach Note: Need to set GearRatio (40.0:1 for the main robot)
+		robotUG.driveTrain.setGearRatio(40.0, this);
+
 		//Indicate initialization complete and provide telemetry
 		telemetry.addData("Status: ", "Initialized");
 		telemetry.addData("Commands", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)", forwardDirection, rightDirection, clockwise);
 		telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)", robotUG.driveTrain.frontLeft.getPower(), robotUG.driveTrain.frontRight.getPower(), robotUG.driveTrain.backLeft.getPower(), robotUG.driveTrain.backRight.getPower());
 		telemetry.addData(">", "Press Play to start");
 		telemetry.update();
+		telemetry.setAutoClear(true);//revert back to telemetry.update clearing prior display
+
 	}
 
 //	@Override
@@ -64,33 +71,11 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 
 			robotUG.driveTrain.angleUnWrap();
 
-			if (gamepad1.dpad_up) {
-
-				telemetryOption += 1;
-
-				if (telemetryOption > 4) {
-
-					telemetryOption = 0;
-				}
-
-			}
-
-
-
-
-			telemetry.addData("Status", "Run Time: ",runtime.toString());
-//			multiTelemetry(telemetryOption);
-			telemetry.addData("Robot Heading", "( %.2f )", robotUG.driveTrain.robotHeading);
-			telemetry.addData("Commands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
-					forwardDirection, rightDirection, clockwise);
-			telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
-					robotUG.driveTrain.frontLeft.getPower(), robotUG.driveTrain.frontRight.getPower(), robotUG.driveTrain.backLeft.getPower(),
-					robotUG.driveTrain.backRight.getPower());
-			telemetry.update();
+			multiTelemetry();
 
 			idle();
 		}
-		robotUG.driveTrain.setMotorPower(0);
+		robotUG.shutdownAll();
 
 	}
 

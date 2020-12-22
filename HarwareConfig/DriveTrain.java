@@ -83,6 +83,7 @@ public class DriveTrain {
     public double targetHeading;
 
     public double gearRatioDegToCounts = 40;// for 40 to 1 {Coach Note -- needs to be ratio not gear ratio, define in constructor}
+    public double gearRatio;//use to determine that gear ratio for drive train has been set
 
     public int countDistance = 0;
 
@@ -126,8 +127,7 @@ public class DriveTrain {
 //            imu.initialize(parameters);
         }
         else {
-            om.telemetry.addLine("... ");//add line space
-            om.telemetry.addData("Status: ", "Initializing DriveTrain ...");
+            om.telemetry.addData("DriveTrain", " Initializing  ...");
             om.telemetry.update();
 
             // Define and Initialize Motors
@@ -188,8 +188,7 @@ public class DriveTrain {
 */
             setGearRatio(40.0, om);
             //Indicate initialization complete and provide telemetry
-            om.telemetry.addLine(" ");//blank line space
-            om.telemetry.addData("Status: ", "Drive Train Initialized");
+            om.telemetry.addLine("\t\t... Initialization COMPLETE");
             om.telemetry.update();
 
         }
@@ -249,7 +248,7 @@ public class DriveTrain {
         if(gearRatioChoice == 60) {
             gearRatioDegToCounts = om.cons.DEGREES_TO_COUNTS_60_1;// 60 to 1 gear ratio
         }
-
+        gearRatio = gearRatioChoice;
     }
     public void setMotorPower(double power) {
 

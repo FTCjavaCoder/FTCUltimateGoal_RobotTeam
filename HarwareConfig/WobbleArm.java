@@ -53,8 +53,7 @@ public class WobbleArm {
 
         }
         else {
-            om.telemetry.addLine("... ");//add line space
-            om.telemetry.addData("Status: ", "Wobble Arm Initializing...");
+            om.telemetry.addData("Wobble Arm", " Initializing...");
             om.telemetry.update();
             wobbleGoalArm = om.hardwareMap.get(DcMotor.class, "motor_wobble_goal");
             wobbleGoalServo = om.hardwareMap.get(Servo.class, "wobble_goal_servo");
@@ -67,8 +66,7 @@ public class WobbleArm {
 //            wobbleGoalArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             wobbleGoalArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            om.telemetry.addLine(" ");//blank line space
-            om.telemetry.addData("Status: ", "Wobble Arm  Initialized");
+            om.telemetry.addLine("\t\t... Initialization COMPLETE");
             om.telemetry.update();
         }
     }

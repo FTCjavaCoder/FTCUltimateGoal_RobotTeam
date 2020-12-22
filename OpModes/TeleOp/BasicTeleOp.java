@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
@@ -47,7 +48,11 @@ public class BasicTeleOp extends BasicOpMode {
 
     public double manualGripperIncrement = 0.05;// was 0.01 and 0.005
 
-    public int telemetryOption = 1;
+    private final int TELEMETRY_MAX_SIZE = 3;
+    private int telemetrySize = 1;
+    private int telemetryActiveIndex = 0;
+    private int[] telemetryOption = new int[]{1,0,0};//used to determine telemetry to display, must match TELEMETRY_MAX_SIZE
+
 
     /* Coach Note: moved runTime to BasicOpMode so it would be available for all methods receiving om
      *
@@ -57,7 +62,10 @@ public class BasicTeleOp extends BasicOpMode {
     public void runOpMode() {
 
     }
-
+/* -- COACH NOTE: now that we're moving forward with HardwareRobotMulti class for robot
+ *    can remove the methods that are no longer needed for the old "Billy" robot
+ *  - old versions will still be on Git Hub and in the Skystone project
+ */
     public void initializeTeleOp() {
 
         telemetry.addLine("NOT READY DON'T PRESS PLAY");
@@ -181,107 +189,143 @@ public class BasicTeleOp extends BasicOpMode {
     }
 
     public void multiTelemetry() {
+        setTelemetrySize();
+        setTelemetryIndex();
+        setTelemetryOption();
+        telemetry.addData("Run Time", " %s",runtime.toString());
+        telemetry.addData("Telemetry Size:", "%d (Bumpers),  Active TM window: %d (Start)",telemetrySize, telemetryActiveIndex);
+        telemetry.addLine("--------------------------------------");
 
-        if(gamepad1.back){
-            setTelemetryOption();
-            sleep(300);
-        }
-        switch (telemetryOption) {
+        for(int j =0; j < telemetrySize; j++){
+            switch (telemetryOption[j]) {
 
-            case 1 :
-                telemetry.addLine("DRIVE TRAIN ...");
-                if(robotUG.driveTrain != null) {
-                    telemetry.addLine("ROBOT GAMEPAD COMMANDS ...");
-                    telemetry.addData("\tCommands", "FWD (%.2f), Right (%.2f), CW (%.2f)",
-                            robotUG.driveTrain.forwardDirection, robotUG.driveTrain.rightDirection, robotUG.driveTrain.clockwise);
-                    telemetry.addData("\tDrive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
-                            robotUG.driveTrain.frontLeft.getPower(), robotUG.driveTrain.frontRight.getPower(), robotUG.driveTrain.backLeft.getPower(),
-                            robotUG.driveTrain.backRight.getPower());
-                    telemetry.addLine("ROBOT LOCATION ...");
-                    telemetry.addData("\tRobot Field Position (X, Y)", " ( %1.1f, %1.1f)", robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
-                    telemetry.addData("\tRobot Angles", " \t Heading: %1.1f, \t Field: %1.1f", robotUG.driveTrain.robotHeading, robotUG.driveTrain.robotFieldLocation.theta);
-                }
-                else {
-                    telemetry.addLine("\t ... is NOT active!!");
-                }
-                break;
-
-            case 2 :
-                telemetry.addLine("WOBBLE GOAL ...");
-                if(robotUG.wobbleArm != null) {
-                    telemetry.addData("\tArm Target", "Goal Arm Target Angle (%d) degrees", robotUG.wobbleArm.wobbleArmTargetAngle);
-                    telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",robotUG.wobbleArm.getArmAngleDegrees());
-                    telemetry.addData("\tMotor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d) counts", robotUG.wobbleArm.armPower, robotUG.wobbleArm.wobbleGoalArm.getTargetPosition());
-                    telemetry.addData("\tMotor Position", "Goal Arm Current Pos (%d) counts", robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
-                    telemetry.addData("\tServo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
-                            robotUG.wobbleArm.wobbleGrabPos, robotUG.wobbleArm.wobbleReleasePos);
-                    telemetry.addData("\tServo Position", "Servo Pos (%.2f)",robotUG.wobbleArm.wobbleGoalServo.getPosition());
-                }
-                else {
-                    telemetry.addLine("\t ... is NOT active!!");
-                }
-                break;
-
-            case 3 :
-                telemetry.addLine("SHOOTER ...");
-                if(robotUG.shooter != null) {
-                    telemetry.addData("\tMotor Power", "Right Power (%.2f), Left Power (%.2f)", robotUG.shooter.shooterRight.getPower(), robotUG.shooter.shooterLeft.getPower());
-                    telemetry.addData("\tShooter Power Variable", "Variable: Shooter Power (%.2f)", robotUG.shooter.shooter_Power);
-                }
-                else {
-                    telemetry.addLine("\t ... is NOT active!!");
-                }
-                break;
-
-            case 4 :
-                telemetry.addLine("CONVEYOR ...");
-                if(robotUG.conveyor != null) {
-                    telemetry.addData("\tServo Power", "Right Power (%.2f), Left Power (%.2f)", robotUG.conveyor.conveyorRight.getPower(), robotUG.conveyor.conveyorLeft.getPower());
-                    telemetry.addData("\tConveyor Power Variable", "Variable: Conveyor Power (%.2f)", robotUG.conveyor.conveyor_Power);
-                }
-                else {
-                        telemetry.addLine("\t ... is NOT active!!");
-                }
-                break;
-            case 5 :
-                telemetry.addLine("COLLECTOR ...");
-                if(robotUG.collector != null) {
-                    telemetry.addData("\tCommands", "collectorPower (%.2f), collectorWheel Power (%.2f)", robotUG.collector.collectorPower, robotUG.collector.collectorWheel.getPower());
-                telemetry.update();
-                }
-                else {
-                    telemetry.addLine("\t ... is NOT active!!");
-                }
-
-                break;
-            case 6 :
-                telemetry.addLine("IMAGE RECOGNITION ...");
-                if(robotUG.imageRecog != null){
-                    List<Recognition> ringRecognitions = robotUG.imageRecog.tfod.getRecognitions();
-
-                    for (int i = 0; i < ringRecognitions.size(); i++) {
-                        telemetry.addData(String.format("\tLabel (%d)", i), ringRecognitions.get(i).getLabel());
-                        telemetry.addData(String.format("\t\tleft,top (%d)", i), "%.03f , %.03f",
-                                ringRecognitions.get(i).getLeft(), ringRecognitions.get(i).getTop());
-                        telemetry.addData(String.format("\t\tright,bottom (%d)", i), "%.03f , %.03f",
-                                ringRecognitions.get(i).getRight(), ringRecognitions.get(i).getBottom());
+                case 0 :
+                    telemetry.addData("OPTION 0", "TM Window %d NOT Active (Back)",j);
+                    break;
+                case 1 :
+                    telemetry.addLine("DRIVE TRAIN (OPTION 1 - Back)...");
+                    if(robotUG.driveTrain != null) {
+                        telemetry.addLine("ROBOT GAMEPAD COMMANDS ...");
+                        telemetry.addData("\tCommands", "FWD (%.2f), Right (%.2f), CW (%.2f)",
+                                robotUG.driveTrain.forwardDirection, robotUG.driveTrain.rightDirection, robotUG.driveTrain.clockwise);
+                        telemetry.addData("\tDrive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
+                                robotUG.driveTrain.frontLeft.getPower(), robotUG.driveTrain.frontRight.getPower(), robotUG.driveTrain.backLeft.getPower(),
+                                robotUG.driveTrain.backRight.getPower());
+                        telemetry.addLine("ROBOT LOCATION ...");
+                        telemetry.addData("\tRobot Field Position (X, Y)", " ( %1.1f, %1.1f)", robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
+                        telemetry.addData("\tRobot Angles", " \t Heading: %1.1f, \t Field: %1.1f", robotUG.driveTrain.robotHeading, robotUG.driveTrain.robotFieldLocation.theta);
                     }
-                }
-                else {
-                    telemetry.addLine("\t ... is NOT active!!");
-                }
+                    else {
+                        telemetry.addLine("\t ... is NOT active!!");
+                    }
+                    telemetry.addLine("");
+                    break;
 
-                break;
+                case 2 :
+                    telemetry.addLine("WOBBLE GOAL (OPTION 2 - Back))...");
+                    if(robotUG.wobbleArm != null) {
+                        telemetry.addData("\tArm Target", "Goal Arm Target Angle (%d) degrees", robotUG.wobbleArm.wobbleArmTargetAngle);
+                        telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",robotUG.wobbleArm.getArmAngleDegrees());
+                        telemetry.addData("\tMotor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d) counts", robotUG.wobbleArm.armPower, robotUG.wobbleArm.wobbleGoalArm.getTargetPosition());
+                        telemetry.addData("\tMotor Position", "Goal Arm Current Pos (%d) counts", robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
+                        telemetry.addData("\tServo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
+                                robotUG.wobbleArm.wobbleGrabPos, robotUG.wobbleArm.wobbleReleasePos);
+                        telemetry.addData("\tServo Position", "Servo Pos (%.2f)",robotUG.wobbleArm.wobbleGoalServo.getPosition());
+                    }
+                    else {
+                        telemetry.addLine("\t ... is NOT active!!");
+                    }
+                    telemetry.addLine("");
+                    break;
+
+                case 3 :
+                    telemetry.addLine("SHOOTER (OPTION 3 - Back))...");
+                    if(robotUG.shooter != null) {
+                        telemetry.addData("\tMotor Power", "Right Power (%.2f), Left Power (%.2f)", robotUG.shooter.shooterRight.getPower(), robotUG.shooter.shooterLeft.getPower());
+                        telemetry.addData("\tShooter Power Variable", "Variable: Shooter Power (%.2f)", robotUG.shooter.shooter_Power);
+                    }
+                    else {
+                        telemetry.addLine("\t ... is NOT active!!");
+                    }
+                    telemetry.addLine("");
+                    break;
+
+                case 4 :
+                    telemetry.addLine("CONVEYOR (OPTION 4 - Back))...");
+                    if(robotUG.conveyor != null) {
+                        telemetry.addData("\tServo Power", "Right Power (%.2f), Left Power (%.2f)", robotUG.conveyor.conveyorRight.getPower(), robotUG.conveyor.conveyorLeft.getPower());
+                        telemetry.addData("\tConveyor Power Variable", "Variable: Conveyor Power (%.2f)", robotUG.conveyor.conveyor_Power);
+                    }
+                    else {
+                        telemetry.addLine("\t ... is NOT active!!");
+                    }
+                    telemetry.addLine("");
+                    break;
+                case 5 :
+                    telemetry.addLine("COLLECTOR (OPTION 5)...");
+                    if(robotUG.collector != null) {
+                        telemetry.addData("\tCommands", "collectorPower (%.2f), collectorWheel Power (%.2f)", robotUG.collector.collectorPower, robotUG.collector.collectorWheel.getPower());
+                    }
+                    else {
+                        telemetry.addLine("\t ... is NOT active!!");
+                    }
+                    telemetry.addLine("");
+                    break;
+                case 6 :
+                    telemetry.addLine("IMAGE RECOGNITION (OPTION 6 - Back))...");
+                    if(robotUG.imageRecog != null){
+                        List<Recognition> ringRecognitions = robotUG.imageRecog.tfod.getRecognitions();
+
+                        for (int i = 0; i < ringRecognitions.size(); i++) {
+                            telemetry.addData(String.format("\tLabel (%d)", i), ringRecognitions.get(i).getLabel());
+                            telemetry.addData(String.format("\t\tleft,top (%d)", i), "%.03f , %.03f",
+                                    ringRecognitions.get(i).getLeft(), ringRecognitions.get(i).getTop());
+                            telemetry.addData(String.format("\t\tright,bottom (%d)", i), "%.03f , %.03f",
+                                    ringRecognitions.get(i).getRight(), ringRecognitions.get(i).getBottom());
+                        }
+                    }
+                    else {
+                        telemetry.addLine("\t ... is NOT active!!");
+                    }
+                    telemetry.addLine("");
+                    break;
+            }
+            telemetry.addLine("");
         }
         telemetry.update();
     }
     public void setTelemetryOption() {
-        if(telemetryOption == 6) {
-            telemetryOption = 1;
+        if(gamepad1.back){
+            telemetryOption[telemetryActiveIndex]  += 1;
+            if(telemetryOption[telemetryActiveIndex]  > 6) {
+                telemetryOption[telemetryActiveIndex]  = 0;
+            }
+            sleep(300);// is having the sleep() necessary when this is not immediately in a loop?
         }
-        else {
-            telemetryOption +=1;
+    }
+    public void setTelemetrySize() {
+        if(gamepad1.left_bumper){
+            telemetrySize  -= 1;
+            if(telemetrySize < 1) {
+                telemetrySize = 1;
+            }
+            sleep(300);// is having the sleep() necessary when this is not immediately in a loop?
         }
-
+        if(gamepad1.right_bumper){
+            telemetrySize  += 1;
+            if(telemetrySize > TELEMETRY_MAX_SIZE) {
+                telemetrySize = TELEMETRY_MAX_SIZE;
+            }
+            sleep(300);// is having the sleep() necessary when this is not immediately in a loop?
+        }
+    }
+    public void setTelemetryIndex() {
+        if(gamepad1.start){
+            telemetryActiveIndex += 1;
+            if(telemetryActiveIndex  >= TELEMETRY_MAX_SIZE) {
+                telemetryActiveIndex = 0;
+            }
+            sleep(300);// is having the sleep() necessary when this is not immediately in a loop?
+        }
     }
 }

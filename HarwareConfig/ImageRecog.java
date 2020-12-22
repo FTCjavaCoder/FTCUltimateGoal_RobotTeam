@@ -52,8 +52,7 @@ public class ImageRecog {
             /**
              * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
              */
-            om.telemetry.addLine("... ");//add line space
-            om.telemetry.addData("Status: ", "Image Recognition Initializing ...");
+            om.telemetry.addData("Image Recognition", " Initializing ...");
             om.telemetry.update();
             parameters.vuforiaLicenseKey = VUFORIA_KEY;
             parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;// FRONT screen side, BACK = back of phone
@@ -89,12 +88,12 @@ public class ImageRecog {
 
                 // Uncomment the following line if you want to adjust the magnification and/or the aspect ratio of the input images.
                 //tfod.setZoom(2.5, 1.78);
-                om.telemetry.addLine("TFOD activated");
+                om.telemetry.addLine("Status ... TFOD activated");
                 om.telemetry.update();
 
             }
-            om.telemetry.addLine(" ");//blank line space
-            om.telemetry.addData("Status: ", "Image Recognition  Initialized");
+            om.telemetry.addLine("\t\t... Initialization COMPLETE");
+
             om.telemetry.update();
         }
 

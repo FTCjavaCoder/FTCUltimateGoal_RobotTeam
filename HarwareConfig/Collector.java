@@ -22,8 +22,7 @@ public class Collector {
             om.telemetry.update();
         }
         else {
-            om.telemetry.addLine("... ");//add line space
-            om.telemetry.addData("Status: ", "Initializing Collector ...");
+            om.telemetry.addData("Collector", " Initializing ...");
             om.telemetry.update();
 
             collectorWheel = om.hardwareMap.get(DcMotor.class, "motor_collector");
@@ -32,8 +31,7 @@ public class Collector {
             collectorWheel.setDirection(DcMotorSimple.Direction.FORWARD);
             collectorWheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-            om.telemetry.addLine(" ");//blank line space
-            om.telemetry.addData("Status: ", "Collector Initialized");
+            om.telemetry.addLine("\t\t... Initialization COMPLETE");
             om.telemetry.update();
         }
 

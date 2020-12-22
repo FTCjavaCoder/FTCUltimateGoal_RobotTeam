@@ -42,10 +42,11 @@ public class EverythingDrive extends BasicTeleOp {
          */
         // HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector   ImageRecog
         boolean[] configArray = new boolean[]{ true, 	true, 	true, 		true, 		true,       false};
-        for(int j=0;j<configArray.length;j++) {
-            telemetry.addData("ConfigArray Index", "%d with Value: %s", j, configArray[j]);
-        }
-        telemetry.update(); // report values of configArray
+// TROUBLESHOOTING: report values of configArray
+//        for(int j=0;j<configArray.length;j++) {
+//            telemetry.addData("ConfigArray Index", "%d with Value: %s", j, configArray[j]);
+//        }
+//        telemetry.update();
 
         robotUG = new HardwareRobotMulti(this, configArray,false);
         // READ HASHMAP FILE
@@ -62,6 +63,9 @@ public class EverythingDrive extends BasicTeleOp {
         //Indicate initialization complete and provide telemetry
         telemetry.addLine(" ");// blank line
         telemetry.addData("Status: ", "Robot & OpMode Initialized");
+        telemetry.addData("Robot Field Location", "X = %.1f, Y = %.1f, Theta = %.1f",robotUG.driveTrain.robotFieldLocation.x,
+                robotUG.driveTrain.robotFieldLocation.y,robotUG.driveTrain.robotFieldLocation.theta);
+        telemetry.addData("Drive Train Gear Ratio", " %.1f : 1",robotUG.driveTrain.gearRatio);
         telemetry.addLine(" ");// blank line
 
         telemetry.addData("Commands", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)", forwardDirection, rightDirection, clockwise);
@@ -106,7 +110,7 @@ public class EverythingDrive extends BasicTeleOp {
             * -- If not selectable then format to easier to read - spacing, tabs, line separators
             */
 
-            telemetry.addData("Status", "Run Time: ",runtime.toString());
+
 			multiTelemetry();// COACH implemented multiTelemetry
 
 //            telemetry.addLine("ROBOT GAMEPAD COMMANDS ...");
