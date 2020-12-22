@@ -17,7 +17,6 @@ public class Collector {
 
     public Collector(BasicOpMode om, boolean tm)  {
         if(tm) {
-//            wobbleGoalServo = new Servo();
             om.telemetry.addData("ERROR: ", "Initializing Collector in TestMode...");
             om.telemetry.update();
         }

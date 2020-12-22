@@ -60,12 +60,30 @@ public class Conveyor {
     }
     /* -- COACH NOTE: need to add method for autonomous conveyor control
      * -- method required to set power like "y" button
+     *      * see created setMotion and motionType enum
      * -- also need a stop method to keep rings from continually advancing
      *  - made a shutdown method for all hardware
      *
      */
+    public enum motionType {UP, DOWN, OFF};
+
+    public void setMotion(motionType mt){
+        switch(mt){
+            case UP:
+                conveyor_Power = -1.0;//pull rings up
+                break;
+            case DOWN:
+                conveyor_Power = 1.0;//push rings down
+                break;
+            case OFF:
+                conveyor_Power = 0.0;// stop
+                break;
+        }
+        conveyorLeft.setPower(conveyor_Power);
+        conveyorRight.setPower(-conveyor_Power);
+    }
     public void shutdown(){
         conveyorLeft.setPower(0.0);
-        conveyorLeft.setPower(0.0);
+        conveyorRight.setPower(0.0);
     }
 }

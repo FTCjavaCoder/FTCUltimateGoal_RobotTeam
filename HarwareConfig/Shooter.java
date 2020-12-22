@@ -74,10 +74,16 @@ public class Shooter {
     }
     /* -- COACH NOTE: need to add method for autonomous shooter control
      *  - method required to set power like "dpad" button
+     *     * see setShooter_Power()
      *  - also need a stop method to shutdown after 3 shots
      *  - made a shutdown method for all hardware
      *
      */
+    public void setShooter_Power(double power){
+        shooter_Power = power;
+        shooterLeft.setPower(shooter_Power);
+        shooterRight.setPower(-shooter_Power);
+    }
     public void shutdown(){
         shooterLeft.setPower(0.0);
         shooterRight.setPower(0.0);
