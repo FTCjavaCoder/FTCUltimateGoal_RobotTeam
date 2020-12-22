@@ -15,7 +15,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
  */
 
 @TeleOp(name="MiniDrive Scaled Stick Control", group="TeleOp")
-@Disabled
+//@Disabled
 public class MiniDrive_Scaled_StickControl extends BasicTeleOp {
 
     @Override
@@ -57,15 +57,16 @@ public class MiniDrive_Scaled_StickControl extends BasicTeleOp {
         // Tel the robot that it's starting at (0,0) field center and angle is zero - facing EAST - Right
         robotUG.driveTrain.initIMU(this); //confgures IMU and sets initial heading to 0.0 degrees
         robotUG.driveTrain.robotFieldLocation.setLocation(0,0,0);
-        telemetry.addData("Robot Field Location", "X = %.1f, Y = %.1f, Theta = %.1f",robotUG.driveTrain.robotFieldLocation.x,
-                robotUG.driveTrain.robotFieldLocation.y,robotUG.driveTrain.robotFieldLocation.theta);
+
 
         //Coach Note: Need to set GearRatio (60.0:1 for the miniBot)
         robotUG.driveTrain.setGearRatio(60.0, this);
-        telemetry.addData("Drive Train Gear Ratio", " %.1f : 1",robotUG.driveTrain.gearRatio);
 
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "MiniBot Initialized");
+        telemetry.addData("Robot Field Location", "X = %.1f, Y = %.1f, Theta = %.1f",robotUG.driveTrain.robotFieldLocation.x,
+                robotUG.driveTrain.robotFieldLocation.y,robotUG.driveTrain.robotFieldLocation.theta);
+        telemetry.addData("Drive Train Gear Ratio", " %.1f : 1",robotUG.driveTrain.gearRatio);
         telemetry.addData("Commands", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)", forwardDirection, rightDirection, clockwise);
         telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)", robotUG.driveTrain.frontLeft.getPower(), robotUG.driveTrain.frontRight.getPower(), robotUG.driveTrain.backLeft.getPower(), robotUG.driveTrain.backRight.getPower());
         telemetry.addData(">", "Press Play to start");

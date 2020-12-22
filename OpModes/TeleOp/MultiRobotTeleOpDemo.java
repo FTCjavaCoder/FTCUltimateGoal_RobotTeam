@@ -52,7 +52,11 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 		robotUG.driveTrain.setGearRatio(40.0, this);
 
 		//Indicate initialization complete and provide telemetry
+		telemetry.addLine(" ");// blank line
 		telemetry.addData("Status: ", "Initialized");
+		telemetry.addData("Robot Field Location", "X = %.1f, Y = %.1f, Theta = %.1f",robotUG.driveTrain.robotFieldLocation.x,
+				robotUG.driveTrain.robotFieldLocation.y,robotUG.driveTrain.robotFieldLocation.theta);
+		telemetry.addData("Drive Train Gear Ratio", " %.1f : 1",robotUG.driveTrain.gearRatio);
 		telemetry.addData("Commands", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)", forwardDirection, rightDirection, clockwise);
 		telemetry.addData("Drive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)", robotUG.driveTrain.frontLeft.getPower(), robotUG.driveTrain.frontRight.getPower(), robotUG.driveTrain.backLeft.getPower(), robotUG.driveTrain.backRight.getPower());
 		telemetry.addData(">", "Press Play to start");
