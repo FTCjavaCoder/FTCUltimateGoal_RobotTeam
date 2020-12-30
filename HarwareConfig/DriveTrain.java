@@ -82,9 +82,9 @@ public class DriveTrain {
 
     public double targetHeading;
 
-    public final double DEGREES_TO_COUNTS_1to1 = 24/360;//24 counts per revolution if gear ratio is 1:1, 60:1 = 1440
-    public double gearRatioDegToCounts = 40.0 * DEGREES_TO_COUNTS_1to1;// for 40 to 1 {Coach Note -- needs to be ratio not gear ratio, define in constructor}
-    public double gearRatio;//use to determine that gear ratio for drive train has been set
+    public final double DEGREES_TO_COUNTS_1to1 = 24.0/360.0;//24 counts per revolution if gear ratio is 1:1, 60:1 = 1440
+    public double gearRatio = 1.0;//use to determine that gear ratio for drive train has been set
+    public double gearRatioDegToCounts = gearRatio * DEGREES_TO_COUNTS_1to1;// for 40 to 1 {Coach Note -- needs to be ratio not gear ratio, define in constructor}
 
     public int countDistance = 0;
 

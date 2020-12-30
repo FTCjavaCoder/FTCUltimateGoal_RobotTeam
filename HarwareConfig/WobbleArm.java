@@ -187,7 +187,7 @@ public class WobbleArm {
             // do nothing but wait for arm to move within tolerance
             om.robotUG.driveTrain.robotNavigator(om);//replaces angleUnwrap (called in navigator)
             om.telemetry.addLine("WOBBLE GOAL DROP:");
-            om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%d) degrees", om.robotUG.wobbleArm.wobbleArmTargetAngle);
+            om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%.1f) degrees", om.robotUG.wobbleArm.wobbleArmTargetAngle);
             om.telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",om.robotUG.wobbleArm.getArmAngleDegrees());
             om.telemetry.addData("\tMotor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d) counts", om.robotUG.wobbleArm.armPower, om.robotUG.wobbleArm.wobbleGoalArm.getTargetPosition());
             om.telemetry.addData("\tMotor Position", "Goal Arm Current Pos (%d) counts", om.robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
@@ -209,7 +209,7 @@ public class WobbleArm {
             // do nothing but wait for arm to move within tolerance
             om.robotUG.driveTrain.robotNavigator(om);//replaces angleUnwrap (called in navigator)
             om.telemetry.addLine("WOBBLE GOAL DROP:");
-            om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%d) degrees", om.robotUG.wobbleArm.wobbleArmTargetAngle);
+            om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%.1f) degrees", om.robotUG.wobbleArm.wobbleArmTargetAngle);
             om.telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",om.robotUG.wobbleArm.getArmAngleDegrees());
             om.telemetry.addData("\tMotor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d) counts", om.robotUG.wobbleArm.armPower, om.robotUG.wobbleArm.wobbleGoalArm.getTargetPosition());
             om.telemetry.addData("\tMotor Position", "Goal Arm Current Pos (%d) counts", om.robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
@@ -229,7 +229,7 @@ public class WobbleArm {
             // do nothing but wait for arm to move within tolerance
             om.robotUG.driveTrain.robotNavigator(om);//replaces angleUnwrap (called in navigator)
             om.telemetry.addLine("WOBBLE GOAL DROP:");
-            om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%d) degrees", om.robotUG.wobbleArm.wobbleArmTargetAngle);
+            om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%.1f) degrees", om.robotUG.wobbleArm.wobbleArmTargetAngle);
             om.telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",om.robotUG.wobbleArm.getArmAngleDegrees());
             om.telemetry.addData("\tMotor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d) counts", om.robotUG.wobbleArm.armPower, om.robotUG.wobbleArm.wobbleGoalArm.getTargetPosition());
             om.telemetry.addData("\tMotor Position", "Goal Arm Current Pos (%d) counts", om.robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());

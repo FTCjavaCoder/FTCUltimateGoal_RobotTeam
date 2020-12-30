@@ -41,7 +41,7 @@ public class HardwareRobotMulti
     public ElapsedTime period  = new ElapsedTime();
     */ // End Delete
 // HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector	ImageRecog
-    boolean[] configArrayHW = new boolean[]{ false, 	false, 	false, 		false, 		false,		true};//all defaults to false
+    boolean[] configArrayHW = new boolean[]{ false, 	false, 	false, 		false, 		false,		false};//all defaults to false
     private final int TELEMETRY_MAX_SIZE = 3;
     private int telemetrySize = 1;
     private int telemetryActiveIndex = 0;
@@ -133,7 +133,7 @@ public class HardwareRobotMulti
                 case 2 :
                     om.telemetry.addLine("WOBBLE GOAL (OPTION 2 - Back))...");
                     if(wobbleArm != null) {
-                        om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%d) degrees", wobbleArm.wobbleArmTargetAngle);
+                        om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%.1f) degrees", wobbleArm.wobbleArmTargetAngle);
                         om.telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",wobbleArm.getArmAngleDegrees());
                         om.telemetry.addData("\tMotor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d) counts", wobbleArm.armPower, wobbleArm.wobbleGoalArm.getTargetPosition());
                         om.telemetry.addData("\tMotor Position", "Goal Arm Current Pos (%d) counts", wobbleArm.wobbleGoalArm.getCurrentPosition());

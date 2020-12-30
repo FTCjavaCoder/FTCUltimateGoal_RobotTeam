@@ -66,6 +66,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
 		robotUG.driveTrain.robotX = 0;// robot local coordinates always start at 0
 		robotUG.driveTrain.robotY = 0;
+		robotUG.wobbleArm.wobbleGoalServo.setPosition(0.8);
 
 		// Update telemetry to tell driver than robot is ready
 		telemetry.addData("STATUS", "MultiRobot Hardware Configured!!");
@@ -164,7 +165,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		robotUG.wobbleArm.dropWobble(this);
 
 		telemetry.addLine("Drop Goal");
-		telemetry.addData("Wobble Goal Arm", " Command: %1.2f, Actual: %1.2f", robotUG.wobbleArm.wobbleArmTargetAngle, robotUG.wobbleArm.wobbleArmTarget);
+		telemetry.addData("Wobble Goal Arm", " Command: %1.2f, Actual: %d", robotUG.wobbleArm.wobbleArmTargetAngle, robotUG.wobbleArm.wobbleArmTarget);
 		telemetry.addData("Wobble Goal Servo", " \t Desired: %1.1f, \t Actual: %1.1f", 90.0, robotUG.driveTrain.robotHeading);
 		telemetry.addLine("Check that Wobble Goal Has Been Dropped ...");
 
