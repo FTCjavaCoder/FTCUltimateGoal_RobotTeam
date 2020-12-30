@@ -82,7 +82,8 @@ public class DriveTrain {
 
     public double targetHeading;
 
-    public double gearRatioDegToCounts = 40;// for 40 to 1 {Coach Note -- needs to be ratio not gear ratio, define in constructor}
+    public final double DEGREES_TO_COUNTS_1to1 = 24/360;//24 counts per revolution if gear ratio is 1:1, 60:1 = 1440
+    public double gearRatioDegToCounts = 40.0 * DEGREES_TO_COUNTS_1to1;// for 40 to 1 {Coach Note -- needs to be ratio not gear ratio, define in constructor}
     public double gearRatio;//use to determine that gear ratio for drive train has been set
 
     public int countDistance = 0;
@@ -186,7 +187,7 @@ public class DriveTrain {
 /* COACH UPDATE: define default condition for gear ratio in constructor
 * in case gear ratio method not called by user in OpMode
 */
-            setGearRatio(40.0, om);
+            setGearRatio(40.0);
             //Indicate initialization complete and provide telemetry
             om.telemetry.addLine("\t\t... Initialization COMPLETE");
             om.telemetry.update();
@@ -211,15 +212,13 @@ public class DriveTrain {
 
         om.sleep(100);
     }
-    public void initIMUtoAngle(BasicOpMode om, double initAngle) {
+    public void initIMUtoAngle(double initAngle) {
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//This line calls the angles from the IMU
 
         offset = angles.firstAngle - initAngle; //Determine initial angle offset 
         priorAngle = angles.firstAngle; //set prior angle for unwrap to be initial angle 
         robotHeading = angles.firstAngle - offset; //robotHeading to be set at 0 degrees to start 
-
-//        om.sleep(100);
     }
     /* -- COACH NOTE: setGearRatio was never being called and results weren't used in robotNavigator
      *  -- method "setGearRatio" should only select existing constants, not recalculate them
@@ -239,16 +238,11 @@ public class DriveTrain {
 //        backRight.setZeroPowerBehavior(FLOAT);
         setMotorPower(0.0);
     }
-    public void setGearRatio(double gearRatioChoice, BasicOpMode om) {
+    public void setGearRatio(double gearRatioChoice) {
+        gearRatio = gearRatioChoice;// set global variable to input
+        //calculate degrees to counts based on gear ratio of motor gear box input
+        gearRatioDegToCounts = gearRatio * DEGREES_TO_COUNTS_1to1;
 
-        if(gearRatioChoice == 40) {
-            gearRatioDegToCounts = om.cons.DEGREES_TO_COUNTS_40_1; // 40 to 1 gear ratio
-        }
-
-        if(gearRatioChoice == 60) {
-            gearRatioDegToCounts = om.cons.DEGREES_TO_COUNTS_60_1;// 60 to 1 gear ratio
-        }
-        gearRatio = gearRatioChoice;
     }
     public void setMotorPower(double power) {
 
@@ -353,8 +347,6 @@ public class DriveTrain {
 
         return currentPos;
     }
-
-
 
     public boolean targetPosTolerence(BasicAuto om) {
 
@@ -738,7 +730,9 @@ public class DriveTrain {
 
         calcDistanceIMU(driveDirection, om);
 
-        double steeringPower = calcSteeringPowerIMU(targetAngle, om);
+        robotNavigator(om);//replaces angleUnwrap (called in navigator)
+        double steeringPower = calcSteeringPowerNav(targetAngle, robotHeading,om);//Updated to Nav version since Navigator called
+
 
         om.updateIMU();
 
@@ -773,8 +767,8 @@ public class DriveTrain {
 
             calcDistanceIMU(driveDirection, om);
 
-            steeringPower = calcSteeringPowerIMU(targetAngle, om);
-
+            robotNavigator(om);//replaces angleUnwrap (called in navigator)
+            steeringPower = calcSteeringPowerNav(targetAngle, robotHeading,om);//Updated to Nav version since Navigator called
             om.updateIMU();
 
             for (int i = 0; i < 4; i++) {
@@ -821,7 +815,7 @@ public class DriveTrain {
 
         setMotorPower(0);
 
-        angleUnWrap();
+        robotNavigator(om);//replaces angleUnwrap (called in navigator)
         om.updateIMU();
 
         om.telemetry.addData("COMPLETED Driving: ", step);
@@ -868,7 +862,7 @@ public class DriveTrain {
         currentPos = getMotorPosArray();
         //*************** ADDED CURRENT POSITION CALCULATION  ************************************
 
-        angleUnWrap();
+        robotNavigator(om);//replaces angleUnwrap (called in navigator)
         om.updateIMU();
 
         for(int i = 0; i < 4; i++){
@@ -888,7 +882,7 @@ public class DriveTrain {
             //*************** ADDED CURRENT POSITION CALCULATION  FOR TELEMETRY ************************************
 
 
-            angleUnWrap();
+            robotNavigator(om);//replaces angleUnwrap (called in navigator)
             om.updateIMU();
 
             for(int i = 0; i < 4; i++){
@@ -916,7 +910,7 @@ public class DriveTrain {
         setMotorPower(0);
 
         currentPos = getMotorPosArray();
-        angleUnWrap();
+        robotNavigator(om);//replaces angleUnwrap (called in navigator)
         om.updateIMU();
 
         om.telemetry.addData("COMPLETED Driving: ", step);

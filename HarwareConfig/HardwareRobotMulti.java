@@ -1,6 +1,10 @@
 package UltimateGoal_RobotTeam.HarwareConfig;
 
 
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+
+import java.util.List;
+
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
 
 //import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -38,6 +42,10 @@ public class HardwareRobotMulti
     */ // End Delete
 // HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector	ImageRecog
     boolean[] configArrayHW = new boolean[]{ false, 	false, 	false, 		false, 		false,		true};//all defaults to false
+    private final int TELEMETRY_MAX_SIZE = 3;
+    private int telemetrySize = 1;
+    private int telemetryActiveIndex = 0;
+    private int[] telemetryOption = new int[]{1,0,0};//used to determine telemetry to display, must match TELEMETRY_MAX_SIZE
 
     /** Constructor
      * This constructs the robot needed for each OpMode and can be called in that OpMode to complete the null robotUG
@@ -88,6 +96,148 @@ public class HardwareRobotMulti
     }
 
     /* Methods */
+
+    public void multiTelemetry(BasicOpMode om) {
+        setTelemetrySize(om);
+        setTelemetryIndex(om);
+        setTelemetryOption(om);
+        om.telemetry.addData("Run Time", " %s",om.runtime.toString());
+        om.telemetry.addData("Telemetry Size:", "%d (Bumpers),  Active TM window: %d (Start)",telemetrySize, telemetryActiveIndex);
+        om.telemetry.addLine("--------------------------------------");
+
+        for(int j =0; j < telemetrySize; j++){
+            switch (telemetryOption[j]) {
+
+                case 0 :
+                    om.telemetry.addData("OPTION 0", "TM Window %d NOT Active (Back)",j);
+                    break;
+                case 1 :
+                    om.telemetry.addLine("DRIVE TRAIN (OPTION 1 - Back)...");
+                    if(driveTrain != null) {
+                        om.telemetry.addLine("ROBOT GAMEPAD COMMANDS ...");
+                        om.telemetry.addData("\tCommands", "FWD (%.2f), Right (%.2f), CW (%.2f)",
+                                driveTrain.forwardDirection, driveTrain.rightDirection, driveTrain.clockwise);
+                        om.telemetry.addData("\tDrive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
+                                driveTrain.frontLeft.getPower(), driveTrain.frontRight.getPower(), driveTrain.backLeft.getPower(),
+                                driveTrain.backRight.getPower());
+                        om.telemetry.addLine("ROBOT LOCATION ...");
+                        om.telemetry.addData("\tRobot Field Position (X, Y)", " ( %1.1f, %1.1f)", driveTrain.robotFieldLocation.x, driveTrain.robotFieldLocation.y);
+                        om.telemetry.addData("\tRobot Angles", " \t Heading: %1.1f, \t Field: %1.1f", driveTrain.robotHeading, driveTrain.robotFieldLocation.theta);
+                    }
+                    else {
+                        om.telemetry.addLine("\t ... is NOT active!!");
+                    }
+                    om.telemetry.addLine("");
+                    break;
+
+                case 2 :
+                    om.telemetry.addLine("WOBBLE GOAL (OPTION 2 - Back))...");
+                    if(wobbleArm != null) {
+                        om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%d) degrees", wobbleArm.wobbleArmTargetAngle);
+                        om.telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",wobbleArm.getArmAngleDegrees());
+                        om.telemetry.addData("\tMotor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d) counts", wobbleArm.armPower, wobbleArm.wobbleGoalArm.getTargetPosition());
+                        om.telemetry.addData("\tMotor Position", "Goal Arm Current Pos (%d) counts", wobbleArm.wobbleGoalArm.getCurrentPosition());
+                        om.telemetry.addData("\tServo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
+                                wobbleArm.wobbleGrabPos, wobbleArm.wobbleReleasePos);
+                        om.telemetry.addData("\tServo Position", "Servo Pos (%.2f)",wobbleArm.wobbleGoalServo.getPosition());
+                    }
+                    else {
+                        om.telemetry.addLine("\t ... is NOT active!!");
+                    }
+                    om.telemetry.addLine("");
+                    break;
+
+                case 3 :
+                    om.telemetry.addLine("SHOOTER (OPTION 3 - Back))...");
+                    if(shooter != null) {
+                        om.telemetry.addData("\tMotor Power", "Right Power (%.2f), Left Power (%.2f)", shooter.shooterRight.getPower(), shooter.shooterLeft.getPower());
+                        om.telemetry.addData("\tShooter Power Variable", "Variable: Shooter Power (%.2f)", shooter.shooter_Power);
+                    }
+                    else {
+                        om.telemetry.addLine("\t ... is NOT active!!");
+                    }
+                    om.telemetry.addLine("");
+                    break;
+
+                case 4 :
+                    om.telemetry.addLine("CONVEYOR (OPTION 4 - Back))...");
+                    if(conveyor != null) {
+                        om.telemetry.addData("\tServo Power", "Right Power (%.2f), Left Power (%.2f)", conveyor.conveyorRight.getPower(), conveyor.conveyorLeft.getPower());
+                        om.telemetry.addData("\tConveyor Power Variable", "Variable: Conveyor Power (%.2f)", conveyor.conveyor_Power);
+                    }
+                    else {
+                        om.telemetry.addLine("\t ... is NOT active!!");
+                    }
+                    om.telemetry.addLine("");
+                    break;
+                case 5 :
+                    om.telemetry.addLine("COLLECTOR (OPTION 5)...");
+                    if(collector != null) {
+                        om.telemetry.addData("\tCommands", "collectorPower (%.2f), collectorWheel Power (%.2f)", collector.collectorPower, collector.collectorWheel.getPower());
+                    }
+                    else {
+                        om.telemetry.addLine("\t ... is NOT active!!");
+                    }
+                    om.telemetry.addLine("");
+                    break;
+                case 6 :
+                    om.telemetry.addLine("IMAGE RECOGNITION (OPTION 6 - Back))...");
+                    if(imageRecog != null){
+                        List<Recognition> ringRecognitions = imageRecog.tfod.getRecognitions();
+
+                        for (int i = 0; i < ringRecognitions.size(); i++) {
+                            om.telemetry.addData(String.format("\tLabel (%d)", i), ringRecognitions.get(i).getLabel());
+                            om.telemetry.addData(String.format("\t\tleft,top (%d)", i), "%.03f , %.03f",
+                                    ringRecognitions.get(i).getLeft(), ringRecognitions.get(i).getTop());
+                            om.telemetry.addData(String.format("\t\tright,bottom (%d)", i), "%.03f , %.03f",
+                                    ringRecognitions.get(i).getRight(), ringRecognitions.get(i).getBottom());
+                        }
+                    }
+                    else {
+                        om.telemetry.addLine("\t ... is NOT active!!");
+                    }
+                    om.telemetry.addLine("");
+                    break;
+            }
+            om.telemetry.addLine("");
+        }
+        om.telemetry.update();
+    }
+    public void setTelemetryOption(BasicOpMode om) {
+        if(om.gamepad1.back){
+            telemetryOption[telemetryActiveIndex]  += 1;
+            if(telemetryOption[telemetryActiveIndex]  > 6) {
+                telemetryOption[telemetryActiveIndex]  = 0;
+            }
+            om.sleep(300);// is having the sleep() necessary when this is not immediately in a loop?
+        }
+    }
+    public void setTelemetrySize(BasicOpMode om) {
+        if(om.gamepad1.left_bumper){
+            telemetrySize  -= 1;
+            if(telemetrySize < 1) {
+                telemetrySize = 1;
+            }
+            om.sleep(300);// is having the sleep() necessary when this is not immediately in a loop?
+        }
+        if(om.gamepad1.right_bumper){
+            telemetrySize  += 1;
+            if(telemetrySize > TELEMETRY_MAX_SIZE) {
+                telemetrySize = TELEMETRY_MAX_SIZE;
+            }
+            om.sleep(300);// is having the sleep() necessary when this is not immediately in a loop?
+        }
+    }
+    public void setTelemetryIndex(BasicOpMode om) {
+        if(om.gamepad1.start){
+            telemetryActiveIndex += 1;
+            if(telemetryActiveIndex  >= TELEMETRY_MAX_SIZE) {
+                telemetryActiveIndex = 0;
+            }
+            om.sleep(300);// is having the sleep() necessary when this is not immediately in a loop?
+        }
+    }
+
     public void shutdownAll(){
         if (configArrayHW[0]) {
             driveTrain.shutdown();

@@ -63,7 +63,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		// Tell the robot where it's starting location and orientation on the field is
 
 		robotUG.driveTrain.robotFieldLocation.setLocation(-24,-63,90);
-		robotUG.driveTrain.initIMUtoAngle(this,-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
+		robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
 		robotUG.driveTrain.robotX = 0;// robot local coordinates always start at 0
 		robotUG.driveTrain.robotY = 0;
 

@@ -2,6 +2,7 @@ package UltimateGoal_RobotTeam.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import UltimateGoal_RobotTeam.HarwareConfig.Conveyor;
 import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
@@ -62,7 +63,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		// Tell the robot where it's starting location and orientation on the field is
 
 		robotUG.driveTrain.robotFieldLocation.setLocation(-36,-63,90);
-		robotUG.driveTrain.initIMUtoAngle(this,-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
+		robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
 		robotUG.driveTrain.robotX = 0;// robot local coordinates always start at 0
 		robotUG.driveTrain.robotY = 0;
 
@@ -176,9 +177,11 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 	 */
 		robotUG.driveTrain.IMUDriveRotate(0, "Rotate 90 deg CCW", this);/* COACH CHANGED */
 
-		fieldPoints.add(new PursuitPoint(-14, 0));/* COACH CHANGED - need to go further - robot radius end condition*/
+		fieldPoints.add(new PursuitPoint(-17, 0));/* COACH CHANGED - need to go further than X = 20 - robot radius end condition*/
 
 		pressAToContinue();
+		//TURN ON SHOOTER -- allow time to power up to full speed while driving
+		robotUG.shooter.setShooter_Power(-1.0);
 
 	/** Drive to and Shoot the Powershots */
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To PowerShot Shooting Position");
@@ -190,22 +193,82 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 	robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);/* COACH ADDED */
 
-	// make sure you at -90 angle
+	// make sure you are at -90 angle
+		telemetry.addLine(" VERIFY robot is aligned Shoot Target #1");
+		telemetry.addData("Heading", " %1.1f",  robotUG.driveTrain.robotHeading);
+		telemetry.addData("Location", " (%1.1f, %1.1f)",  robotUG.driveTrain.robotFieldLocation.x,robotUG.driveTrain.robotFieldLocation.y);
+		pressAToContinue();
+
 		// shoot powershot
-
-		pressAToContinue();
+		//TURN ON CONVEYOR
+		robotUG.conveyor.setMotion(Conveyor.motionType.UP);
+		double startTime = runtime.time();
+		double shootTime = runtime.time() - startTime;
+		while(!gamepad2.back) {
+			telemetry.addLine("Shoot Target #1");
+			telemetry.addData("Timer", " %1.2f", runtime.time() - startTime);
+			telemetry.addData("Shooter Power", "  %1.2f",  robotUG.shooter.shooter_Power);
+			telemetry.addData("Conveyor Power", " %1.1f",  robotUG.conveyor.conveyor_Power);
+			telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
+			telemetry.update();
+			shootTime = runtime.time() - startTime;
+		}
+		//TURN OFF CONVEYOR
+		robotUG.conveyor.setMotion(Conveyor.motionType.OFF);
+		telemetry.addData("Time to Shoot Target #1", " %1.2f", shootTime);
+		pressAToContinue();//record the time to fire shot #1 and observe outcome
 
 		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Right 7.5 inch to shot", this);
 
-		//shoot powershot
-
+		//Make sure that robot is lined up for 2nd shot
+		telemetry.addLine(" VERIFY robot is aligned Shoot Target #2");
+		telemetry.addData("Heading", " %1.1f",  robotUG.driveTrain.robotHeading);
+		telemetry.addData("Location", " (%1.1f, %1.1f)",  robotUG.driveTrain.robotFieldLocation.x,robotUG.driveTrain.robotFieldLocation.y);
 		pressAToContinue();
+		// shoot powershot
+		//TURN ON CONVEYOR
+		robotUG.conveyor.setMotion(Conveyor.motionType.UP);
+		startTime = runtime.time();
+		shootTime = runtime.time() - startTime;
+		while(!gamepad2.back) {
+			telemetry.addLine("Shoot Target #2");
+			telemetry.addData("Timer", " %1.2f", runtime.time() - startTime);
+			telemetry.addData("Shooter Power", "  %1.2f",  robotUG.shooter.shooter_Power);
+			telemetry.addData("Conveyor Power", " %1.1f",  robotUG.conveyor.conveyor_Power);
+			telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
+			telemetry.update();
+			shootTime = runtime.time() - startTime;
+		}
+		//TURN OFF CONVEYOR
+		robotUG.conveyor.setMotion(Conveyor.motionType.OFF);
+		telemetry.addData("Time to Shoot Target #2", " %1.2f", shootTime);
+		pressAToContinue();//record the time to fire shot #1 and observe outcome
 
 		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Right 7.5 inch to shot", this);
-
-		//shoot powershot
-
+		//Make sure that robot is lined up for 2nd shot
+		telemetry.addLine(" VERIFY robot is aligned Shoot Target #3");
+		telemetry.addData("Heading", " %1.1f",  robotUG.driveTrain.robotHeading);
+		telemetry.addData("Location", " (%1.1f, %1.1f)",  robotUG.driveTrain.robotFieldLocation.x,robotUG.driveTrain.robotFieldLocation.y);
 		pressAToContinue();
+		//TURN ON CONVEYOR
+		robotUG.conveyor.setMotion(Conveyor.motionType.UP);
+		startTime = runtime.time();
+		shootTime = runtime.time() - startTime;
+		while(!gamepad2.back) {
+			telemetry.addLine("Shoot Target #3");
+			telemetry.addData("Timer", " %1.2f", runtime.time() - startTime);
+			telemetry.addData("Shooter Power", "  %1.2f",  robotUG.shooter.shooter_Power);
+			telemetry.addData("Conveyor Power", " %1.1f",  robotUG.conveyor.conveyor_Power);
+			telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
+			telemetry.update();
+			shootTime = runtime.time() - startTime;
+		}
+		//TURN OFF CONVEYOR & SHOOTER
+		robotUG.conveyor.setMotion(Conveyor.motionType.OFF);
+		robotUG.shooter.setShooter_Power(0.0);
+		telemetry.addData("Time to Shoot Target #3", " %1.2f", shootTime);
+		pressAToContinue();//record the time to fire shot #1 and observe outcome
+
 
 		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 6, -90, "Move Fwd ~6 in. to score points", this);
 
@@ -221,9 +284,12 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		telemetry.addData("Motor Counts", "FL (%d) FR (%d) BR (%d) BL (%d)",
 				robotUG.driveTrain.flPrevious, robotUG.driveTrain.frPrevious, robotUG.driveTrain.brPrevious, robotUG.driveTrain.blPrevious);
 
-		telemetry.addData("Final Point", " (%.2f, %.2f)", fieldPoints.get(fieldPoints.size()-1).x,fieldPoints.get(fieldPoints.size()-1).y);
+		telemetry.addData("Final Pursuit Point", " (%.2f, %.2f)", fieldPoints.get(fieldPoints.size()-1).x,fieldPoints.get(fieldPoints.size()-1).y);
 		telemetry.addLine("----------------------------------");
-		telemetry.update();
+		telemetry.addLine("Observe telemetry and Press A to shutdown");
+
+		pressAToContinue();//observe telemetry before shutdown
+		robotUG.shutdownAll();
 	}
 
 }

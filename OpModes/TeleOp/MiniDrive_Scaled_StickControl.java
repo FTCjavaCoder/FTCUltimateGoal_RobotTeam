@@ -60,7 +60,7 @@ public class MiniDrive_Scaled_StickControl extends BasicTeleOp {
 
 
         //Coach Note: Need to set GearRatio (60.0:1 for the miniBot)
-        robotUG.driveTrain.setGearRatio(60.0, this);
+        robotUG.driveTrain.setGearRatio(60.0);
 
         //Indicate initialization complete and provide telemetry
         telemetry.addData("Status: ", "MiniBot Initialized");
@@ -85,7 +85,7 @@ public class MiniDrive_Scaled_StickControl extends BasicTeleOp {
 
             robotUG.driveTrain.angleUnWrap();
 
-            multiTelemetry();
+            robotUG.multiTelemetry(this);
 
             idle();
         }

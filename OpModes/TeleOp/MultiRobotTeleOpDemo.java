@@ -49,7 +49,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 		robotUG.driveTrain.robotLocationV1.setLocation(0,0,0);
 
 		//Coach Note: Need to set GearRatio (40.0:1 for the main robot)
-		robotUG.driveTrain.setGearRatio(40.0, this);
+		robotUG.driveTrain.setGearRatio(40.0);
 
 		//Indicate initialization complete and provide telemetry
 		telemetry.addLine(" ");// blank line
@@ -75,7 +75,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 
 			robotUG.driveTrain.angleUnWrap();
 
-			multiTelemetry();
+			robotUG.multiTelemetry(this);
 
 			idle();
 		}

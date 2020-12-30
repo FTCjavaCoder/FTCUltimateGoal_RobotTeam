@@ -54,10 +54,10 @@ public class EverythingDrive extends BasicTeleOp {
         // Tell the robot that it's starting at (0,0) field center and angle is zero - facing EAST - Right
         robotUG.driveTrain.robotFieldLocation.setLocation(0,0,0);
 
-        robotUG.driveTrain.initIMUtoAngle(this,-robotUG.driveTrain.robotFieldLocation.theta);// set IMU to desired robotHeading
+        robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);// set IMU to desired robotHeading
 
         //Coach Note: Need to set GearRatio
-        robotUG.driveTrain.setGearRatio(40.0, this);
+        robotUG.driveTrain.setGearRatio(40.0);
 
 
         //Indicate initialization complete and provide telemetry
@@ -111,7 +111,7 @@ public class EverythingDrive extends BasicTeleOp {
             */
 
 
-			multiTelemetry();// COACH implemented multiTelemetry
+			robotUG.multiTelemetry(this);// COACH implemented multiTelemetry
 
 //            telemetry.addLine("ROBOT GAMEPAD COMMANDS ...");
 //            telemetry.addData("\tCommands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",
