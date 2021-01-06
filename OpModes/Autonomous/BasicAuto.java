@@ -366,7 +366,6 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
-
     public void decideWobbleGoalZone(String ringsViewed) {
 
         switch (ringsViewed) {

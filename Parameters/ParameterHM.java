@@ -2,7 +2,7 @@ package UltimateGoal_RobotTeam.Parameters;
 
 public class ParameterHM {
 
-    public enum instanceType {powerLimit, counts, toleranceCounts, distanceInches, rotationDegrees, servoPosition}
+    public enum instanceType {powerLimit, counts, toleranceCounts, distanceInches, rotationDegrees, servoPosition, controlGain}
 
     public boolean hasRange = true;
     public double min = -999;
@@ -17,6 +17,7 @@ public class ParameterHM {
 
             case powerLimit :
                 value = inputValue;
+                hasRange = true;
                 min = -1;
                 max = 1;
                 increment = 0.01;
@@ -57,6 +58,15 @@ public class ParameterHM {
                 min = 0;
                 max = 1;
                 increment = .1;
+                paramType = type;
+                break;
+
+            case controlGain :
+                value = inputValue;
+                hasRange = true;
+                min = 0;
+                max = 1;
+                increment = 0.0001;
                 paramType = type;
                 break;
         }

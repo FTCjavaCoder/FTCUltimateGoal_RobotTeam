@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
 
+import java.util.HashMap;
+
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
 
 public class Shooter {
@@ -102,6 +104,10 @@ public class Shooter {
             shooterRight.setDirection(DcMotorSimple.Direction.FORWARD);//Spins Clockwise when viewed from above to shoot rings w/ positive power
 
             //Set 'constants' and gains here from parameters in OPMode
+            SPEED_KI = om.cons.speedKI;
+            MAX_ERROR = om.cons.maxError;
+            SPEED_KP = om.cons.speedKP;
+
             //read in hashmap prior tp HW initialization
             om.telemetry.addLine("\t\t... Initialization COMPLETE");
             om.telemetry.update();

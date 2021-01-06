@@ -11,7 +11,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
-@Autonomous(name="Wobble Zone Drive Pure Pursuit", group="Autonomous")
+@Autonomous(name="Complete Autonomous", group="Autonomous")
 
  public class CompleteAutonomous extends BasicAuto {
 	@Override
@@ -61,9 +61,11 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		// HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector	ImageRecog
 		boolean[] configArray = new boolean[]{ true, 	true, 	true, 		true, 		true,		true};
 
-		robotUG = new HardwareRobotMulti(this, configArray,testModeActive);
 		// READ HASHMAP FILE
 		readOrWriteHashMap();
+
+		robotUG = new HardwareRobotMulti(this, configArray,testModeActive);
+
 		// Tell the robot where it's starting location and orientation on the field is
 
 		robotUG.driveTrain.robotFieldLocation.setLocation(-36,-63,90);
@@ -93,7 +95,6 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 		robotUG.wobbleArm.wobbleGoalServo.setPosition(0.9);//this is a firm grip on the goal
 
-
 		// Add points for Pure Pursuit motion - always start with where the robot was initialized to be on the field
 
 		/* Drive to Wobble Goal and Scan the Number of Rings*/
@@ -120,7 +121,6 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		 *       allows the shooter, conveyor, collector to be on for 1 set time
 		 *   - if trying the power shots the robot needs to move more to the right and re-align
 		 */
-
 
 		/* -- COACH NOTE: for IMAGE RECOGNITION developed timed method and ran several times counting loops
 		 *   - 2.0s yields 2000 to 9000 loops in timed method

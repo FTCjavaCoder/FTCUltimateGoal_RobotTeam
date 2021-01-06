@@ -44,30 +44,14 @@ public class Constants {
     //new Ultimate Goal variables
     public double PURSUIT_RADIUS = 6.0;
 
+    // Shooter control parameters
+    public double speedKI = 0.00025;
+    public double maxError = 1000;
+    public double speedKP = 0.0024;
+
+
     //Old Skystone variables
-//    public double SLIDE_POWER_LIMIT = 0.40;// was 0.6
-//
-//    public final double TURN_POWER =  0.40;
-//
-//    public double forwardFirstMove = 21;// was 13
-//    public double skystoneExtraBack = 8;
-//
     public double doRotateMethod = 0;
-//
-//    public double skystoneExtraSideways = 0;
-//    public double skystoneExtraStoneGrab = -1;
-//
-//    public double adjustVuforiaPhone = 0;
-//
-//    public double tensorFlowMinimumConfidence = 0.5;
-//
-//    public double sideGrabSkystone = 13.0;
-//    public double sidePullSkystone = 6.0;
-//    public double sideGrab2Skystone = 6.0;
-//
-//    public double delayForPark = 20;
-//
-//    public double backTowardsBridge = 0;// added on constant
 
     public final double ROBOT_INCH_TO_MOTOR_DEG = 360 / (3.875 * 3.14159); // units deg/inch - 360 deg. / wheel circumference (Wheel diameter x pi)
     public final int NUMBER_OF_JACK_STAGES = 3;// ASSUMING 3 PAIRS OF PIECES PER SIDE
@@ -133,34 +117,12 @@ public class Constants {
         pHM.put("teleOpRotatePowerLimit", new ParameterHM(1.0, ParameterHM.instanceType.powerLimit));// was 0.40
 
         pHM.put("pursuitRadius", new ParameterHM(6.0, ParameterHM.instanceType.distanceInches));
-//
-//        pHM.put("slidePowerLimit", new ParameterHM(0.40, ParameterHM.instanceType.powerLimit));// was 0.40
-//
-//        pHM.put("moveTol", new ParameterHM(30, ParameterHM.instanceType.toleranceCounts));// was !! 8 !!
-//
-//        pHM.put("forwardFirstMove", new ParameterHM(21, ParameterHM.instanceType.distanceInches));// was 13 For forward before Vuforia in 2 stone
-//
-//        pHM.put("skystoneExtraBack", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different backup distance to get to second Skystone
-//
-//        pHM.put("doRotateMethod", new ParameterHM(0, ParameterHM.instanceType.toleranceCounts));// set to 1 to use IMURotate at the end of each IMUFwdRight move
-//
-//        pHM.put("skystoneExtraSideways", new ParameterHM(0, ParameterHM.instanceType.distanceInches));//
-//
-//        pHM.put("skystoneExtraStoneGrab", new ParameterHM(-2.0, ParameterHM.instanceType.distanceInches));// was 0 and unused to move more or less when pulling stone out
-//
-//        pHM.put("adjustVuforiaPhone", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// For different positions of phone to adjust values Vuforia uses to determine Left, Center, or Right
-//
-//        pHM.put("tensorFlowMinimumConfidence", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit));// For adjusting TensorFlow confidence level
-//
-//        pHM.put("sideGrabSkystone", new ParameterHM(11, ParameterHM.instanceType.distanceInches));// was 9 For forward before Vuforia in 2 stone
-//
-//        pHM.put("sidePullSkystone", new ParameterHM(8.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab was 6.0
-//
-//        pHM.put("sideGrab2Skystone", new ParameterHM(7.0, ParameterHM.instanceType.distanceInches));// For all Pull/Grab of stone after initial grab was 6.0
-//
-//        pHM.put("delayForPark", new ParameterHM(20, ParameterHM.instanceType.distanceInches));// Time to delay for parking program (seconds)
-//
-//        pHM.put("backTowardsBridge", new ParameterHM(0, ParameterHM.instanceType.distanceInches));// Inches to back up towards bridge (can change for blue or red)
+
+        pHM.put("speedKI", new ParameterHM(0.00025, ParameterHM.instanceType.controlGain));
+
+        pHM.put("maxError", new ParameterHM(1000, ParameterHM.instanceType.counts));
+
+        pHM.put("speedKP", new ParameterHM(0.0024, ParameterHM.instanceType.controlGain));
 
     }// Define initial values for HashMap parameters
 
@@ -207,48 +169,15 @@ public class Constants {
             if(s.equals("pursuitRadius")) {
                 PURSUIT_RADIUS = pHM.get(s).value;
             }
-//            if(s.equals("slidePowerLimit")) {
-//                SLIDE_POWER_LIMIT = pHM.get(s).value;
-//            }
-//            if(s.equals("moveTol")) {
-//                MOVE_TOL = pHM.get(s).integerParameter();
-//            }
-//            if(s.equals("forwardFirstMove")) {
-//                forwardFirstMove = pHM.get(s).value;
-//            }
-//            if(s.equals("skystoneExtraBack")) {
-//                skystoneExtraBack = pHM.get(s).value;
-//            }
-//            if(s.equals("doRotateMethod")) {
-//                doRotateMethod = pHM.get(s).value;
-//            }
-//            if(s.equals("skystoneExtraSideways")) {
-//                skystoneExtraSideways = pHM.get(s).value;
-//            }
-//            if(s.equals("skystoneExtraStoneGrab")) {
-//                skystoneExtraStoneGrab = pHM.get(s).value;
-//            }
-//            if(s.equals("adjustVuforiaPhone")) {
-//                adjustVuforiaPhone = pHM.get(s).value;
-//            }
-//            if(s.equals("tensorFlowMinimumConfidence")) {
-//                tensorFlowMinimumConfidence = pHM.get(s).value;
-//            }
-//            if(s.equals("sideGrabSkystone")) {
-//                sideGrabSkystone = pHM.get(s).value;
-//            }
-//            if(s.equals("sidePullSkystone")) {
-//                sidePullSkystone = pHM.get(s).value;
-//            }
-//            if(s.equals("sideGrab2Skystone")) {
-//                sideGrab2Skystone = pHM.get(s).value;
-//            }
-//            if(s.equals("delayForPark")) {
-//                delayForPark = pHM.get(s).value;
-//            }
-//            if(s.equals("backTowardsBridge")) {
-//                backTowardsBridge = pHM.get(s).value;
-//            }
+            if(s.equals("speedKI")) {
+                speedKI = pHM.get(s).value;
+            }
+            if(s.equals("maxError")) {
+                maxError = pHM.get(s).value;
+            }
+            if(s.equals("speedKP")) {
+                speedKP = pHM.get(s).value;
+            }
 
         }
     }
