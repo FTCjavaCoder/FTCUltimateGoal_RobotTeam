@@ -9,6 +9,7 @@ public class ParameterHM {
     public double max = 999;
     public double increment = 0;
     public double value = 0;
+    public String format = "%.2f";
     public instanceType paramType;
 
     public ParameterHM(double inputValue, instanceType type) {
@@ -67,6 +68,7 @@ public class ParameterHM {
                 min = 0;
                 max = 1;
                 increment = 0.0001;
+                format = "%.5f";
                 paramType = type;
                 break;
         }
