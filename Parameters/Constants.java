@@ -236,7 +236,7 @@ public class Constants {
                 double min = Double.parseDouble(br.readLine());
                 double max = Double.parseDouble(br.readLine());
                 double inc = Double.parseDouble(br.readLine());
-                String form = br.readLine();
+//                String form = br.readLine();
 
                 switch (t) {
 
@@ -302,12 +302,12 @@ public class Constants {
             while(!(om.gamepad1.x || om.gamepad1.b) && om.opModeIsActive()) {
                 // X to EDIT || B to SKIP
                 om.telemetry.addData("Parameter Name", "%s", s);
-                om.telemetry.addData("Value", pHM.get(s).format, pHM.get(s).value);
+                om.telemetry.addData("Value", "%.5f", pHM.get(s).value);
                 om.telemetry.addData("Type", "%s", pHM.get(s).paramType);
                 om.telemetry.addData("Range?", "%s", pHM.get(s).hasRange);
                 om.telemetry.addData("Min", "%.2f", pHM.get(s).min);
                 om.telemetry.addData("Max", "%.2f", pHM.get(s).max);
-                om.telemetry.addData("Increment", pHM.get(s).format, pHM.get(s).increment);
+                om.telemetry.addData("Increment", "%.5f", pHM.get(s).increment);
                 om.telemetry.addLine("X to EDIT || B to SKIP");
                 om.telemetry.update();
             }
@@ -316,8 +316,8 @@ public class Constants {
                 while(!om.gamepad1.y && om.opModeIsActive()) {
 
                     om.telemetry.addData("Parameter Name", "%s", s);
-                    om.telemetry.addData("Value", pHM.get(s).format, pHM.get(s).value);
-                    om.telemetry.addData("Increment", pHM.get(s).format, pHM.get(s).increment);
+                    om.telemetry.addData("Value", "%.5f", pHM.get(s).value);
+                    om.telemetry.addData("Increment", "%.5f", pHM.get(s).increment);
                     om.telemetry.addLine("Right Bumper to increase, Left Bumper to decrease");
                     om.telemetry.addLine("Press Y to accept value");
                     om.telemetry.update();
@@ -356,7 +356,7 @@ public class Constants {
                 osw.write(s + "\n");
                 om.telemetry.addData("Parameter Name", "%s", s);
                 osw.write(pHM.get(s).value + "\n");
-                om.telemetry.addData("Value", pHM.get(s).format, pHM.get(s).value);
+                om.telemetry.addData("Value", "%.5f", pHM.get(s).value);
                 osw.write(pHM.get(s).paramType + "\n");
                 om.telemetry.addData("Type", "%s", pHM.get(s).paramType);
                 osw.write(pHM.get(s).hasRange + "\n");
@@ -366,9 +366,9 @@ public class Constants {
                 osw.write(pHM.get(s).max + "\n");
                 om.telemetry.addData("Max", "%.2f", pHM.get(s).max);
                 osw.write(pHM.get(s).increment + "\n");
-                om.telemetry.addData("Increment", pHM.get(s).format, pHM.get(s).increment);
-                osw.write(pHM.get(s).format + "\n");
-                om.telemetry.addData("Format", "%s", pHM.get(s).format);
+                om.telemetry.addData("Increment", "%.5f", pHM.get(s).increment);
+//                osw.write(pHM.get(s).format + "\n");
+//                om.telemetry.addData("Format", "%s", pHM.get(s).format);
                 om.telemetry.update();
             }
 
@@ -400,7 +400,7 @@ public class Constants {
                 double min = Double.parseDouble(br.readLine());
                 double max = Double.parseDouble(br.readLine());
                 double inc = Double.parseDouble(br.readLine());
-                String form = br.readLine();
+//                String form = br.readLine();
 
                 switch (t) {
 
@@ -435,12 +435,12 @@ public class Constants {
                 om.fileWasRead = true;
 
                 om.telemetry.addData("Parameter Name", "%s", s);
-                om.telemetry.addData("Value", pHM.get(s).format, v);
+                om.telemetry.addData("Value", "%.5f", v);
                 om.telemetry.addData("Type", "%s", t);
                 om.telemetry.addData("Range?", "%s", hr);
                 om.telemetry.addData("Min", "%.2f", min);
                 om.telemetry.addData("Max", "%.2f", max);
-                om.telemetry.addData("Increment", pHM.get(s).format, inc);
+                om.telemetry.addData("Increment", "%.5f", inc);
                 om.telemetry.addLine("/////////////////////////////");
 
                 om.idle();
