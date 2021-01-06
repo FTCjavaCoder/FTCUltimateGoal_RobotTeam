@@ -82,8 +82,14 @@ public class Conveyor {
         conveyorLeft.setPower(conveyor_Power);
         conveyorRight.setPower(-conveyor_Power);
     }
+    public void getTelemetry(BasicOpMode om){
+        om.telemetry.addData("\tServo Power", "Right (%.2f), Left (%.2f)", conveyorRight.getPower(), conveyorLeft.getPower());
+        om.telemetry.addData("\tConveyor Power Command", " %.2f", conveyor_Power);
+        // NO telemetry.update() since more info will be added at RobotHWMulti and/or OpMode level
+    }
     public void shutdown(){
         conveyorLeft.setPower(0.0);
         conveyorRight.setPower(0.0);
     }
+
 }

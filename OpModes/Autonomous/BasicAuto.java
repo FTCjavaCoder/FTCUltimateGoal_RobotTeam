@@ -374,23 +374,34 @@ public class BasicAuto extends BasicOpMode {
             case "None":
                 // Zone A pursuit points
 
-                fieldPoints.add(new PursuitPoint(-54,-18));
-                fieldPoints.add(new PursuitPoint(-54,0));
+//                fieldPoints.add(new PursuitPoint(-60,-18));
+//                fieldPoints.add(new PursuitPoint(-60,0));
+                /* COACH UPDATES */
+                fieldPoints.add(new PursuitPoint(-54,-36));//sharper turn to avoid rings, keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-54,-8));//more negative final location for wobble goal drop
             break;
 
             case "Single":
                 // Zone B pursuit points
 
-                fieldPoints.add(new PursuitPoint(-12,-18));
+//                fieldPoints.add(new PursuitPoint(-12,-18));
+//                fieldPoints.add(new PursuitPoint(-12,-12));
+//                fieldPoints.add(new PursuitPoint(-36,24));
+                /* COACH UPDATES */
+                fieldPoints.add(new PursuitPoint(-12,-36));//sharper turn to avoid rings
                 fieldPoints.add(new PursuitPoint(-12,-12));
-                fieldPoints.add(new PursuitPoint(-36,24));
+                fieldPoints.add(new PursuitPoint(-30,6));//keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-30,16));//added straight section, more negative final location for wobble goal drop
             break;
 
             case "Quad":
                 // Zone C pursuit points
 
-                fieldPoints.add(new PursuitPoint(-54,-18));
-                fieldPoints.add(new PursuitPoint(-54,48));
+//                fieldPoints.add(new PursuitPoint(-60,-18));
+//                fieldPoints.add(new PursuitPoint(-60,48));
+                /* COACH UPDATES */
+                fieldPoints.add(new PursuitPoint(-54,-36));//sharper turn to avoid rings, keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-54,40));//more negative final location for wobble goal drop
             break;
 
             case "Multiple":

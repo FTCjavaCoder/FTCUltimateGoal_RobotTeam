@@ -3,6 +3,7 @@ package UltimateGoal_RobotTeam.OpModes.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobot;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 
 @TeleOp(name="Robot Multi Demo", group="TeleOp")
@@ -75,7 +76,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 
 			robotUG.driveTrain.angleUnWrap();
 
-			robotUG.multiTelemetry(this);
+			robotUG.gamePadMultiTelemetry(this, HardwareRobotMulti.telemetryDetails.BASIC);
 
 			idle();
 		}

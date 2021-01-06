@@ -1,12 +1,6 @@
 package UltimateGoal_RobotTeam.OpModes.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 
@@ -85,7 +79,7 @@ public class MiniDrive_Scaled_StickControl extends BasicTeleOp {
 
             robotUG.driveTrain.angleUnWrap();
 
-            robotUG.multiTelemetry(this);
+            robotUG.gamePadMultiTelemetry(this,HardwareRobotMulti.telemetryDetails.BASIC);
 
             idle();
         }

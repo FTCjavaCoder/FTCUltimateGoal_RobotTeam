@@ -15,6 +15,7 @@ import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCapt
 import java.util.ArrayList;
 import java.util.List;
 
+import UltimateGoal_RobotTeam.HarwareConfig.Shooter;
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
 
 @Autonomous(name="BasicTeleOp", group="TeleOp")
@@ -183,6 +184,7 @@ public class BasicTeleOp extends BasicOpMode {
     public void initServosAfterStart() {
 
     }
+
 
 
 }

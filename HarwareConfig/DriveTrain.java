@@ -230,6 +230,20 @@ public class DriveTrain {
      *  - made a shutdown method for all hardware
      *
      */
+    public void getTelemetry(BasicOpMode om){
+        om.telemetry.addLine("ROBOT GAMEPAD COMMANDS ...");
+        om.telemetry.addData("\tCommands", "FWD (%.2f), Right (%.2f), CW (%.2f)",
+                forwardDirection, rightDirection, clockwise);
+        om.telemetry.addData("\tDrive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
+                frontLeft.getPower(), frontRight.getPower(), backLeft.getPower(),
+                backRight.getPower());
+        om.telemetry.addLine("ROBOT LOCATION ...");
+        om.telemetry.addData("\tRobot Field Position (X, Y)", " ( %1.1f, %1.1f)", robotFieldLocation.x, robotFieldLocation.y);
+        om.telemetry.addData("\tRobot Angles", " \t Heading: %1.1f, \t Field: %1.1f", robotHeading, robotFieldLocation.theta);
+        // NO telemetry.update() since more info will be added at RobotHWMulti and/or OpMode level
+        // Can add more lines as needed or max a BASIC and MAX TM option - Autonomous might have MaxOption for pursuit points
+
+    }
     public void shutdown(){
         // stops motors from driving, should they coast or hold?  currently set to hold
 //        frontLeft.setZeroPowerBehavior(FLOAT);

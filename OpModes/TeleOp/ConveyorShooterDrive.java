@@ -2,7 +2,6 @@ package UltimateGoal_RobotTeam.OpModes.TeleOp;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 
@@ -74,7 +73,7 @@ public class ConveyorShooterDrive extends BasicTeleOp {
 
             robotUG.conveyor.ConveyorControl(gamepad1, this);
 
-            robotUG.shooter.ShooterControl(gamepad1, this);
+            robotUG.shooter.setShooterPowerControl(gamepad1, this);
 
             telemetry.addData("Status", "Run Time: ",runtime.toString());
 //			multiTelemetry(telemetryOption);
@@ -85,7 +84,7 @@ public class ConveyorShooterDrive extends BasicTeleOp {
                     robotUG.driveTrain.frontLeft.getPower(), robotUG.driveTrain.frontRight.getPower(), robotUG.driveTrain.backLeft.getPower(),
                     robotUG.driveTrain.backRight.getPower());
             telemetry.addData("Motor Power", "Right Power (%.2f), Left Power (%.2f)", robotUG.shooter.shooterRight.getPower(), robotUG.shooter.shooterLeft.getPower());
-            telemetry.addData("Shooter Power Variable", "Variable: Shooter Power (%.2f)", robotUG.shooter.shooter_Power);
+            telemetry.addData("Shooter Power Variable", "Variable: Shooter Power (%.2f)", robotUG.shooter.getShooter_Power());
             telemetry.addData("Servo Power", "Right Power (%.2f), Left Power (%.2f)", robotUG.conveyor.conveyorRight.getPower(), robotUG.conveyor.conveyorLeft.getPower());
             telemetry.addData("Conveyor Power Variable", "Variable: Shooter Power (%.2f)", robotUG.conveyor.conveyor_Power);
             telemetry.update();

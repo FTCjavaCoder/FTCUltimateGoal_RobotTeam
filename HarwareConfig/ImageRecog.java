@@ -37,7 +37,7 @@ public class ImageRecog {
     public VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
     public TFObjectDetector.Parameters tfodParameters = null;
-
+    private List<Recognition> ringRecognitions;
 
     public ImageRecog(BasicOpMode om, boolean tm)  {
         if(tm) {
@@ -98,7 +98,18 @@ public class ImageRecog {
         }
 
     }
-
+public void getTelemetry(BasicOpMode om){
+    ringRecognitions = tfod.getRecognitions();
+    for (int i = 0; i < ringRecognitions.size(); i++) {
+        om.telemetry.addData(String.format("\tLabel (%d)", i), ringRecognitions.get(i).getLabel());
+        om.telemetry.addData(String.format("\t\tleft,top (%d)", i), "%.03f , %.03f",
+                ringRecognitions.get(i).getLeft(), ringRecognitions.get(i).getTop());
+        om.telemetry.addData(String.format("\t\tright,bottom (%d)", i), "%.03f , %.03f",
+                ringRecognitions.get(i).getRight(), ringRecognitions.get(i).getBottom());
+    }
+    // NO telemetry.update() since more info will be added at RobotHWMulti and/or OpMode level
+    // Can add more lines as needed or max a BASIC and MAX TM option
+}
     public void shutdown(){
         if (tfod != null) {
             tfod.shutdown();

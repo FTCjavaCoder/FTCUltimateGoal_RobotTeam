@@ -93,7 +93,7 @@ public class EverythingDrive extends BasicTeleOp {
 
             robotUG.conveyor.ConveyorControl(gamepad1, this);
 
-            robotUG.shooter.ShooterControl(gamepad1, this);
+            robotUG.shooter.setShooterPowerControl(gamepad1, this);
 
             robotUG.wobbleArm.setWobbleMotorPower(gamepad2, this);
 
@@ -111,7 +111,7 @@ public class EverythingDrive extends BasicTeleOp {
             */
 
 
-			robotUG.multiTelemetry(this);// COACH implemented multiTelemetry
+			robotUG.gamePadMultiTelemetry(this, HardwareRobotMulti.telemetryDetails.BASIC);// COACH implemented multiTelemetry
 
 //            telemetry.addLine("ROBOT GAMEPAD COMMANDS ...");
 //            telemetry.addData("\tCommands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",

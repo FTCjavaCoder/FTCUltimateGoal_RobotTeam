@@ -125,12 +125,12 @@ public class WobbleArm {
     public void autoWobbleMotorVariable(Gamepad gamepad, BasicOpMode om) {
 
         if (gamepad.y) {
-            wobbleArmTargetAngle = 110/2 * (24/15);/* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE    */
+            wobbleArmTargetAngle = 190.0;/* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE  - this is drop angle   */
 //            wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));// KS added om.cons & commented
             om.sleep(300);
         }
         if (gamepad.a) {
-            wobbleArmTargetAngle = 70/2 * (24/15);/* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE    */
+            wobbleArmTargetAngle = 65;/* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE - this is perpendicular before drop    */
 //            wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));// KS added om.cons & commented
             om.sleep(300);
         }
@@ -177,7 +177,7 @@ public class WobbleArm {
 
         wobbleGoalArm.setPower(0.5);
 
-        wobbleArmTargetAngle = 30/2 * (24/15);
+        wobbleArmTargetAngle = 65.0;
         /* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE    */
 //        wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));// KS added om.cons & commented
         wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
@@ -197,11 +197,11 @@ public class WobbleArm {
             om.telemetry.addLine("________________________________");
             om.telemetry.update();
         }
-        wobbleGoalServo.setPosition(0.5);
+        wobbleGoalServo.setPosition(0.8);//this is a loose grip
         om.sleep(500);//might not need to be this long
 
-        wobbleArmTargetAngle = 100/2 * (24/15);
-        /* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE    */
+        wobbleArmTargetAngle = 190.0;
+        /* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE   to drop goal */
 
 //        wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));// KS added om.cons & commented
         wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
@@ -220,9 +220,9 @@ public class WobbleArm {
             om.telemetry.update();
 
         }
-        wobbleGoalServo.setPosition(0);
+        wobbleGoalServo.setPosition(0.4);// this is open grip without going max open
         om.sleep(500);//might not need to be this long
-        wobbleArmTargetAngle = 10.0;
+        wobbleArmTargetAngle = 25.0;// this is back near start but not all the way to avoid overshoot and impact
         /* LIFT ARM   */
         wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
         while(Math.abs(wobbleGoalArm.getTargetPosition() - wobbleGoalArm.getCurrentPosition()) > 10){// alternate loop criteria but need variable for tolerances
@@ -254,7 +254,16 @@ public class WobbleArm {
     public int angleToCounts(double angle){
         return (int) Math.round(angle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));//returns counts to use in motor
     }
+    public void getTelemetry(BasicOpMode om){
+        om.telemetry.addData("\tArm Angle", "Target = %.1f(deg.); Current = %.1f(deg.))", wobbleArmTargetAngle, getArmAngleDegrees());
+        om.telemetry.addData("\tMotor Power", "Command= %.2f; Actual= %.2f;", armPower,wobbleGoalArm.getPower());
+        om.telemetry.addData("\tMotor Position", "Target = %.1f(cnt); Current = %.1f(cnt)", wobbleGoalArm.getTargetPosition(),wobbleGoalArm.getCurrentPosition());
+        om.telemetry.addData("\tServo Variables", "Grab(%.2f), Release(%.2f)", wobbleGrabPos, wobbleReleasePos);
+        om.telemetry.addData("\tServo Position", "%.2f",wobbleGoalServo.getPosition());
+        // NO telemetry.update() since more info will be added at RobotHWMulti and/or OpMode level
+        // Can add more lines as needed or max a BASIC and MAX TM option
 
+    }
     public void shutdown(){// sort of redundant but confirms to common naming structure for use in HWMulti
         wobbleGoalArm.setZeroPowerBehavior(FLOAT);
         wobbleGoalArm.setPower(0.0);//could result in crash of arm when hitting stop

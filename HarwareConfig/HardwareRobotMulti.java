@@ -3,6 +3,7 @@ package UltimateGoal_RobotTeam.HarwareConfig;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
+import java.util.Arrays;
 import java.util.List;
 
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
@@ -41,11 +42,11 @@ public class HardwareRobotMulti
     public ElapsedTime period  = new ElapsedTime();
     */ // End Delete
 // HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector	ImageRecog
-    boolean[] configArrayHW = new boolean[]{ false, 	false, 	false, 		false, 		false,		false};//all defaults to false
-    private final int TELEMETRY_MAX_SIZE = 3;
+    private boolean[] configArrayHW = new boolean[]{ false, 	false, 	false, 		false, 		false,		false};//all defaults to false
+    private final int TELEMETRY_MAX_SIZE = configArrayHW.length;//update so size tracks the max amount of HW
     private int telemetrySize = 1;
     private int telemetryActiveIndex = 0;
-    private int[] telemetryOption = new int[]{1,0,0};//used to determine telemetry to display, must match TELEMETRY_MAX_SIZE
+    private int[] telemetryOption = new int[TELEMETRY_MAX_SIZE];//used to determine telemetry to display, size must match TELEMETRY_MAX_SIZE
 
     /** Constructor
      * This constructs the robot needed for each OpMode and can be called in that OpMode to complete the null robotUG
@@ -64,7 +65,7 @@ public class HardwareRobotMulti
      */
     public HardwareRobotMulti(BasicOpMode om, boolean[] configArray, boolean tm){
         //configArray has True or False values for each subsystem HW element
-        // Use the array to make it easy to pass values bu then values are decoded in constructor for ease of understanding
+        // Use the array to make it easy to pass values but then values are decoded in constructor for ease of understanding
         configArrayHW = configArray;
         boolean trueDriveTrain = configArray[0];
         boolean trueShooter = configArray[1];
@@ -92,15 +93,69 @@ public class HardwareRobotMulti
         if (trueImageRecog) {
             imageRecog = new ImageRecog(om,tm);
         }
+        telemetryOption[0] = 1;//ensure that that the initial telemetry window is active after initialization
 
     }
 
     /* Methods */
+    //Consider the method to select the TM is here with robot, but the specific TM items reside with each HW class
+    public enum telemetryDetails {BASIC,MAX}
+    public void gamePadMultiTelemetry(BasicOpMode om, telemetryDetails details) {
+        gamePadSetTelemetrySize(om);//sets number of windows from 1 to TELEMETRY_MAX_SIZE
+        gamePadSetTelemetryIndex(om);//sets active index
+        gamePadSetTelemetryOption(om);//sets telemetry (HW class item) option
+        // Can add TeleOp unique items if desired before running multiTelemetry()
+        multiTelemetry(om, details);//avoids duplicating the code for autonomous and TeleOp by using this method
+        //multiTelemetry ends with om.telemetry.update() to refresh screen
+    }
+    public void gamePadSetTelemetryOption(BasicOpMode om) {
+        if(om.gamepad1.back){
+            telemetryOption[telemetryActiveIndex]  += 1;
+            if(telemetryOption[telemetryActiveIndex]  > 6) {
+                telemetryOption[telemetryActiveIndex]  = 0;//0 = inactive
+            }
+            om.sleep(300);
+        }
+    }
+    public void gamePadSetTelemetrySize(BasicOpMode om) {
+        if(om.gamepad1.left_bumper){
+            telemetrySize  -= 1;
+            if(telemetrySize < 1) {
+                telemetrySize = 1;
+            }
+            om.sleep(300);
+        }
+        if(om.gamepad1.right_bumper){
+            telemetrySize  += 1;
+            if(telemetrySize > TELEMETRY_MAX_SIZE) {
+                telemetrySize = TELEMETRY_MAX_SIZE;
+            }
+            om.sleep(300);
+        }
+    }
+    public void gamePadSetTelemetryIndex(BasicOpMode om) {
+        if(om.gamepad1.start){
+            telemetryActiveIndex += 1;
+            if(telemetryActiveIndex  >= TELEMETRY_MAX_SIZE) {
+                telemetryActiveIndex = 0;
+            }
+            om.sleep(300);
+        }
+    }
+    public void setTelemetryOption(int option) {
+        telemetryOption[telemetryActiveIndex]  = option;
+    }
+    public void setTelemetrySize(int size) {
+         telemetrySize  = size;
+    }
+    public void setTelemetryIndex(int index) {
+         telemetryActiveIndex = index;
+    }
+    public void multiTelemetry(BasicOpMode om, telemetryDetails details) {
+        // Uses the private global variables of telemetryOption[], telemetryActiveIndex, telemetrySize, TELEMETRY_MAX_SIZE
+        // Some HW classes will have Basic and Max options (shooter during trial & error)
+        //  - HashMap parameter to select option during robotUG constructor that sets an enum within HW class?
 
-    public void multiTelemetry(BasicOpMode om) {
-        setTelemetrySize(om);
-        setTelemetryIndex(om);
-        setTelemetryOption(om);
         om.telemetry.addData("Run Time", " %s",om.runtime.toString());
         om.telemetry.addData("Telemetry Size:", "%d (Bumpers),  Active TM window: %d (Start)",telemetrySize, telemetryActiveIndex);
         om.telemetry.addLine("--------------------------------------");
@@ -113,129 +168,55 @@ public class HardwareRobotMulti
                     break;
                 case 1 :
                     om.telemetry.addLine("DRIVE TRAIN (OPTION 1 - Back)...");
-                    if(driveTrain != null) {
-                        om.telemetry.addLine("ROBOT GAMEPAD COMMANDS ...");
-                        om.telemetry.addData("\tCommands", "FWD (%.2f), Right (%.2f), CW (%.2f)",
-                                driveTrain.forwardDirection, driveTrain.rightDirection, driveTrain.clockwise);
-                        om.telemetry.addData("\tDrive Motors", "FL (%.2f), FR (%.2f), BL (%.2f), BR (%.2f)",
-                                driveTrain.frontLeft.getPower(), driveTrain.frontRight.getPower(), driveTrain.backLeft.getPower(),
-                                driveTrain.backRight.getPower());
-                        om.telemetry.addLine("ROBOT LOCATION ...");
-                        om.telemetry.addData("\tRobot Field Position (X, Y)", " ( %1.1f, %1.1f)", driveTrain.robotFieldLocation.x, driveTrain.robotFieldLocation.y);
-                        om.telemetry.addData("\tRobot Angles", " \t Heading: %1.1f, \t Field: %1.1f", driveTrain.robotHeading, driveTrain.robotFieldLocation.theta);
-                    }
-                    else {
-                        om.telemetry.addLine("\t ... is NOT active!!");
-                    }
-                    om.telemetry.addLine("");
+                    if(driveTrain != null) {driveTrain.getTelemetry(om);}
+                    else {om.telemetry.addLine("\t ... is NOT active!!");}
+//                    om.telemetry.addLine("");//REMOVED added blank lines
                     break;
 
                 case 2 :
                     om.telemetry.addLine("WOBBLE GOAL (OPTION 2 - Back))...");
-                    if(wobbleArm != null) {
-                        om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%.1f) degrees", wobbleArm.wobbleArmTargetAngle);
-                        om.telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",wobbleArm.getArmAngleDegrees());
-                        om.telemetry.addData("\tMotor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d) counts", wobbleArm.armPower, wobbleArm.wobbleGoalArm.getTargetPosition());
-                        om.telemetry.addData("\tMotor Position", "Goal Arm Current Pos (%d) counts", wobbleArm.wobbleGoalArm.getCurrentPosition());
-                        om.telemetry.addData("\tServo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
-                                wobbleArm.wobbleGrabPos, wobbleArm.wobbleReleasePos);
-                        om.telemetry.addData("\tServo Position", "Servo Pos (%.2f)",wobbleArm.wobbleGoalServo.getPosition());
-                    }
-                    else {
-                        om.telemetry.addLine("\t ... is NOT active!!");
-                    }
-                    om.telemetry.addLine("");
+                    if(wobbleArm != null) {wobbleArm.getTelemetry(om);}
+                    else {om.telemetry.addLine("\t ... is NOT active!!");}
+//                    om.telemetry.addLine("");//REMOVED added blank lines
                     break;
 
                 case 3 :
                     om.telemetry.addLine("SHOOTER (OPTION 3 - Back))...");
                     if(shooter != null) {
-                        om.telemetry.addData("\tMotor Power", "Right Power (%.2f), Left Power (%.2f)", shooter.shooterRight.getPower(), shooter.shooterLeft.getPower());
-                        om.telemetry.addData("\tShooter Power Variable", "Variable: Shooter Power (%.2f)", shooter.shooter_Power);
+                        switch (details) {
+                            case BASIC://basic telemetry option
+                                shooter.getBasicTelemetry(om);//BASIC OPTION
+                                break;
+                            case MAX://MAX OPTION
+                                shooter.getMaxTelemetry(om);//MAX OPTION for trial & error and troubleshooting
+                        }
                     }
-                    else {
-                        om.telemetry.addLine("\t ... is NOT active!!");
-                    }
-                    om.telemetry.addLine("");
+                    else {om.telemetry.addLine("\t ... is NOT active!!");}
+//                    om.telemetry.addLine("");//REMOVED added blank lines
                     break;
 
                 case 4 :
                     om.telemetry.addLine("CONVEYOR (OPTION 4 - Back))...");
-                    if(conveyor != null) {
-                        om.telemetry.addData("\tServo Power", "Right Power (%.2f), Left Power (%.2f)", conveyor.conveyorRight.getPower(), conveyor.conveyorLeft.getPower());
-                        om.telemetry.addData("\tConveyor Power Variable", "Variable: Conveyor Power (%.2f)", conveyor.conveyor_Power);
-                    }
-                    else {
-                        om.telemetry.addLine("\t ... is NOT active!!");
-                    }
-                    om.telemetry.addLine("");
+                    if(conveyor != null) {conveyor.getTelemetry(om);}
+                    else {om.telemetry.addLine("\t ... is NOT active!!");}
+//                    om.telemetry.addLine("");//REMOVED added blank lines
                     break;
                 case 5 :
                     om.telemetry.addLine("COLLECTOR (OPTION 5)...");
-                    if(collector != null) {
-                        om.telemetry.addData("\tCommands", "collectorPower (%.2f), collectorWheel Power (%.2f)", collector.collectorPower, collector.collectorWheel.getPower());
-                    }
-                    else {
-                        om.telemetry.addLine("\t ... is NOT active!!");
-                    }
-                    om.telemetry.addLine("");
+                    if(collector != null) {collector.getTelemetry(om);}
+                    else {om.telemetry.addLine("\t ... is NOT active!!");}
+//                    om.telemetry.addLine("");//REMOVED added blank lines
                     break;
                 case 6 :
                     om.telemetry.addLine("IMAGE RECOGNITION (OPTION 6 - Back))...");
-                    if(imageRecog != null){
-                        List<Recognition> ringRecognitions = imageRecog.tfod.getRecognitions();
-
-                        for (int i = 0; i < ringRecognitions.size(); i++) {
-                            om.telemetry.addData(String.format("\tLabel (%d)", i), ringRecognitions.get(i).getLabel());
-                            om.telemetry.addData(String.format("\t\tleft,top (%d)", i), "%.03f , %.03f",
-                                    ringRecognitions.get(i).getLeft(), ringRecognitions.get(i).getTop());
-                            om.telemetry.addData(String.format("\t\tright,bottom (%d)", i), "%.03f , %.03f",
-                                    ringRecognitions.get(i).getRight(), ringRecognitions.get(i).getBottom());
-                        }
-                    }
-                    else {
-                        om.telemetry.addLine("\t ... is NOT active!!");
-                    }
-                    om.telemetry.addLine("");
+                    if(imageRecog != null){imageRecog.getTelemetry(om);}
+                    else {om.telemetry.addLine("\t ... is NOT active!!");}
+//                    om.telemetry.addLine("");//REMOVED added blank lines
                     break;
             }
             om.telemetry.addLine("");
         }
         om.telemetry.update();
-    }
-    public void setTelemetryOption(BasicOpMode om) {
-        if(om.gamepad1.back){
-            telemetryOption[telemetryActiveIndex]  += 1;
-            if(telemetryOption[telemetryActiveIndex]  > 6) {
-                telemetryOption[telemetryActiveIndex]  = 0;
-            }
-            om.sleep(300);// is having the sleep() necessary when this is not immediately in a loop?
-        }
-    }
-    public void setTelemetrySize(BasicOpMode om) {
-        if(om.gamepad1.left_bumper){
-            telemetrySize  -= 1;
-            if(telemetrySize < 1) {
-                telemetrySize = 1;
-            }
-            om.sleep(300);// is having the sleep() necessary when this is not immediately in a loop?
-        }
-        if(om.gamepad1.right_bumper){
-            telemetrySize  += 1;
-            if(telemetrySize > TELEMETRY_MAX_SIZE) {
-                telemetrySize = TELEMETRY_MAX_SIZE;
-            }
-            om.sleep(300);// is having the sleep() necessary when this is not immediately in a loop?
-        }
-    }
-    public void setTelemetryIndex(BasicOpMode om) {
-        if(om.gamepad1.start){
-            telemetryActiveIndex += 1;
-            if(telemetryActiveIndex  >= TELEMETRY_MAX_SIZE) {
-                telemetryActiveIndex = 0;
-            }
-            om.sleep(300);// is having the sleep() necessary when this is not immediately in a loop?
-        }
     }
 
     public void shutdownAll(){
