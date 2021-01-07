@@ -15,7 +15,7 @@ public class EditHashMapParameters extends BasicTeleOp {
         waitForStart();
         runtime.reset();
 
-        cons.readFromPhone(hashMapFile, this);
+        fileWasRead = cons.readFromPhone(hashMapFile, this);
         telemetry.addData("File Was Read?","%s", fileWasRead);
 
         if (!fileWasRead) {
@@ -23,7 +23,7 @@ public class EditHashMapParameters extends BasicTeleOp {
             cons.defineParameters();
             cons.writeToPhone(hashMapFile, this);
 
-            cons.readFromPhone(hashMapFile, this);
+            fileWasRead = cons.readFromPhone(hashMapFile, this);
             telemetry.addData("Created File, file Was Read?","%s", fileWasRead);
         }
         pressAToContinue();

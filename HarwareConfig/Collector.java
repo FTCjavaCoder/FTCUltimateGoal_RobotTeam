@@ -81,6 +81,16 @@ public class Collector {
             collectorServo.setPosition(servoPos);
             om.sleep(300);
         }
+        if (gp.right_stick_y < -0.2) {//Y is negative away from driver
+            servoPos += 0.01;
+            collectorServo.setPosition(servoPos);
+            om.sleep(300);
+        }
+        if (gp.right_stick_y > 0.2) {//Y is positive towards driver
+            servoPos -= 0.01;
+            collectorServo.setPosition(servoPos);
+            om.sleep(300);
+        }
 
     }
     public void getTelemetry(BasicOpMode  om){

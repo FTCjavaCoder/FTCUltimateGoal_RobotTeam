@@ -186,14 +186,9 @@ public class WobbleArm {
 //        while(wobbleGoalArm.isBusy()){// might not be robust -- take too long to settle and exit
             // do nothing but wait for arm to move within tolerance
             om.robotUG.driveTrain.robotNavigator(om);//replaces angleUnwrap (called in navigator)
-            om.telemetry.addLine("WOBBLE GOAL DROP:");
-            om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%.1f) degrees", om.robotUG.wobbleArm.wobbleArmTargetAngle);
-            om.telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",om.robotUG.wobbleArm.getArmAngleDegrees());
-            om.telemetry.addData("\tMotor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d) counts", om.robotUG.wobbleArm.armPower, om.robotUG.wobbleArm.wobbleGoalArm.getTargetPosition());
-            om.telemetry.addData("\tMotor Position", "Goal Arm Current Pos (%d) counts", om.robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
-            om.telemetry.addData("\tServo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
-                    om.robotUG.wobbleArm.wobbleGrabPos, om.robotUG.wobbleArm.wobbleReleasePos);
-            om.telemetry.addData("\tServo Position", "Servo Pos (%.2f)",om.robotUG.wobbleArm.wobbleGoalServo.getPosition());
+            om.telemetry.addLine("WOBBLE GOAL DROP: PREP");
+            getTelemetry(om);
+
             om.telemetry.addLine("________________________________");
             om.telemetry.update();
         }
@@ -208,14 +203,8 @@ public class WobbleArm {
         while(Math.abs(wobbleGoalArm.getTargetPosition() - wobbleGoalArm.getCurrentPosition()) > 10){// alternate loop criteria but need variable for tolerances
             // do nothing but wait for arm to move within tolerance
             om.robotUG.driveTrain.robotNavigator(om);//replaces angleUnwrap (called in navigator)
-            om.telemetry.addLine("WOBBLE GOAL DROP:");
-            om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%.1f) degrees", om.robotUG.wobbleArm.wobbleArmTargetAngle);
-            om.telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",om.robotUG.wobbleArm.getArmAngleDegrees());
-            om.telemetry.addData("\tMotor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d) counts", om.robotUG.wobbleArm.armPower, om.robotUG.wobbleArm.wobbleGoalArm.getTargetPosition());
-            om.telemetry.addData("\tMotor Position", "Goal Arm Current Pos (%d) counts", om.robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
-            om.telemetry.addData("\tServo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
-                    om.robotUG.wobbleArm.wobbleGrabPos, om.robotUG.wobbleArm.wobbleReleasePos);
-            om.telemetry.addData("\tServo Position", "Servo Pos (%.2f)",om.robotUG.wobbleArm.wobbleGoalServo.getPosition());
+            om.telemetry.addLine("WOBBLE GOAL DROP: DROP");
+            getTelemetry(om);
             om.telemetry.addLine("________________________________");
             om.telemetry.update();
 
@@ -228,14 +217,8 @@ public class WobbleArm {
         while(Math.abs(wobbleGoalArm.getTargetPosition() - wobbleGoalArm.getCurrentPosition()) > 10){// alternate loop criteria but need variable for tolerances
             // do nothing but wait for arm to move within tolerance
             om.robotUG.driveTrain.robotNavigator(om);//replaces angleUnwrap (called in navigator)
-            om.telemetry.addLine("WOBBLE GOAL DROP:");
-            om.telemetry.addData("\tArm Target", "Goal Arm Target Angle (%.1f) degrees", om.robotUG.wobbleArm.wobbleArmTargetAngle);
-            om.telemetry.addData("\tArm Angle", "Goal Arm Current Angle (%.2f) degrees",om.robotUG.wobbleArm.getArmAngleDegrees());
-            om.telemetry.addData("\tMotor Variables", "Goal Arm Power (%.2f), Goal Arm Target (%d) counts", om.robotUG.wobbleArm.armPower, om.robotUG.wobbleArm.wobbleGoalArm.getTargetPosition());
-            om.telemetry.addData("\tMotor Position", "Goal Arm Current Pos (%d) counts", om.robotUG.wobbleArm.wobbleGoalArm.getCurrentPosition());
-            om.telemetry.addData("\tServo Variables", "Goal Grab (%.2f), Goal Release (%.2f)",
-                    om.robotUG.wobbleArm.wobbleGrabPos, om.robotUG.wobbleArm.wobbleReleasePos);
-            om.telemetry.addData("\tServo Position", "Servo Pos (%.2f)",om.robotUG.wobbleArm.wobbleGoalServo.getPosition());
+            om.telemetry.addLine("WOBBLE GOAL DROP: RAISE");
+            getTelemetry(om);
             om.telemetry.addLine("________________________________");
             om.telemetry.update();
 
@@ -257,7 +240,7 @@ public class WobbleArm {
     public void getTelemetry(BasicOpMode om){
         om.telemetry.addData("\tArm Angle", "Target = %.1f(deg.); Current = %.1f(deg.))", wobbleArmTargetAngle, getArmAngleDegrees());
         om.telemetry.addData("\tMotor Power", "Command= %.2f; Actual= %.2f;", armPower,wobbleGoalArm.getPower());
-        om.telemetry.addData("\tMotor Position", "Target = %.1f(cnt); Current = %.1f(cnt)", wobbleGoalArm.getTargetPosition(),wobbleGoalArm.getCurrentPosition());
+        om.telemetry.addData("\tMotor Position", "Target = %d(cnt); Current = %d(cnt)", wobbleGoalArm.getTargetPosition(),wobbleGoalArm.getCurrentPosition());
         om.telemetry.addData("\tServo Variables", "Grab(%.2f), Release(%.2f)", wobbleGrabPos, wobbleReleasePos);
         om.telemetry.addData("\tServo Position", "%.2f",wobbleGoalServo.getPosition());
         // NO telemetry.update() since more info will be added at RobotHWMulti and/or OpMode level

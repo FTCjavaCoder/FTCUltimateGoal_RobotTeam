@@ -16,7 +16,8 @@ public class BasicOpMode extends LinearOpMode {
 
     //********************UPDATED 12/27/19 for OpMpde HashMap *********************************
 //    public OpModeParamFunctions ompf = new OpModeParamFunctions();
-    public boolean loadFile = true;
+    /* UPDATED TO BE PRIVATE */
+    private boolean loadFile = true;
     public String fileName = "AndroidHashMapFile.txt";
     public String fileNameEdited = "AndroidHashMapFileEdited.txt";
     //********************UPDATED 12/27/19 for OpMpde HashMap *********************************
@@ -33,7 +34,7 @@ public class BasicOpMode extends LinearOpMode {
 
     public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
 
-//    public Telemetry telemetry = new Telemetry();
+//    public Telemetry telemetry = new Telemetry();//used for OfflineCode
 
     public BasicOpMode() {
 
@@ -56,9 +57,13 @@ public class BasicOpMode extends LinearOpMode {
         sleep(300);
     }
 
+    /* COACH NOTE: updated readOrWriteHashMap methods to receive boolean as output from Constants methods
+     *   - USING PRIVATE VARIABLE IN OPMODE THAT IS SET BY METHOD IN CONSTANTS
+     *   - This makes it easier to see where the private variable is set
+     */
     public void readOrWriteHashMap() {
 
-        cons.readFromPhone(hashMapFile, this);
+        fileWasRead = cons.readFromPhone(hashMapFile, this);
         telemetry.addData("Existing File Was Read?","%s", fileWasRead);
 
         if (!fileWasRead) {
@@ -66,18 +71,18 @@ public class BasicOpMode extends LinearOpMode {
             cons.defineParameters();
             cons.writeToPhone(hashMapFile, this);
 
-            cons.readFromPhone(hashMapFile, this);//Can be eliminated because HashMap exists in constants from defineParameters
+            fileWasRead = cons.readFromPhone(hashMapFile, this);//Can be eliminated because HashMap exists in constants from defineParameters
             telemetry.addData("Created File, File Was Read?","%s", fileWasRead);
             //No telemetry.update();
             //Note differences in Pancho's Constants_Pw
         }
-
+        telemetry.update();
         cons.initParameters();
     }
 
     public void readOrWriteHashMapOffline() {
 
-        cons.readFromFile(hashMapFile, this);
+        fileWasRead = cons.readFromFile(hashMapFile, this);
         telemetry.addData("Existing File Was Read?","%s", fileWasRead);
         telemetry.update();
         if (!fileWasRead) {
@@ -85,7 +90,7 @@ public class BasicOpMode extends LinearOpMode {
             cons.defineParameters();
             cons.writeToFile(hashMapFile, this);
 
-            cons.readFromFile(hashMapFile, this);//Can be eliminated because HashMap exists in constants from defineParameters
+            fileWasRead = cons.readFromFile(hashMapFile, this);//Can be eliminated because HashMap exists in constants from defineParameters
             telemetry.addData("Created File, File Was Read?","%s", fileWasRead);
             telemetry.update();
         }

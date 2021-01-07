@@ -130,15 +130,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		double start = runtime.time();
 		while ((runtime.time() - start) < 2.0){
 			// Do nothing but report TM for counter and wait for robot to settle before looking at rings
-			List<Recognition> ringRecognitions = robotUG.imageRecog.tfod.getRecognitions();
-			telemetry.addData("Timer","%.2fs out of 2.0",runtime.time() - start);
-			for (int i = 0; i < ringRecognitions.size(); i++) {
-				telemetry.addData(String.format("\tLabel (%d)", i), ringRecognitions.get(i).getLabel());
-				telemetry.addData(String.format("\t\tleft,top (%d)", i), "%.03f , %.03f",
-						ringRecognitions.get(i).getLeft(), ringRecognitions.get(i).getTop());
-				telemetry.addData(String.format("\t\tright,bottom (%d)", i), "%.03f , %.03f",
-						ringRecognitions.get(i).getRight(), ringRecognitions.get(i).getBottom());
-			}
+			robotUG.imageRecog.getTelemetry(this);
 			telemetry.update();
 		}
 //		String ringsViewed = robotUG.imageRecog.viewRings(this, 25);//baseline method that runs for set number of loops
@@ -233,7 +225,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		telemetry.addData("Robot Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
 //		telemetry.addData("Robot Angles", " \t Desired: %1.1f, \t Actual: %1.1f", 0.0, robotUG.driveTrain.robotHeading);
 //		pressAToContinue();
-	/* Coach Note: need to rotate to face the PowerShot targets and activate shooter, conveyor, & collector
+	/* Coach Note: need to rotate to face the PowerShot targets or HIGh GOAL and activate shooter, conveyor, & collector
 	 * see added lines below
 	 */
 
@@ -246,13 +238,13 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		telemetry.addData("Location", " (%1.1f, %1.1f)",  robotUG.driveTrain.robotFieldLocation.x,robotUG.driveTrain.robotFieldLocation.y);
 //		pressAToContinue();
 
-		// shoot powershot
+		// shoot HIGH GOAL
 		//TURN ON CONVEYOR & COLLECTOR (last ring is partially under collector)
 		robotUG.conveyor.setMotion(Conveyor.motionType.UP);
 		robotUG.collector.collectorWheel.setPower(-1.0);//need negative power to collector rings
 		double startTime = runtime.time();
 		double shootTime = runtime.time() - startTime;
-		while(shootTime <10.0) {
+		while(shootTime <10.0) {//Since no sensors purely timed set of shots
 			shootTime = runtime.time() - startTime;
 			telemetry.addLine("Shoot high goal x 3");
 			telemetry.addData("Timer", " %1.2f", shootTime);
@@ -264,7 +256,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		//TURN OFF CONVEYOR & COLLECTOR OFF
 		robotUG.conveyor.setMotion(Conveyor.motionType.OFF);
 		robotUG.collector.collectorWheel.setPower(0.0);
-
+		robotUG.shooter.shutdown();
 //		telemetry.addData("Time to Shoot Target 3 targets", " %1.2f", shootTime);
 //		pressAToContinue();//record the time to fire shot #1 and observe outcome
 

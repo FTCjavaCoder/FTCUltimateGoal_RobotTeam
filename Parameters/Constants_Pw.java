@@ -20,6 +20,8 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 public class Constants_Pw  {
 
+    /* %%%% DELETE PW FILES FROM ULTIMATE GOAL %%%% */
+
     public String hashMapFile = "HashMapFile.txt";
     public HashMap<String, ParameterHM> pHM = new HashMap();
 
@@ -27,17 +29,17 @@ public class Constants_Pw  {
 
     public void defineParameters() {
 
-        pHM.put("drivePowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));
+        pHM.put("drivePowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit, ParameterHM.groupType.GENERAL));
 
-        pHM.put("rotatePowerLimit", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit));// was 0.25
+        pHM.put("rotatePowerLimit", new ParameterHM(0.5, ParameterHM.instanceType.powerLimit, ParameterHM.groupType.GENERAL));// was 0.25
 
-        pHM.put("teleOpDrivePowerLimit", new ParameterHM(0.55, ParameterHM.instanceType.powerLimit));
+        pHM.put("teleOpDrivePowerLimit", new ParameterHM(0.55, ParameterHM.instanceType.powerLimit, ParameterHM.groupType.GENERAL));
 
-        pHM.put("jackPowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit));
+        pHM.put("jackPowerLimit", new ParameterHM(0.75, ParameterHM.instanceType.powerLimit, ParameterHM.groupType.GENERAL));
 
-        pHM.put("slidePowerLimit", new ParameterHM(0.40, ParameterHM.instanceType.powerLimit));
+        pHM.put("slidePowerLimit", new ParameterHM(0.40, ParameterHM.instanceType.powerLimit, ParameterHM.groupType.GENERAL));
 
-        pHM.put("moveTol", new ParameterHM(30, ParameterHM.instanceType.toleranceCounts));// was !! 8 !!
+        pHM.put("moveTol", new ParameterHM(30, ParameterHM.instanceType.toleranceCounts, ParameterHM.groupType.GENERAL));// was !! 8 !!
 
     }
 
@@ -62,26 +64,26 @@ public class Constants_Pw  {
 
                 switch (t) {
                     case ("powerLimit") :
-                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.powerLimit));
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.powerLimit, ParameterHM.groupType.GENERAL));
                         break;
                     case ("counts") :
-                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.counts));
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.counts, ParameterHM.groupType.GENERAL));
                         break;
 
                     case ("toleranceCounts") :
-                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.toleranceCounts));
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.toleranceCounts, ParameterHM.groupType.GENERAL));
                         break;
 
                     case ("distanceInches") :
-                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.distanceInches));
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.distanceInches, ParameterHM.groupType.GENERAL));
                         break;
 
                     case ("rotationDegrees") :
-                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.rotationDegrees));
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.rotationDegrees, ParameterHM.groupType.GENERAL));
                         break;
 
                     case ("servoPosition") :
-                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.servoPosition));
+                        pHM.put(s, new ParameterHM(v, ParameterHM.instanceType.servoPosition, ParameterHM.groupType.GENERAL));
                         break;
                 }
 
