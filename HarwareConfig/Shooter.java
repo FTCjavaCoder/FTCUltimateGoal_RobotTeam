@@ -162,12 +162,12 @@ public class Shooter {
             om.sleep(200);
         }
         if (gp.dpad_up) {
-            userTargetRPM += 100.0;//increase target speed
+            userTargetRPM += 25.0;//increase target speed, was 100.0
             integratorReset();//reset integrator for new commands
             om.sleep(200);
         }
         if (gp.dpad_down) {
-            userTargetRPM -= 100.0;//reduce target speed
+            userTargetRPM -= 25.0;//reduce target speed, was 100.0
             integratorReset();//reset integrator for new commands
             om.sleep(200);
         }
