@@ -38,9 +38,11 @@ public class WobbleArm {
     public double armPower = 0.25;
     public double powerInc = 0.05;
     public double armPowerHold = 0.7;
-    public final double ARM_GEAR_RATIO = 24/15; //Coach Note: updated value is 24.0/15.0, but will change the angles for the arm by (24/15 / 2)
-            // Example WAS 110 = 110/2 * (24/15) = 88, HAVE NOT CHANGED VALUES
-            // Updated for constant style guide
+    public final double ARM_GEAR_RATIO = 24/15; //Coach Note: updated value is 24.0/15.0, commands were updated but don't make sense
+            // Drop position of 190 > 180 doesn't physically make sense when observing robot
+            // Error might be integer division in input 24/15 = 1.0 vs. 24.0/15.0 = 1.6 - need to investigate in a test OpMode
+            // 24 = motor motion for 15 of input arm motion output * 24/15 = motor OR motor * 15/24 = output
+            // Also Updated for Java constant style guide
     private final double MOTOR_DEG_TO_COUNT = 1440.0/360.0; // Coach Note: since motor is part of this HW can make local
         // don't need to change with any global parameter and therefore avoids having to pass in om.cons for final value
 
@@ -232,8 +234,8 @@ public class WobbleArm {
      *   - made a shutdown method for all hardware
      */
     public double getArmAngleDegrees(){
-        return wobbleGoalArm.getCurrentPosition()/(MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO); //
-    }
+        return wobbleGoalArm.getCurrentPosition()/(MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO); //return arm angle in degrees based on motor counts
+          }
     public int angleToCounts(double angle){
         return (int) Math.round(angle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));//returns counts to use in motor
     }
