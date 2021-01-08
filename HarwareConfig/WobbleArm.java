@@ -168,10 +168,33 @@ public class WobbleArm {
 
     }
 
-    public void pickUpWobble(BasicOpMode om) {
+    public void setWobbleGoalArmDown(Gamepad gamepad, BasicOpMode om) {
 
+        if (gamepad.dpad_down){
+            wobbleArmTargetAngle = 190.0;/* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE - this is perpendicular to grab    */
+            wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));// Updated coach method
+            om.sleep(300);
+        }
 
+    }
 
+    public void setWobbleGoalArmUp(Gamepad gamepad, BasicOpMode om) {
+
+        if (gamepad.dpad_up){
+            wobbleArmTargetAngle = 80;// initial guess for Wobble Goal over field wall
+            wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));// Updated coach method
+            om.sleep(300);
+        }
+
+    }
+
+    public void setWobbleGoalArmStowed(Gamepad gamepad, BasicOpMode om) {
+
+        if (gamepad.dpad_right){
+            wobbleArmTargetAngle = 10;// initial guess for Wobble Goal stowed safely
+            wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));// Updated coach method
+            om.sleep(300);
+        }
 
     }
 
