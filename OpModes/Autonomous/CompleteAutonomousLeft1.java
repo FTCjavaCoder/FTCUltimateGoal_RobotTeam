@@ -1,6 +1,7 @@
 package UltimateGoal_RobotTeam.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 import UltimateGoal_RobotTeam.HarwareConfig.Conveyor;
 import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
@@ -8,7 +9,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 @Autonomous(name="Complete Autonomous", group="Autonomous")
 
- public class CompleteAutonomous extends BasicAuto {
+ public class CompleteAutonomousLeft1 extends BasicAuto {
 	@Override
 	public void runOpMode() {
 
@@ -63,7 +64,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 		// Tell the robot where it's starting location and orientation on the field is
 
-		robotUG.driveTrain.robotFieldLocation.setLocation(-36,-63,90);
+		robotUG.driveTrain.robotFieldLocation.setLocation(-59,-63,90);
 		robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
 		robotUG.driveTrain.robotX = 0;// robot local coordinates always start at 0
 		robotUG.driveTrain.robotY = 0;
