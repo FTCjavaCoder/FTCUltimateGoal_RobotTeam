@@ -37,7 +37,7 @@ public class Constants {
     public double IMU_ROTATE_TOL = 1.0;
     public double IMU_DISTANCE_TOL = 1.0;
 
-    public double SHOOTER_POWER_LIMIT = 1.0;
+    public double SHOOTER_POWER_LIMIT = 0.9;// was 1.0
 
     public int MOVE_TOL = 30;// tolerance for motor reaching final positions in drive methods
 
@@ -112,7 +112,7 @@ public class Constants {
 
         pHM.put("rotatePowerLimit", new ParameterHM(1.0, instanceType.powerLimit,groupType.AUTO_LIMITS));// was 0.75
 
-        pHM.put("shooterPowerLimit", new ParameterHM(1.0, instanceType.powerLimit,groupType.GENERAL));
+        pHM.put("shooterPowerLimit", new ParameterHM(0.9, instanceType.powerLimit,groupType.GENERAL));// was 1.0
 
         pHM.put("powerGain", new ParameterHM(0.1, instanceType.powerLimit,groupType.AUTO_ADJUSTMENTS));// was 0.2
 

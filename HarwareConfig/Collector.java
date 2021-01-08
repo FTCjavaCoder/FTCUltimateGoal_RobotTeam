@@ -64,6 +64,22 @@ public class Collector {
         }
 
     }
+
+    public void collectorOnOffControl(Gamepad g, BasicOpMode om) {
+
+        if (g.left_trigger > 0) {
+            collectorPower = 0;// collector off
+            collectorWheel.setPower(collectorPower);
+            om.sleep(300);
+        }
+        if (g.right_trigger > 0) {
+            collectorPower = -1;// collector on
+            collectorWheel.setPower(collectorPower);
+            om.sleep(300);
+        }
+
+    }
+
     /* -- COACH NOTE: made a shutdown method for all hardware
      * - Added servo for collector assembly and setServoPos method
      */

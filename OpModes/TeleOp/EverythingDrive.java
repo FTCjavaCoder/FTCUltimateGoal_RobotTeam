@@ -105,7 +105,7 @@ public class EverythingDrive extends BasicTeleOp {
 
             robotUG.wobbleArm.setWobbleServoPos(gamepad2,this);
 
-            robotUG.collector.collectorControl(gamepad2,  this);
+            robotUG.collector.collectorOnOffControl(gamepad2,  this);
 
             /* --Coach Note: add selectable telemetry so based on what's going on we can set TM output
             * -- Are there buttons left to select TM?
