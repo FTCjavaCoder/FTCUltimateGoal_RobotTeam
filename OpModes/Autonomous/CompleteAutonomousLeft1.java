@@ -7,7 +7,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
-@Autonomous(name="Complete Autonomous", group="Autonomous")
+@Autonomous(name="Complete Autonomous Left1", group="Autonomous")
 
  public class CompleteAutonomousLeft1 extends BasicAuto {
 	@Override
