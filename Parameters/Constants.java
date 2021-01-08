@@ -116,13 +116,13 @@ public class Constants {
 
         pHM.put("powerGain", new ParameterHM(0.1, instanceType.powerLimit,groupType.AUTO_ADJUSTMENTS));// was 0.2
 
-        pHM.put("rotatePowerGain", new ParameterHM(0.01, instanceType.powerLimit, groupType.AUTO_ADJUSTMENTS));// was 0.02
+        pHM.put("rotatePowerGain", new ParameterHM(0.01, instanceType.driveGain, groupType.AUTO_ADJUSTMENTS));// was 0.02
 
         pHM.put("IMURotateTol", new ParameterHM(1.0, instanceType.rotationDegrees,groupType.AUTO_ADJUSTMENTS));// was 2.0
 
         pHM.put("IMUDistanceTol", new ParameterHM(1.0, instanceType.distanceInches,groupType.AUTO_ADJUSTMENTS));// new
 
-        pHM.put("steeringPowerGain", new ParameterHM(0.03, instanceType.powerLimit,groupType.PURE_PURSUIT));// new
+        pHM.put("steeringPowerGain", new ParameterHM(0.03, instanceType.driveGain,groupType.PURE_PURSUIT));// new
 
         pHM.put("steeringPowerLimit", new ParameterHM(0.6, instanceType.powerLimit,groupType.PURE_PURSUIT));// new
 
