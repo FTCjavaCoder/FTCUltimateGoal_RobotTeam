@@ -341,9 +341,10 @@ public class Shooter {
         om.telemetry.addData("\tActual","   L: %.2f, R: %.2f",shooterLeft.getPower(),shooterRight.getPower());
         // NO telemetry.update() since more info will be added at RobotHWMulti and/or OpMode level
         //Write to RobotLog methods are static so always accessible?
-        //LOG HEADERS"\tTime(s)\tDelta Time (s)\tSpeedActive\tTarget Speed (RPM)\tLeft Speed (RPM)\tRight Speed (RPM)");
+        //LOG HEADERS"\tTime(s)\tDelta Time (s)\tSpeedActive\tTarget Speed (RPM)\tLeft Speed (RPM)\tRight Speed (RPM)\tLeft Power\tRight Power");
 
-        RobotLog.vv("Shooter Speed", "\t%.3f\t%.3f\t%s\t%.1f\t%.1f\t%.1f", om.runtime.time(), deltaTime,speedActive,userTargetRPM,speedLeft,speedRight);
+        RobotLog.ii("Shooter Speed", "\t%.3f\t%.3f\t%s\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f", om.runtime.time(),
+                deltaTime,speedActive,userTargetRPM,speedLeft,speedRight,shooterLeft.getPower(),shooterRight.getPower());
 
     }
     public void getBasicTelemetry(BasicOpMode om) {

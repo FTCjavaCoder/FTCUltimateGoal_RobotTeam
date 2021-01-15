@@ -2,6 +2,7 @@ package UltimateGoal_RobotTeam.OpModes.TeleOp;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 
@@ -80,6 +81,30 @@ public class EverythingDrive extends BasicTeleOp {
     public void runCode() {
 
 // run until the end of the match (driver presses STOP)
+        // CONFIGURE THE TELEMETRY DESIRED w/o gamepad prior to loop
+        robotUG.setTelemetrySize(5);//create windows for driveTrain, wobbleGoal, shooter, conveyor, collector
+        robotUG.setTelemetryIndex(0);//active index from 0 to size-1
+        //Options are 0 = inactive, 1 = drivetrain, 2 = WGA, 3 = shooter, 4 = conveyor , 5 = collector, 6 = image recognition
+        robotUG.setTelemetryOption(1);//DriveTrain
+
+        robotUG.setTelemetryIndex(1);
+        robotUG.setTelemetryOption(2);//Wobble Goal Arm
+
+        robotUG.setTelemetryIndex(2);
+        robotUG.setTelemetryOption(3);//Shooter
+
+        robotUG.setTelemetryIndex(3);
+        robotUG.setTelemetryOption(4);//Conveyor
+
+        robotUG.setTelemetryIndex(4);
+        robotUG.setTelemetryOption(5);//Collector
+        double[] gainData =robotUG.shooter.getGainArray();
+
+        RobotLog.ii("SHOOTER SPEED LOG", "********* NEW LOG ***********");
+        RobotLog.ii("Shooter Speed Gains", "\tFF:%.6f\tKP:%.6f\tKI:%.6f",gainData[0],gainData[1],gainData[2]);
+        RobotLog.ii("Shooter Speed Headers", "\tTime(s)\tDelta Time (s)\tSpeedActive\tTarget Speed (RPM)\tLeft Speed (RPM)\tRight Speed (RPM)\tLeft Power\tRight Power");
+        runtime.reset();
+        //Configuration can be updated within the robotUG.gamePadMultiTelemetry() method later
         while (opModeIsActive()) {
 
             // Set Drive Motor Power
@@ -115,7 +140,8 @@ public class EverythingDrive extends BasicTeleOp {
             */
 
 
-			robotUG.gamePadMultiTelemetry(this, HardwareRobotMulti.telemetryDetails.BASIC);// COACH implemented multiTelemetry
+			robotUG.gamePadMultiTelemetry(this, HardwareRobotMulti.telemetryDetails.MAX);// COACH implemented multiTelemetry
+            /* MAX telemetry option returns all the shooter control info and logs data*/
 
 //            telemetry.addLine("ROBOT GAMEPAD COMMANDS ...");
 //            telemetry.addData("\tCommands Drive", "Forward (%.2f), Right (%.2f), Clockwise (%.2f)",

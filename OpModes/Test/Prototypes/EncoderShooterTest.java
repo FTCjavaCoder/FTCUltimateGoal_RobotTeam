@@ -76,9 +76,9 @@ public class EncoderShooterTest extends BasicTeleOp {
         robotUG.setTelemetryOption(4);//Conveyor
         robotUG.setTelemetryIndex(2);
         robotUG.setTelemetryOption(5);//Collector
-        RobotLog.vv("SHOOTER SPEED LOG", "********* NEW LOG ***********");
-        RobotLog.vv("Shooter Speed Gains", "\tFF:%.6f\tKP:%.6f\tKI:%.6f",gainData[0],gainData[1],gainData[2]);
-        RobotLog.vv("Shooter Speed Headers", "\tTime(s)\tDelta Time (s)\tSpeedActive\tTarget Speed (RPM)\tLeft Speed (RPM)\tRight Speed (RPM)");
+        RobotLog.ii("SHOOTER SPEED LOG", "********* NEW LOG ***********");
+        RobotLog.ii("Shooter Speed Gains", "\tFF:%.6f\tKP:%.6f\tKI:%.6f",gainData[0],gainData[1],gainData[2]);
+        RobotLog.ii("Shooter Speed Headers", "\tTime(s)\tDelta Time (s)\tSpeedActive\tTarget Speed (RPM)\tLeft Speed (RPM)\tRight Speed (RPM)\tLeft Power\tRight Power");
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
