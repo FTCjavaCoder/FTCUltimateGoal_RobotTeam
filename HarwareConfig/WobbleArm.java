@@ -181,7 +181,7 @@ public class WobbleArm {
     public void setWobbleGoalArmUp(Gamepad gamepad, BasicOpMode om) {
 
         if (gamepad.dpad_up){
-            wobbleArmTargetAngle = 80;// initial guess for Wobble Goal over field wall
+            wobbleArmTargetAngle = 70;// initial guess for Wobble Goal over field wall || was 80
             wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));// Updated coach method
             om.sleep(300);
         }
