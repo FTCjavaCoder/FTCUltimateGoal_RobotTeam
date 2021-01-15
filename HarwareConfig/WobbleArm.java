@@ -172,7 +172,7 @@ public class WobbleArm {
 
         if (gamepad.y) {
 
-            wobbleGoalPos = 0.8;
+            wobbleGoalPos = 0.9;
             wobbleGoalServo.setPosition(wobbleGoalPos);
             om.sleep(250);
         }
