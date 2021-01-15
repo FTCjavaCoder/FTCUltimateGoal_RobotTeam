@@ -1,6 +1,7 @@
 package UltimateGoal_RobotTeam.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import UltimateGoal_RobotTeam.HarwareConfig.Conveyor;
 import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
@@ -8,7 +9,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 @Autonomous(name="Double Wobble Goal Autonomous Left", group="Autonomous")
-
+@Disabled
  public class DoubleWobbleGoalAutonomousLeft extends BasicAuto {
 	@Override
 	public void runOpMode() {
@@ -194,7 +195,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Second Wobble Goal");
 
-		//robotUG.wobbleArm.grabWobble(this);// Grab second Wobble Goal
+		robotUG.wobbleArm.grabWobble(this);// Grab second Wobble Goal
 
 		// Go to drop point for second Wobble Goal
 		fieldPoints.add(new PursuitPoint(-48, -8));//??

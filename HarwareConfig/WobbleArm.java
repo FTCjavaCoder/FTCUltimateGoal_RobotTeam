@@ -267,6 +267,41 @@ public class WobbleArm {
         }
 
     }
+
+    public void grabWobble(BasicOpMode om) {
+
+        wobbleGoalArm.setPower(0.5);
+        wobbleArmTargetAngle = 190.0;
+
+        wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
+        while(Math.abs(wobbleGoalArm.getTargetPosition() - wobbleGoalArm.getCurrentPosition()) > 10){// alternate loop criteria but need variable for tolerances
+
+            // do nothing but wait for arm to move within tolerance
+            om.robotUG.driveTrain.robotNavigator(om);//replaces angleUnwrap (called in navigator)
+            om.telemetry.addLine("WOBBLE GOAL DROP: PREP");
+            getTelemetry(om);
+
+            om.telemetry.addLine("________________________________");
+            om.telemetry.update();
+        }
+        wobbleGoalServo.setPosition(0.9);//this is a good grip
+        om.sleep(500);//might not need to be this long
+
+        wobbleArmTargetAngle = 65.0;
+
+        wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
+        while(Math.abs(wobbleGoalArm.getTargetPosition() - wobbleGoalArm.getCurrentPosition()) > 10){// alternate loop criteria but need variable for tolerances
+            // do nothing but wait for arm to move within tolerance
+            om.robotUG.driveTrain.robotNavigator(om);//replaces angleUnwrap (called in navigator)
+            om.telemetry.addLine("WOBBLE GOAL DROP: DROP");
+            getTelemetry(om);
+            om.telemetry.addLine("________________________________");
+            om.telemetry.update();
+
+        }
+
+    }
+
     /* -- COACH ADDITIONS: added some useful methods to simplify top level telemetry and commands
      *   - return ArmAngle in Degrees
      *   - convert ArmAngle in degrees to counts
