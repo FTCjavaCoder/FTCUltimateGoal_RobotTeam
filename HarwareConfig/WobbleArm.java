@@ -151,7 +151,7 @@ public class WobbleArm {
 
     }
 
-    public void setWobbleServoPos(Gamepad gamepad, BasicOpMode om) {
+    public void moveWobbleServo(Gamepad gamepad, BasicOpMode om) {
 
         if (gamepad.y) {
 
@@ -162,6 +162,23 @@ public class WobbleArm {
         if (gamepad.a) {
 
             wobbleGoalPos -= wobbleGrabInc;
+            wobbleGoalServo.setPosition(wobbleGoalPos);
+            om.sleep(250);
+        }
+
+    }
+
+    public void setWobbleServoPos(Gamepad gamepad, BasicOpMode om) {
+
+        if (gamepad.y) {
+
+            wobbleGoalPos = 0.8;
+            wobbleGoalServo.setPosition(wobbleGoalPos);
+            om.sleep(250);
+        }
+        if (gamepad.a) {
+
+            wobbleGoalPos = 0.25;
             wobbleGoalServo.setPosition(wobbleGoalPos);
             om.sleep(250);
         }
