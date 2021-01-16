@@ -9,7 +9,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 @Autonomous(name="Complete Autonomous Left1", group="Autonomous")
 
- public class CompleteAutonomousLeft1 extends BasicAuto {
+ public class CompleteAutonomousBlueExterior extends BasicAuto {
 	@Override
 	public void runOpMode() {
 
@@ -64,7 +64,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 		// Tell the robot where it's starting location and orientation on the field is
 
-		robotUG.driveTrain.robotFieldLocation.setLocation(-59,-63,90);
+		robotUG.driveTrain.robotFieldLocation.setLocation(-57,-63,90);
 		robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
 		robotUG.driveTrain.robotX = 0;// robot local coordinates always start at 0
 		robotUG.driveTrain.robotY = 0;
@@ -95,9 +95,9 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 		/* Drive to Wobble Goal and Scan the Number of Rings*/
 
-		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
-
-		fieldPoints.add(new PursuitPoint(-36, -43));
+		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); //x: -57, y: -63
+		fieldPoints.add(new PursuitPoint(-57, -57));
+		fieldPoints.add(new PursuitPoint(-40, -46.2));
 
 	// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
 		for(int h=0;h<fieldPoints.size();h++) {
