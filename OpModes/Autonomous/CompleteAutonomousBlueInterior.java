@@ -6,7 +6,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
-@Autonomous(name="Complete Autonomous Center Start", group="Autonomous")
+@Autonomous(name="Complete Autonomous Blue Interior", group="Autonomous")
 
  public class CompleteAutonomousBlueInterior extends BasicAuto {
 	@Override
@@ -225,7 +225,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		fieldPoints.add(new PursuitPoint(-30, -8));/* COACH CHANGED - for high goal */
 
 		//TURN ON SHOOTER -- allow time to power up to full speed while driving
-		robotUG.shooter.setShooter_Power(1.0);//1.0 for high goal too much @ Y = -6, trying -8
+		robotUG.shooter.setShooter_Power(0.8);//1.0 for high goal too much @ Y = -6, trying -8
 
 	/* Drive to and Shoot the Powershots */
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To PowerShot Shooting Position");
