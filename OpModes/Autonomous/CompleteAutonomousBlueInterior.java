@@ -221,8 +221,8 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		 *   - moved location from 0 to -6 in Y
 		 *   - Added a point at (-24, -6) so robot would align straight from any location
 		 */
-		fieldPoints.add(new PursuitPoint(-48, -8));/* COACH CHANGED - for high goal - allow all options to align */
-		fieldPoints.add(new PursuitPoint(-30, -8));/* COACH CHANGED - for high goal */
+		fieldPoints.add(new PursuitPoint(-48, -6));/* COACH CHANGED - for high goal - allow all options to align */
+		fieldPoints.add(new PursuitPoint(-30, -6));/* COACH CHANGED - for high goal */
 
 		//TURN ON SHOOTER -- allow time to power up to full speed while driving
 		robotUG.shooter.setShooter_Power(0.8);//1.0 for high goal too much @ Y = -6, trying -8

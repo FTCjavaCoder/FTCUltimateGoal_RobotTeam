@@ -100,7 +100,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); //x: -57, y: -63
 //		fieldPoints.add(new PursuitPoint(-57, -57));
 		fieldPoints.add(new PursuitPoint(-36, -52));// WAS (-40, -46.2) updated to better view rings (changed it to -44, -35); 1/22: changed it back to -36, -53
-		fieldPoints.add(new PursuitPoint(-37.5, -43));
+		fieldPoints.add(new PursuitPoint(-37, -43));
 
 	// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
 		for(int h=0;h<fieldPoints.size();h++) {
@@ -233,8 +233,8 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		 *   - moved location from 0 to -6 in Y
 		 *   - Added a point at (-24, -6) so robot would align straight from any location
 		 */
-		fieldPoints.add(new PursuitPoint(-48, -8));/* COACH CHANGED - for high goal - allow all options to align */
-		fieldPoints.add(new PursuitPoint(-30, -8));/* COACH CHANGED - for high goal */
+		fieldPoints.add(new PursuitPoint(-48, -6));/* COACH CHANGED - for high goal - allow all options to align */
+		fieldPoints.add(new PursuitPoint(-30, -6));/* COACH CHANGED - for high goal */
 
 		/* TEST CODE TO DRAW LINES FOR VISUALIZATION */
 		if(testModeActive) {
