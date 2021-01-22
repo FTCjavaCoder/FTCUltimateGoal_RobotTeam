@@ -122,15 +122,29 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		 *   - 2.0s wait before looking at rings is sufficient time for image to stabilize
 		 *   %% suggest checking reduced wait times and reduce number of loops for the looping method %%
 		 */
-		double start = runtime.time();
-		while ((runtime.time() - start) < 2.0){
-			// Do nothing but report TM for counter and wait for robot to settle before looking at rings
-			robotUG.imageRecog.getTelemetry(this);
-			telemetry.update();
+		String ringsViewed;//Define string for returning what rings were seen
+		if(testModeActive){//Need this code for Offline
+			/* THIS IS WHERE THE WAIT AND VIEW RINGS OCCURS*/
+			int counts = 0;
+			while(counts < 10) {// 10 counts or data points should equal 1 offline second (300 points = 30 s)
+				telemetry.addLine("VIEWING RINGS");
+				telemetry.addData("Counts", " %d", counts);
+				telemetry.update();
+				updateIMU();//run this to log data fro offline code while waiting
+				counts+=1;
+			}
+			ringsViewed = testModeViewRings();
 		}
-//		String ringsViewed = robotUG.imageRecog.viewRings(this, 25);//baseline method that runs for set number of loops
-		String ringsViewed = robotUG.imageRecog.viewRingsTimed(this, 0.5);// ALTERNATE method that runs based on time
-
+		else {//This is what runs on the robot
+			double start = runtime.time();
+			while ((runtime.time() - start) < 2.0) {
+				// Do nothing but report TM for counter and wait for robot to settle before looking at rings
+				robotUG.imageRecog.getTelemetry(this);
+				telemetry.update();
+			}
+//		 	  ringsViewed = robotUG.imageRecog.viewRings(this, 25);//baseline method that runs for set number of loops
+			ringsViewed = robotUG.imageRecog.viewRingsTimed(this, 0.5);// ALTERNATE method that runs based on time
+		}
 		/* COACH NOTE: imageRecog methods end with telemetry being added but waiting for a telemetry.update()
 		 * -- expect an update in the main OpMode or a pressAToContinue method to follow
 		 */
@@ -237,16 +251,31 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		//TURN ON CONVEYOR & COLLECTOR (last ring is partially under collector)
 		robotUG.conveyor.setMotion(Conveyor.motionType.UP);
 		robotUG.collector.collectorWheel.setPower(-1.0);//need negative power to collector rings
-		double startTime = runtime.time();
-		double shootTime = runtime.time() - startTime;
-		while(shootTime <10.0) {//Since no sensors purely timed set of shots
-			shootTime = runtime.time() - startTime;
-			telemetry.addLine("Shoot high goal x 3");
-			telemetry.addData("Timer", " %1.2f", shootTime);
-			telemetry.addData("Shooter Power", "  %1.2f",  robotUG.shooter.getShooter_Power());
-			telemetry.addData("Conveyor Power", " %1.1f",  robotUG.conveyor.conveyor_Power);
-			telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
-			telemetry.update();
+		if(testModeActive){//accessing time will exceed size of data file and cause errors, run by number of counts
+			int counts = 0;
+			while(counts < 50) {
+				telemetry.addLine("Shoot High Goal x3");
+				telemetry.addData("Counts", " %d", counts);
+				telemetry.addData("Shooter Power", "  %1.2f",  robotUG.shooter.getShooter_Power());
+				telemetry.addData("Conveyor Power", " %1.1f",  robotUG.conveyor.conveyor_Power);
+				telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
+				telemetry.update();
+				robotUG.driveTrain.robotNavigator(this);
+				counts+=1;
+			}
+		}
+		else {
+			double startTime = runtime.time();
+			double shootTime = runtime.time() - startTime;
+			while (shootTime < 10.0) {//Since no sensors purely timed set of shots
+				shootTime = runtime.time() - startTime;
+				telemetry.addLine("Shoot high goal x 3");
+				telemetry.addData("Timer", " %1.2f", shootTime);
+				telemetry.addData("Shooter Power", "  %1.2f", robotUG.shooter.getShooter_Power());
+				telemetry.addData("Conveyor Power", " %1.1f", robotUG.conveyor.conveyor_Power);
+				telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
+				telemetry.update();
+			}
 		}
 		//TURN OFF CONVEYOR & COLLECTOR OFF
 		robotUG.conveyor.setMotion(Conveyor.motionType.OFF);
