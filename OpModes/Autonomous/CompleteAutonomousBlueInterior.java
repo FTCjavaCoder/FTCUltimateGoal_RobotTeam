@@ -63,7 +63,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 		// Tell the robot where it's starting location and orientation on the field is
 
-		robotUG.driveTrain.robotFieldLocation.setLocation(-33,-63,90);
+		robotUG.driveTrain.robotFieldLocation.setLocation(-36,-63,90); //was x = -36; I changed it to 33
 		robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
 		robotUG.driveTrain.robotX = 0;// robot local coordinates always start at 0
 		robotUG.driveTrain.robotY = 0;
@@ -94,8 +94,8 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 		/* Drive to Wobble Goal and Scan the Number of Rings*/
 
-		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); // x: -33, y: -63
-		fieldPoints.add(new PursuitPoint(-34.5, -43));
+		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); // x: -33, y: -63; was -36
+		fieldPoints.add(new PursuitPoint(-36, -43)); //was -36, -43; I changed x t0 -34.5
 
 	// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
 		for(int h=0;h<fieldPoints.size();h++) {

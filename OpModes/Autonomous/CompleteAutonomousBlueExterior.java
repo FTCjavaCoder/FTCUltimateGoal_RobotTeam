@@ -98,8 +98,8 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		/* Drive to Wobble Goal and Scan the Number of Rings*/
 
 		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); //x: -57, y: -63
-		fieldPoints.add(new PursuitPoint(-57, -57));
-		fieldPoints.add(new PursuitPoint(-44, -36));// WAS (-40, -46.2) updated to better view rings
+//		fieldPoints.add(new PursuitPoint(-57, -57));
+		fieldPoints.add(new PursuitPoint(-36, -53));// WAS (-40, -46.2) updated to better view rings (changed it to -44, -35); 1/22: changed it back to -36, -53
 
 	// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
 		for(int h=0;h<fieldPoints.size();h++) {
