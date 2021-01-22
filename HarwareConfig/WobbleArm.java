@@ -1,14 +1,14 @@
 package UltimateGoal_RobotTeam.HarwareConfig;
 
-//import OfflineCode.OfflineHW.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import UltimateGoal_RobotTeam.OpModes.Autonomous.BasicAuto;
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
 
-import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.FLOAT;
+//import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.FLOAT;
 
 public class WobbleArm {
 
@@ -27,10 +27,10 @@ public class WobbleArm {
      *  - if there are values that we want to change as hashmap parameters then they can be initialized in constructor
      *  - BEST PRACTICE: define the variables below with description and units (degrees, inches, counts, power)
      */
-    public double wobbleGoalPos = 0.5;// undecided values
+    public double wobbleGoalPos = 0.9;// tight servo grabbing
     public double wobbleGrabInc = 0.1;
     public double wobbleGrabPos = 0.5;
-    public double wobbleReleasePos = 0;
+    public double wobbleReleasePos = 0.4;// this is enough to release goal but not full open
     public int wobbleArmTarget = 0;//KS: this can be deleted it's redundant when there's a conversion method
     public double wobbleArmTargetAngle = 0.0;// this needs be a double - might want decimal degrees
     public int armDegInc = 1;
@@ -46,13 +46,32 @@ public class WobbleArm {
     private final double MOTOR_DEG_TO_COUNT = 1440.0/360.0; // Coach Note: since motor is part of this HW can make local
         // don't need to change with any global parameter and therefore avoids having to pass in om.cons for final value
 
-    public int c = 0; //temporary variable use to prevent us from choosing how we want to progress before we drop the wobble goal
+//    public int c = 0; //temporary variable use to prevent us from choosing how we want to progress before we drop the wobble goal
+    /* Parameters used for offline code for locating arm
+     *
+     */
+    public final double ARM_LENGTH = 12.0;
+    public final double ARM_X = 8.0;//location Right/Left on robot for arm pivot
+    public final double ARM_Y = 0.0;//location FWD/BACK on robot for arm pivot
+    public final double ARM_INIT_ANGLE_DEG = 45.0;
 
     public WobbleArm(BasicOpMode om, boolean tm)  {
         if(tm) {
-//            wobbleGoalServo = new Servo();
-            om.telemetry.addData("ERROR: ", "Initializing WobbleGoalArm in TestMode...");
+            om.telemetry.addData("Wobble Arm", " Initializing...");
+            om.telemetry.update();
+//            wobbleGoalServo = new Servo();wobbleGoalArm = new DcMotor();wobbleGoalArm.timeStep = om.timeStep * (0.2);//NEEDED FOR OFFLINE
+            wobbleGoalArm.setPower(0);
+            wobbleGoalArm.setTargetPosition(0);
+            wobbleGoalArm.setDirection(DcMotorSimple.Direction.FORWARD);
+            wobbleGoalArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            wobbleGoalArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            wobbleGoalArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            wobbleGoalArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+
+
+            om.telemetry.addLine("\t\t... Initialization COMPLETE");
+            om.telemetry.update();
         }
         else {
             om.telemetry.addData("Wobble Arm", " Initializing...");
@@ -137,7 +156,7 @@ public class WobbleArm {
             om.sleep(300);
         }
 
-        c = 1;//Coach note: what's this?  replaced by "pressAToContinue"?
+//        c = 1;//Coach note: what's this?  replaced by "pressAToContinue"?
 
     }
 
@@ -215,7 +234,7 @@ public class WobbleArm {
 
     }
 
-    public void dropWobble(BasicOpMode om) {
+    public void dropWobble(BasicAuto om) {
 
         wobbleGoalArm.setPower(0.5);
 
@@ -223,46 +242,74 @@ public class WobbleArm {
         /* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE    */
 //        wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));// KS added om.cons & commented
         wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
-        while(Math.abs(wobbleGoalArm.getTargetPosition() - wobbleGoalArm.getCurrentPosition()) > 10){// alternate loop criteria but need variable for tolerances
+        int armPos = wobbleGoalArm.getCurrentPosition();
+        int count = 0;
+        om.robotUG.driveTrain.robotNavigator(om);//NEEDED FOR OFFLINE CODE TO UPDATE POSITIONS
+
+        while(Math.abs(wobbleGoalArm.getTargetPosition() - armPos) > 10){// alternate loop criteria but need variable for tolerances
 
 //        while(wobbleGoalArm.isBusy()){// might not be robust -- take too long to settle and exit
             // do nothing but wait for arm to move within tolerance
-            om.robotUG.driveTrain.robotNavigator(om);//replaces angleUnwrap (called in navigator)
             om.telemetry.addLine("WOBBLE GOAL DROP: PREP");
-            getTelemetry(om);
+            om.telemetry.addData("Loop count", " %d",count);
+
+            armPos = getTelemetry(om);
+            om.robotUG.driveTrain.robotNavigator(om);//NEEDED FOR OFFLINE CODE TO UPDATE POSITIONS
 
             om.telemetry.addLine("________________________________");
             om.telemetry.update();
+            count +=1;
+
         }
         wobbleGoalServo.setPosition(0.8);//this is a loose grip
-        om.sleep(500);//might not need to be this long
-
+        if(!om.testModeActive) {
+            om.sleep(500);//might not need to be this long
+        }
         wobbleArmTargetAngle = 190.0;
         /* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE   to drop goal */
 
 //        wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));// KS added om.cons & commented
         wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
-        while(Math.abs(wobbleGoalArm.getTargetPosition() - wobbleGoalArm.getCurrentPosition()) > 10){// alternate loop criteria but need variable for tolerances
+        armPos = wobbleGoalArm.getCurrentPosition();
+        om.robotUG.driveTrain.robotNavigator(om);//NEEDED FOR OFFLINE CODE TO UPDATE POSITIONS
+        count = 0;
+        while(Math.abs(wobbleGoalArm.getTargetPosition() - armPos) > 10){// alternate loop criteria but need variable for tolerances
             // do nothing but wait for arm to move within tolerance
-            om.robotUG.driveTrain.robotNavigator(om);//replaces angleUnwrap (called in navigator)
             om.telemetry.addLine("WOBBLE GOAL DROP: DROP");
-            getTelemetry(om);
+            om.telemetry.addData("Loop count", " %d",count);
+
+            armPos = getTelemetry(om);
+            om.robotUG.driveTrain.robotNavigator(om);//NEEDED FOR OFFLINE CODE TO UPDATE POSITIONS
+
             om.telemetry.addLine("________________________________");
             om.telemetry.update();
-
+            count +=1;
         }
         wobbleGoalServo.setPosition(0.4);// this is open grip without going max open
-        om.sleep(500);//might not need to be this long
+        if(!om.testModeActive) {
+            om.sleep(500);//might not need to be this long
+        }
+        om.haveBlueWobble1 = false;// wobble goal dropped
+        om.haveBlueWobble2 = false;// wobble goal dropped
+        om.haveRedWobble1 = false;// wobble goal dropped
+        om.haveRedWobble2 = false;// wobble goal dropped
+
         wobbleArmTargetAngle = 25.0;// this is back near start but not all the way to avoid overshoot and impact
         /* LIFT ARM   */
         wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
-        while(Math.abs(wobbleGoalArm.getTargetPosition() - wobbleGoalArm.getCurrentPosition()) > 10){// alternate loop criteria but need variable for tolerances
+        armPos = wobbleGoalArm.getCurrentPosition();
+        om.robotUG.driveTrain.robotNavigator(om);//NEEDED FOR OFFLINE CODE TO UPDATE POSITIONS
+        count = 0;
+        while(Math.abs(wobbleGoalArm.getTargetPosition() - armPos) > 10){// alternate loop criteria but need variable for tolerances
             // do nothing but wait for arm to move within tolerance
-            om.robotUG.driveTrain.robotNavigator(om);//replaces angleUnwrap (called in navigator)
             om.telemetry.addLine("WOBBLE GOAL DROP: RAISE");
-            getTelemetry(om);
+            om.telemetry.addData("Loop count", " %d",count);
+
+            armPos = getTelemetry(om);
+            om.robotUG.driveTrain.robotNavigator(om);//NEEDED FOR OFFLINE CODE TO UPDATE POSITIONS
             om.telemetry.addLine("________________________________");
             om.telemetry.update();
+            count +=1;
 
         }
 
@@ -311,21 +358,25 @@ public class WobbleArm {
     public double getArmAngleDegrees(){
         return wobbleGoalArm.getCurrentPosition()/(MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO); //return arm angle in degrees based on motor counts
           }
+    public double convertArmAngleDegrees(int armCounts){
+        return armCounts/(MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO); //return arm angle in degrees based on motor counts
+    }
     public int angleToCounts(double angle){
         return (int) Math.round(angle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));//returns counts to use in motor
     }
-    public void getTelemetry(BasicOpMode om){
-        om.telemetry.addData("\tArm Angle", "Target = %.1f(deg.); Current = %.1f(deg.))", wobbleArmTargetAngle, getArmAngleDegrees());
+    public int getTelemetry(BasicOpMode om){
+        int pos = wobbleGoalArm.getCurrentPosition();//Added to aid offline and reduce calls to calculate motor position
+        om.telemetry.addData("\tMotor Position", "Target = %d(cnt); Current = %d(cnt)", wobbleGoalArm.getTargetPosition(),pos);
+        om.telemetry.addData("\tArm Angle", "Target = %.1f(deg.); Current = %.1f(deg.))", wobbleArmTargetAngle, convertArmAngleDegrees(pos));
         om.telemetry.addData("\tMotor Power", "Command= %.2f; Actual= %.2f;", armPower,wobbleGoalArm.getPower());
-        om.telemetry.addData("\tMotor Position", "Target = %d(cnt); Current = %d(cnt)", wobbleGoalArm.getTargetPosition(),wobbleGoalArm.getCurrentPosition());
         om.telemetry.addData("\tServo Variables", "Grab(%.2f), Release(%.2f)", wobbleGrabPos, wobbleReleasePos);
         om.telemetry.addData("\tServo Position", "%.2f",wobbleGoalServo.getPosition());
         // NO telemetry.update() since more info will be added at RobotHWMulti and/or OpMode level
         // Can add more lines as needed or max a BASIC and MAX TM option
-
+        return pos;
     }
     public void shutdown(){// sort of redundant but confirms to common naming structure for use in HWMulti
-        wobbleGoalArm.setZeroPowerBehavior(FLOAT);
+        wobbleGoalArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         wobbleGoalArm.setPower(0.0);//could result in crash of arm when hitting stop
         // believe best to remove power
         wobbleGoalServo.setPosition(0.0);//stop gripping

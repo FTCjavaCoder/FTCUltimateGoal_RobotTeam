@@ -20,7 +20,18 @@ public class Collector {
 
     public Collector(BasicOpMode om, boolean tm)  {
         if(tm) {
-            om.telemetry.addData("ERROR: ", "Initializing Collector in TestMode...");
+            om.telemetry.addData("Collector", " Initializing ...");
+            om.telemetry.update();
+
+//            collectorWheel = new DcMotor();collectorWheel.timeStep = om.timeStep;//NEEDED FOR OFFLINE
+
+            collectorWheel.setPower(0);
+            collectorWheel.setDirection(DcMotorSimple.Direction.FORWARD);
+            collectorWheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+
+            om.telemetry.addLine("\t\t... Initialization COMPLETE");
             om.telemetry.update();
         }
         else {

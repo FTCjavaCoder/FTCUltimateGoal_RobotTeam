@@ -111,21 +111,19 @@ public class DriveTrain {
      */
     public DriveTrain(BasicOpMode om, boolean tm) {
         if(tm) {
-            om.telemetry.addData("ERROR: ", "Initializing DriveTrain in TestMode...");
-            om.telemetry.update();
-            /** ONLY USED IN OFFLINE TEST MODE
-             *
-             */
+            om.telemetry.addData("Status: ", "Initializing DriveTrain TestMode...");
 
-//            // Define and Initialize Motors
-//            frontLeft = new DcMotor();
-//            frontRight = new DcMotor();
-//            backLeft = new DcMotor();
-//            backRight = new DcMotor();
-//
-//            imu = new BNO055IMU();
-//            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();//Need help on enclosing class
-//            imu.initialize(parameters);
+            // Define and Initialize Motors
+//            frontLeft = new DcMotor();frontRight = new DcMotor();backLeft = new DcMotor();backRight = new DcMotor();imu = new BNO055IMU();//NEEDED FOR OFFLINE
+
+
+            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();//Need help on enclosing class
+            imu.initialize(parameters);
+            // COACH UPDATE: define default condition for gear ratio in constructor
+// in case gear ratio method not called by user in OpMode
+            setGearRatio(40.0);
+
+//            imu.timeStep = om.timeStep;frontLeft.timeStep = om.timeStep;frontRight.timeStep = om.timeStep;backRight.timeStep = om.timeStep;backLeft.timeStep = om.timeStep;//NEEDED FOR OFFLINE
         }
         else {
             om.telemetry.addData("DriveTrain", " Initializing  ...");
@@ -304,6 +302,7 @@ public class DriveTrain {
     public double calcSteeringPowerIMU(double angleWanted, BasicAuto om) {
 
         angleUnWrap();
+        om.updateIMU();//Added to support any use in OfflineCode
         double steerPower = (angleWanted - robotHeading) * om.cons.STEERING_POWER_GAIN;
 
         double clippedSteering = -1.0 * (Range.clip(steerPower, -om.cons.STEERING_POWER_LIMIT, om.cons.STEERING_POWER_LIMIT) );
@@ -413,7 +412,7 @@ public class DriveTrain {
 
         // Update to use IMU angle
         angleUnWrap();// update heading info
-
+        om.updateIMU();//NEEDED FOR OFFLINE CODE
         robotAngle = robotHeading;
         /** robotAngle is not needed
          * can be ignored because navigator only needs to track robot on field in field coordinates
@@ -748,7 +747,6 @@ public class DriveTrain {
         double steeringPower = calcSteeringPowerNav(targetAngle, robotHeading,om);//Updated to Nav version since Navigator called
 
 
-        om.updateIMU();
 
         double prePower[] = new double[4];
 
@@ -783,7 +781,6 @@ public class DriveTrain {
 
             robotNavigator(om);//replaces angleUnwrap (called in navigator)
             steeringPower = calcSteeringPowerNav(targetAngle, robotHeading,om);//Updated to Nav version since Navigator called
-            om.updateIMU();
 
             for (int i = 0; i < 4; i++) {
 
@@ -830,7 +827,6 @@ public class DriveTrain {
         setMotorPower(0);
 
         robotNavigator(om);//replaces angleUnwrap (called in navigator)
-        om.updateIMU();
 
         om.telemetry.addData("COMPLETED Driving: ", step);
 //        om.telemetry.addData("Motor Commands: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
@@ -877,7 +873,6 @@ public class DriveTrain {
         //*************** ADDED CURRENT POSITION CALCULATION  ************************************
 
         robotNavigator(om);//replaces angleUnwrap (called in navigator)
-        om.updateIMU();
 
         for(int i = 0; i < 4; i++){
 
@@ -897,7 +892,6 @@ public class DriveTrain {
 
 
             robotNavigator(om);//replaces angleUnwrap (called in navigator)
-            om.updateIMU();
 
             for(int i = 0; i < 4; i++){
 
@@ -925,7 +919,6 @@ public class DriveTrain {
 
         currentPos = getMotorPosArray();
         robotNavigator(om);//replaces angleUnwrap (called in navigator)
-        om.updateIMU();
 
         om.telemetry.addData("COMPLETED Driving: ", step);
         om.telemetry.addData("Motor Counts: ", "FL (%d) FR (%d) BR (%d) BL (%d)",
@@ -1025,7 +1018,6 @@ public class DriveTrain {
         fieldY = robotFieldLocation.y;
 
         robotNavigator(om);
-        om.updateIMU();
 
         targetPoint = findPursuitPoint(pathPoints, robotFieldLocation, radius);
 
@@ -1036,7 +1028,6 @@ public class DriveTrain {
 
         while((distanceToTarget > radius) && (om.opModeIsActive() || om.testModeActive)) {
 
-            om.updateIMU();
             robotNavigator(om);
 
 

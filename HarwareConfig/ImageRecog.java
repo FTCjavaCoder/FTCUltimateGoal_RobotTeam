@@ -1,8 +1,7 @@
 package UltimateGoal_RobotTeam.HarwareConfig;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
+
+//import OfflineCode.OfflineHW.CameraSimulant;//NEEDED FOR OFFLINE
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -41,8 +40,20 @@ public class ImageRecog {
 
     public ImageRecog(BasicOpMode om, boolean tm)  {
         if(tm) {
-            om.telemetry.addData("ERROR: ", "Initializing Collector in TestMode...");
+            om.telemetry.addData("Image Recognition", " Initializing in Test Mode...");
+            om.telemetry.update();
 
+//            tfod = new CameraSimulant();//NEEDED FOR OFFLINE
+
+            if (tfod != null) {
+                tfod.activate();
+                om.telemetry.addLine("Status ... Simulant TFOD activated");
+                om.telemetry.update();
+
+            }
+            om.telemetry.addLine("\t\t... Initialization COMPLETE");
+
+            om.telemetry.update();
         }
         else {
 

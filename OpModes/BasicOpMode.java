@@ -2,11 +2,11 @@ package UltimateGoal_RobotTeam.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+//import OfflineCode.OfflineHW.Telemetry;//NEEDED FOR OFFLINE
+//import OfflineCode.OfflineOpModes.OpModeParamFunctions;//NEEDED FOR OFFLINE
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobot;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.Parameters.Constants;
-
 public class BasicOpMode extends LinearOpMode {
 
     public HardwareRobot Billy = new HardwareRobot();// call using Billy.(for hardware or angle unwrap method)
@@ -15,7 +15,7 @@ public class BasicOpMode extends LinearOpMode {
     public Constants cons = new Constants();// call using cons.(constant DRIVE_POWER_LIMIT etc.)
 
     //********************UPDATED 12/27/19 for OpMpde HashMap *********************************
-//    public OpModeParamFunctions ompf = new OpModeParamFunctions();
+//    public OpModeParamFunctions ompf = new OpModeParamFunctions();//NEEDED FOR OFFLINE
     /* UPDATED TO BE PRIVATE */
     private boolean loadFile = true;
     public String fileName = "AndroidHashMapFile.txt";
@@ -34,7 +34,9 @@ public class BasicOpMode extends LinearOpMode {
 
     public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
 
-//    public Telemetry telemetry = new Telemetry();//used for OfflineCode
+//public Telemetry telemetry = new Telemetry();//NEEDED FOR OFFLINE
+//public double timeStep = 135;//NEEDED FOR OFFLINE
+// timeStep (in milliseconds) determined so that faster motor speeds will show shorter time (number of steps, indices in array) to reach distance
 
     public BasicOpMode() {
 
@@ -43,6 +45,9 @@ public class BasicOpMode extends LinearOpMode {
     @Override
     public void runOpMode() {
 
+    }
+    public void updateIMU(){
+        //NEEDED FOR OFFLINE CODE TO UPDATE HW POSITIONS
     }
 
     public void pressAToContinue() {

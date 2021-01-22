@@ -16,6 +16,8 @@ import java.util.List;
 import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
 //import OfflineCode.OfflineHW.Telemetry;
+//import OfflineCode.Field.FieldConfiguration;
+
 import UltimateGoal_RobotTeam.Utilities.PursuitLines;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
@@ -103,26 +105,20 @@ public class BasicAuto extends BasicOpMode {
     public boolean haveBlueWobble2 = false;
     public boolean haveRedWobble1 = false;
     public boolean haveRedWobble2 = false;
-    /**
-     * COMMENTED OUT FOR EXPERIMENTAL CODE
-     * <p>
-     * //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
-     * public FieldConfiguration fc = new FieldConfiguration();
-     * boolean writeBF = false;
-     * boolean writeRF = false;
-     * boolean writeBS1 = false;
-     * boolean writeBS2 = false;
-     * boolean writeRS1 = false;
-     * boolean writeRS2 = false;
-     * <p>
-     * boolean robotSeeStone = false;
-     * <p>
-     * public int IMUCounter =0;
-     * public int size = 300;
-     * //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
-     * <p>
-     * END EXPERIMENTAL CODE
-     */
+
+     //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
+//    public FieldConfiguration fc = new FieldConfiguration();//NEEDED FOR OFFLINE
+    public boolean writeBR = false;
+    public boolean writeRR = false;
+    public boolean writeBW1 = false;
+    public boolean writeBW2 = false;
+    public boolean writeRW1 = false;
+    public boolean writeRW2 = false;
+    public boolean robotSeeRing = false;
+    public int IMUCounter =0;
+    public final static int size = 300;
+     //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
+
 
     /* Needed for Pure Pursuit */
     public ArrayList<PursuitPoint> fieldPoints = new ArrayList();
@@ -350,10 +346,8 @@ public class BasicAuto extends BasicOpMode {
         telemetry.update();//Update telemetry to update display
 
     }
+/* updateIMU() moved to BasicOpMode */
 
-    public void updateIMU() {
-
-    }
 
     public void forwardToViewRings() {
         // move forward ~18 inches
@@ -411,5 +405,19 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
-
+    public String testModeViewRings(){
+        String seeRings;
+        // Options are 0, 1, 4 rings on the field
+        // ringSelect is global in BasicAuto and set within the OfflineOopMode for Field Configuration
+        if(ringSelect == 1){
+            seeRings = "Single";//Same string returned from ImageRecog.viewRingsTimed or viewRings
+        }
+        else if(ringSelect == 4){
+            seeRings = "Quad";//Same string returned from ImageRecog.viewRingsTimed or viewRings
+        }
+        else {// if didn't see rings then return "None" to match ImageREcog
+                seeRings = "None";
+        }
+        return seeRings;
+    }
 }

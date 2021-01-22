@@ -84,10 +84,13 @@ public class Shooter {
 
     public Shooter(BasicOpMode om, boolean tm) {
         if (tm) {
+            om.telemetry.addData("Shooter", " Initializing ...");
+            om.telemetry.update();
 
-//            shooterLeft = new DcMotor();
-//            shooterRight = new DcMotor();
-            om.telemetry.addData("ERROR: ", "Initializing Shooter in TestMode...");
+//            shooterLeft = new DcMotor();shooterRight = new DcMotor();shooterLeft.timeStep = om.timeStep;shooterRight.timeStep = om.timeStep;//NEEDED FOR OFFLINE
+
+
+            om.telemetry.addLine("\t\t... Initialization COMPLETE");
             om.telemetry.update();
 
         } else {
@@ -203,7 +206,7 @@ public class Shooter {
         }
     }
 
-    public void setShooterMode(Gamepad gp, BasicOpMode om) {
+    public void setShooterModeGamePad(Gamepad gp, BasicOpMode om) {
         if (gp.dpad_right) {
             if (speedActive) {
                 speedActive = false;
@@ -234,7 +237,10 @@ public class Shooter {
      *    -- created supporting RPM and counts/s conversion methods convertRPM_to_CountPerSec & convertCountPerSec_to_RPM
      *
      */
+    public void setShooterMode(boolean mode) {
 
+        speedActive = mode;
+    }
     /**
      * shooterSpeedControl() takes in a target speed and time increment to control the motor speeds
      * Calculations use FeedForward (FF_GAIN), Proportional (SPEED_KP), and Integral(SPEED_KI) Gains

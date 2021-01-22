@@ -88,7 +88,7 @@ public class EncoderShooterTest extends BasicTeleOp {
             robotUG.collector.collectorControl(gamepad2,  this);// triggers
             robotUG.collector.setServoPos(gamepad2,  this);// leftstick Y
 
-            robotUG.shooter.setShooterMode(gamepad2,this);//SET the speedActive boolean to determine motor control mode - dPad Right
+            robotUG.shooter.setShooterModeGamePad(gamepad2,this);//SET the speedActive boolean to determine motor control mode - dPad Right
                 //toggles between GamePad1 power control and GamePad2 external speed control
                 //Should set speedActive before 1st commands to avoid integrator wind-up
             robotUG.shooter.setShooterPowerControl(gamepad1,this);//use the GamePad1 to set the shooter powers - dPad

@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import UltimateGoal_RobotTeam.HarwareConfig.Conveyor;
 import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
+import UltimateGoal_RobotTeam.Utilities.PursuitLines;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 @Autonomous(name="Complete Autonomous Left1", group="Autonomous")
@@ -89,6 +90,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 	@Override
 	public void runCode() {
 
+		haveBlueWobble1 = true;//Robot is gripping wobble goal
 		robotUG.wobbleArm.wobbleGoalServo.setPosition(0.9);//this is a firm grip on the goal
 
 		// Add points for Pure Pursuit motion - always start with where the robot was initialized to be on the field
@@ -97,7 +99,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); //x: -57, y: -63
 		fieldPoints.add(new PursuitPoint(-57, -57));
-		fieldPoints.add(new PursuitPoint(-40, -46.2));
+		fieldPoints.add(new PursuitPoint(-44, -36));// WAS (-40, -46.2) updated to better view rings
 
 	// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
 		for(int h=0;h<fieldPoints.size();h++) {
@@ -124,25 +126,41 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		 *   - 2.0s wait before looking at rings is sufficient time for image to stabilize
 		 *   %% suggest checking reduced wait times and reduce number of loops for the looping method %%
 		 */
-		double start = runtime.time();
-		while ((runtime.time() - start) < 2.0){
-			// Do nothing but report TM for counter and wait for robot to settle before looking at rings
-			robotUG.imageRecog.getTelemetry(this);
-			telemetry.update();
+		String ringsViewed;//Define string for returning what rings were seen
+		if(testModeActive){//Need this code for Offline
+			/* THIS IS WHERE THE WAIT AND VIEW RINGS OCCURS*/
+			int counts = 0;
+			while(counts < 10) {// 10 counts or data points should equal 1 offline second (300 points = 30 s)
+				telemetry.addLine("VIEWING RINGS");
+				telemetry.addData("Counts", " %d", counts);
+				telemetry.update();
+				updateIMU();//run this to log data fro offline code while waiting
+				counts+=1;
+			}
+			ringsViewed = testModeViewRings();
 		}
-//		String ringsViewed = robotUG.imageRecog.viewRings(this, 25);//baseline method that runs for set number of loops
-		String ringsViewed = robotUG.imageRecog.viewRingsTimed(this, 0.5);// ALTERNATE method that runs based on time
-
+		else {//This is what runs on the robot
+			double start = runtime.time();
+			while ((runtime.time() - start) < 2.0) {
+				// Do nothing but report TM for counter and wait for robot to settle before looking at rings
+				robotUG.imageRecog.getTelemetry(this);
+				telemetry.update();
+			}
+//		 	  ringsViewed = robotUG.imageRecog.viewRings(this, 25);//baseline method that runs for set number of loops
+			ringsViewed = robotUG.imageRecog.viewRingsTimed(this, 0.5);// ALTERNATE method that runs based on time
+		}
 		/* COACH NOTE: imageRecog methods end with telemetry being added but waiting for a telemetry.update()
 		 * -- expect an update in the main OpMode or a pressAToContinue method to follow
 		 */
 		telemetry.addLine("------------------------------------");
 		telemetry.addData("Image Recognition Completed", "String Value: %s", ringsViewed);
-		pressAToContinue();
-
-
-		robotUG.imageRecog.shutdown();//shutdown after pressA to allow the driver to observe screen before moving on
-
+		if(testModeActive){
+			telemetry.update();//Offline code can't access gamepad or imageRecognition
+		}
+		else { // This is what runs on robot
+			pressAToContinue();
+			robotUG.imageRecog.shutdown();//shutdown after pressA to allow the driver to observe screen before moving on
+		}
 	/* Choose Where to go Next and Pick up Wobble Goal */
 		decideWobbleGoalZone(ringsViewed);
 		/* -- COACH NOTE: for decideWobbleGoalZone
@@ -156,7 +174,12 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		}
 
 //		pressAToContinue();// review the Pursuit Points
-
+		/* TEST CODE TO DRAW LINES FOR VISUALIZATION */
+		if(testModeActive) {
+			for (int h = 0; h < fieldPoints.size() - 1; h++) {
+				lines.add(new PursuitLines(fieldPoints.get(h).x, fieldPoints.get(h).y, fieldPoints.get(h + 1).x, fieldPoints.get(h + 1).y));
+			}
+		}
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
 
 		/* COACH ADDITIONS: added helpful telemetry
@@ -212,8 +235,17 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		fieldPoints.add(new PursuitPoint(-48, -8));/* COACH CHANGED - for high goal - allow all options to align */
 		fieldPoints.add(new PursuitPoint(-30, -8));/* COACH CHANGED - for high goal */
 
-		//TURN ON SHOOTER -- allow time to power up to full speed while driving
+		/* TEST CODE TO DRAW LINES FOR VISUALIZATION */
+		if(testModeActive) {
+			for (int h = 0; h < fieldPoints.size() - 1; h++) {
+				lines.add(new PursuitLines(fieldPoints.get(h).x, fieldPoints.get(h).y, fieldPoints.get(h + 1).x, fieldPoints.get(h + 1).y));
+			}
+		}
+		//TURN ON SHOOTER -- allow time to power up to full speed while driving, UPDATE TO SHOOTER SPEED METHOD
 		robotUG.shooter.setShooter_Power(1.0);//1.0 for high goal too much @ Y = -6, trying -8
+		/* Alternative for Speed Control Below */
+//		robotUG.shooter.setShooterMode(true);//Make speed control active
+//		robotUG.shooter.shooterSpeedControl(1300, this);//Set speed in RPM
 
 	/* Drive to and Shoot the Powershots */
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To PowerShot Shooting Position");
@@ -239,16 +271,31 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		//TURN ON CONVEYOR & COLLECTOR (last ring is partially under collector)
 		robotUG.conveyor.setMotion(Conveyor.motionType.UP);
 		robotUG.collector.collectorWheel.setPower(-1.0);//need negative power to collector rings
-		double startTime = runtime.time();
-		double shootTime = runtime.time() - startTime;
-		while(shootTime <10.0) {//Since no sensors purely timed set of shots
-			shootTime = runtime.time() - startTime;
-			telemetry.addLine("Shoot high goal x 3");
-			telemetry.addData("Timer", " %1.2f", shootTime);
-			telemetry.addData("Shooter Power", "  %1.2f",  robotUG.shooter.getShooter_Power());
-			telemetry.addData("Conveyor Power", " %1.1f",  robotUG.conveyor.conveyor_Power);
-			telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
-			telemetry.update();
+		if(testModeActive){//accessing time will exceed size of data file and cause errors, run by number of counts
+			int counts = 0;
+			while(counts < 50) {
+				telemetry.addLine("Shoot High Goal x3");
+				telemetry.addData("Counts", " %d", counts);
+				telemetry.addData("Shooter Power", "  %1.2f",  robotUG.shooter.getShooter_Power());
+				telemetry.addData("Conveyor Power", " %1.1f",  robotUG.conveyor.conveyor_Power);
+				telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
+				telemetry.update();
+				robotUG.driveTrain.robotNavigator(this);
+				counts+=1;
+			}
+		}
+		else {
+			double startTime = runtime.time();
+			double shootTime = runtime.time() - startTime;
+			while (shootTime < 10.0) {//Since no sensors purely timed set of shots
+				shootTime = runtime.time() - startTime;
+				telemetry.addLine("Shoot high goal x 3");
+				telemetry.addData("Timer", " %1.2f", shootTime);
+				telemetry.addData("Shooter Power", "  %1.2f", robotUG.shooter.getShooter_Power());
+				telemetry.addData("Conveyor Power", " %1.1f", robotUG.conveyor.conveyor_Power);
+				telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
+				telemetry.update();
+			}
 		}
 		//TURN OFF CONVEYOR & COLLECTOR OFF
 		robotUG.conveyor.setMotion(Conveyor.motionType.OFF);
@@ -257,6 +304,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		telemetry.addData("Time to Shoot Target 3 targets", " %1.2f", shootTime);
 //		pressAToContinue();//record the time to fire shot #1 and observe outcome
 
+		// ---------- CODE FOR POWER SHOT ------------------------
 		/* COACH NOTE: observation that robot not moving far enough right
 		 *  7.5" is the correct spacing but the robot rotates so may not fully move the desired amount
 		 *   Could update motion using the navigator
@@ -318,7 +366,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		robotUG.shooter.setShooter_Power(0.0);
 //		telemetry.addData("Time to Shoot Target #3", " %1.2f", shootTime);
 //		pressAToContinue();//record the time to fire shot #1 and observe outcome
-
+// ---------- END CODE FOR POWER SHOT ------------------------
 
 		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 12, -90, "Move Fwd ~6 in. to score points", this);
 		/* INCREASED DRIVING DISTANCE BASED ON SHOOTING LOCATION*/
@@ -339,8 +387,12 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		telemetry.addData("Final Pursuit Point", " (%.2f, %.2f)", fieldPoints.get(fieldPoints.size()-1).x,fieldPoints.get(fieldPoints.size()-1).y);
 		telemetry.addLine("----------------------------------");
 		telemetry.addLine("Observe telemetry and Press A to shutdown");
-
-		pressAToContinue();//observe telemetry before shutdown
+		if(testModeActive){// Can't access gamePad
+			telemetry.update();
+		}
+		else {// PressA included so the runtime and final reported position can be observed
+			pressAToContinue();//observe telemetry before shutdown, without pressA the display is cleared
+		}
 		robotUG.shutdownAll();
 	}
 

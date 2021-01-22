@@ -18,9 +18,11 @@ public class Conveyor {
     public Conveyor(BasicOpMode om, boolean tm) {
 
         if(tm){
-//            conveyorLeft = new CRServo();
-////            conveyorRight = new CRServo();
-            om.telemetry.addData("ERROR: ", "Initializing Conveyor in TestMode...");
+            om.telemetry.addData("Conveyor", " Initializing  ...");
+            om.telemetry.update();
+//            conveyorLeft = new CRServo();conveyorRight = new CRServo();conveyorLeft.timeStep = om.timeStep;conveyorRight.timeStep = om.timeStep;//NEEDED FOR OFFLINE
+
+            om.telemetry.addLine("\t\t... Initialization COMPLETE");
             om.telemetry.update();
 
         }
