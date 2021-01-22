@@ -12,7 +12,7 @@ public class Collector {
 
     public double collectorPower = 0.0;
     public double servoPos = 0.0;
-    private final double SERVO_INIT_POS = 0.8;//servo position with wheels up ready to start game, gets set in constructor
+    private final double SERVO_INIT_POS = 1.0;//servo position with wheels up ready to start game, gets set in constructor
 
     /* Public OpMode members. */
     public DcMotor collectorWheel    = null;

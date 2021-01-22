@@ -85,7 +85,7 @@ public class EncoderShooterTest extends BasicTeleOp {
         while (opModeIsActive()) {
 
             robotUG.conveyor.ConveyorControl(gamepad1, this);// Y, B, X
-            robotUG.collector.collectorControl(gamepad2,  this);// triggers
+            robotUG.collector.collectorOnOffControl(gamepad2,  this);// triggers
             robotUG.collector.setServoPos(gamepad2,  this);// leftstick Y
 
             robotUG.shooter.setShooterModeGamePad(gamepad2,this);//SET the speedActive boolean to determine motor control mode - dPad Right
