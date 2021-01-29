@@ -72,7 +72,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		}
 		telemetry.update();
 
-		robotUG.driveTrain.robotFieldLocation.setLocation(-36,-63,90); //MOVED HERE FOR OFFLINE CODE
+		robotUG.driveTrain.robotFieldLocation.setLocation(-31,-63,90); //MOVED HERE FOR OFFLINE CODE
 
 	}
 	@Override
@@ -108,7 +108,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		/* Drive to Wobble Goal and Scan the Number of Rings*/
 
 		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); // x: -33, y: -63; was -36
-		fieldPoints.add(new PursuitPoint(-36, -43)); //was -36, -43; I changed x t0 -34.5
+		fieldPoints.add(new PursuitPoint(-36, -41)); //was -36, -43; I changed x t0 -34.5
 
 	// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
 		for(int h=0;h<fieldPoints.size();h++) {

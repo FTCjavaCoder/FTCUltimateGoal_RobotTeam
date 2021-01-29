@@ -128,6 +128,9 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		}
 
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To View the Rings");
+
+		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);
+
 		/* -- COACH NOTE: overall good progress but several items need to be tested
 		 *   - Should create variables either in OpMode or in HW for specific conditions so a parameter can be used
 		 *       shooter power, conveyor ON time, right motion, arm & servo positions, and other hard coded values could be parameters
