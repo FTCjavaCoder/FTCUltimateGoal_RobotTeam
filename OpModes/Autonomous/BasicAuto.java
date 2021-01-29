@@ -51,7 +51,7 @@ public class BasicAuto extends BasicOpMode {
     public double insideOutside = 0;// 0 for Inside, 24 for Outside
     public double foundationInOut = 0;// 0 for Inside, 26 for Outside
     public double foundationPush = 8;
-    public double sideColor = 1;// + for Blue, - for Red, KEEP BLUE
+    public int sideColor = 1;// + for Blue, - for Red, KEEP BLUE
 
     public double blockCamera = 0.525;
     public double extraFwdToBlock = 0;
@@ -108,6 +108,7 @@ public class BasicAuto extends BasicOpMode {
 
      //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
 //    public FieldConfiguration fc = new FieldConfiguration();//NEEDED FOR OFFLINE
+
     public boolean writeBR = false;
     public boolean writeRR = false;
     public boolean writeBW1 = false;
@@ -117,6 +118,10 @@ public class BasicAuto extends BasicOpMode {
     public boolean robotSeeRing = false;
     public int IMUCounter =0;
     public final static int size = 300;
+    public int[] collectorArray = new int[size];
+    public int[] conveyorArray = new int[size];
+    public int[] shooterArray = new int[size];
+    public double[] wgaAngleArray = new double[size];
      //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
 
 
@@ -157,13 +162,67 @@ public class BasicAuto extends BasicOpMode {
 
 
     }
+    @Override
+    public void updateIMU() {
+        //NEEDED FOR OFFLINE CODE TO UPDATE HW POSITIONS
 
+        //Moved this method content to BasicAuto so that it is inherited in all BasicOpModes
+        //Otherwise the OpModes run the blank BasicAuto code
+        if (testModeActive) {
+//            robotUG.driveTrain.imu.flCnt = robotUG.driveTrain.frontLeft.getCurrentPosition();
+//            robotUG.driveTrain.imu.frCnt = robotUG.driveTrain.frontRight.getCurrentPosition();
+//            robotUG.driveTrain.imu.brCnt = robotUG.driveTrain.backRight.getCurrentPosition();
+//            robotUG.driveTrain.imu.blCnt = robotUG.driveTrain.backLeft.getCurrentPosition();
+
+//            IMUCounter = robotUG.driveTrain.imu.counter;
+
+            collectorArray[IMUCounter] = (int) Math.round(robotUG.collector.collectorPower);
+            conveyorArray[IMUCounter] = (int) Math.round(robotUG.conveyor.conveyor_Power);
+            shooterArray[IMUCounter] = (int) Math.round(robotUG.shooter.getShooter_Power());
+            wgaAngleArray[IMUCounter] = robotUG.wobbleArm.getArmAngleDegrees() * Math.PI / 180.0;
+
+//            fc.updateField(this);
+
+            if (haveBlueRing) {
+                writeBR = true;
+            }
+            if (haveRedRing) {
+                writeRR = true;
+            }
+            if (haveBlueWobble1) {
+                writeBW1 = true;
+            }
+            if (haveBlueWobble2) {
+                writeBW2 = true;
+            }
+            if (haveRedWobble1) {
+                writeRW1 = true;
+            }
+            if (haveRedWobble2) {
+                writeRW2 = true;
+            }
+
+            try {
+//
+                if (IMUCounter >= size) {
+                    int a = 1 / 0;
+                }
+            } catch (ArithmeticException e) {
+                System.out.println(String.format("Exceeded %d counter steps", size));
+                System.out.println(String.format("IMU Counter = %d", IMUCounter));
+            }
+        }
+    }
     public void runCode() {
 
 
     }
+    public void constructRobot() {
 
-    public void initialize() {
+
+    }
+
+     public void initialize() {
 
         telemetry.addLine("NOT READY DON'T PRESS PLAY");
         telemetry.update();
@@ -367,20 +426,14 @@ public class BasicAuto extends BasicOpMode {
             case "None":
                 // Zone A pursuit points
 
-//                fieldPoints.add(new PursuitPoint(-60,-18));
-//                fieldPoints.add(new PursuitPoint(-60,0));
-                /* COACH UPDATES */
                 fieldPoints.add(new PursuitPoint(-54,-36));//sharper turn to avoid rings, keeping robot off center on tiles
-                fieldPoints.add(new PursuitPoint(-54,-8));//more negative final location for wobble goal drop
+                fieldPoints.add(new PursuitPoint(-54, -8));//more negative final location for wobble goal drop
             break;
 
             case "Single":
                 // Zone B pursuit points
 
-//                fieldPoints.add(new PursuitPoint(-12,-18));
-//                fieldPoints.add(new PursuitPoint(-12,-12));
-//                fieldPoints.add(new PursuitPoint(-36,24));
-                /* COACH UPDATES */
+
                 fieldPoints.add(new PursuitPoint(-12,-36));//sharper turn to avoid rings
                 fieldPoints.add(new PursuitPoint(-12,-12));
                 fieldPoints.add(new PursuitPoint(-30,6));//keeping robot off center on tiles
@@ -390,9 +443,6 @@ public class BasicAuto extends BasicOpMode {
             case "Quad":
                 // Zone C pursuit points
 
-//                fieldPoints.add(new PursuitPoint(-60,-18));
-//                fieldPoints.add(new PursuitPoint(-60,48));
-                /* COACH UPDATES */
                 fieldPoints.add(new PursuitPoint(-54,-36));//sharper turn to avoid rings, keeping robot off center on tiles
                 fieldPoints.add(new PursuitPoint(-54,40));//more negative final location for wobble goal drop
             break;

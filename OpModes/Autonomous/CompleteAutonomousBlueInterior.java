@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import UltimateGoal_RobotTeam.HarwareConfig.Conveyor;
 import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
+import UltimateGoal_RobotTeam.Utilities.PursuitLines;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 @Autonomous(name="Complete Autonomous Blue Interior", group="Autonomous")
@@ -11,6 +12,8 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
  public class CompleteAutonomousBlueInterior extends BasicAuto {
 	@Override
 	public void runOpMode() {
+
+		constructRobot();
 
 		initialize();
 
@@ -33,9 +36,11 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		telemetry.addLine("----------------------------------");
 		telemetry.update();
 	}
-
 	@Override
-	public void initialize() {
+	public void constructRobot() {
+		// This method constructs the robot
+		// It was separated from initialize for use in OfflineCode where offline steps are needed
+		// with constructed robot before initialize
 		runtime.reset();
 		telemetry.addLine("NOT READY DON'T PRESS PLAY");
 		telemetry.update();
@@ -54,26 +59,32 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		 * items that are 1 = true will be configured to the robot
 		 */
 		// HW ELEMENTS *****************    DriveTrain  Shooter  Conveyor	WobbleArm	Collector	ImageRecog
-		boolean[] configArray = new boolean[]{ true, 	true, 	true, 		true, 		true,		true};
+		boolean[] configArray = new boolean[]{true, true, true, true, true, true};
 
 		// READ HASHMAP FILE
 		readOrWriteHashMap();
 
-		robotUG = new HardwareRobotMulti(this, configArray,testModeActive);
+		robotUG = new HardwareRobotMulti(this, configArray, testModeActive);
+		// Update telemetry to tell driver than robot is ready
+		telemetry.addData("STATUS", "MultiRobot Hardware Configured!!");
+//		for(int j=0;j<configArray.length;j++) {
+//			telemetry.addData("ConfigArray Index", "%d with Value: %s", j, configArray[j]);
+//		}
+		telemetry.update();
+
+		robotUG.driveTrain.robotFieldLocation.setLocation(-36,-63,90); //MOVED HERE FOR OFFLINE CODE
+
+	}
+	@Override
+	public void initialize() {
 
 		// Tell the robot where it's starting location and orientation on the field is
 
-		robotUG.driveTrain.robotFieldLocation.setLocation(-36,-63,90); //was x = -36; I changed it to 33
 		robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
 		robotUG.driveTrain.robotX = 0;// robot local coordinates always start at 0
 		robotUG.driveTrain.robotY = 0;
 		robotUG.wobbleArm.wobbleGoalServo.setPosition(0.8);//this is a loose grip
 
-		// Update telemetry to tell driver than robot is ready
-		telemetry.addData("STATUS", "MultiRobot Hardware Configured!!");
-		for(int j=0;j<configArray.length;j++) {
-			telemetry.addData("ConfigArray Index", "%d with Value: %s", j, configArray[j]);
-		}
 		telemetry.addData("Robot Field Location", "X = %.2f inch, Y = %.2f inch, Theta = %.2f degrees",robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y, robotUG.driveTrain.robotFieldLocation.theta);
 		telemetry.addLine(" ");
 		telemetry.addLine("*********************************************");
@@ -87,9 +98,11 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 	@Override
 	public void runCode() {
+		runtime.reset();
+		haveBlueWobble2 = true;//Robot is gripping wobble goal
 
 		robotUG.wobbleArm.wobbleGoalServo.setPosition(0.9);//this is a firm grip on the goal
-
+		telemetry.update();
 		// Add points for Pure Pursuit motion - always start with where the robot was initialized to be on the field
 
 		/* Drive to Wobble Goal and Scan the Number of Rings*/
@@ -150,10 +163,13 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		 */
 		telemetry.addLine("------------------------------------");
 		telemetry.addData("Image Recognition Completed", "String Value: %s", ringsViewed);
-		pressAToContinue();
-
-
-		robotUG.imageRecog.shutdown();//shutdown after pressA to allow the driver to observe screen before moving on
+		if(testModeActive){
+			telemetry.update();//Offline code can't access gamepad or imageRecognition
+		}
+		else { // This is what runs on robot
+			pressAToContinue();
+			robotUG.imageRecog.shutdown();//shutdown after pressA to allow the driver to observe screen before moving on
+		}
 
 	/* Choose Where to go Next and Pick up Wobble Goal */
 		decideWobbleGoalZone(ringsViewed);
@@ -166,7 +182,12 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		for(int h=0;h<fieldPoints.size();h++) {
 //		telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
 //		}
-
+		/* TEST CODE TO DRAW LINES FOR VISUALIZATION */
+		if(testModeActive) {
+			for (int h = 0; h < fieldPoints.size() - 1; h++) {
+				lines.add(new PursuitLines(fieldPoints.get(h).x, fieldPoints.get(h).y, fieldPoints.get(h + 1).x, fieldPoints.get(h + 1).y));
+			}
+		}
 //		pressAToContinue();// review the Pursuit Points
 
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
@@ -223,7 +244,12 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		 */
 		fieldPoints.add(new PursuitPoint(-48, -6));/* COACH CHANGED - for high goal - allow all options to align */
 		fieldPoints.add(new PursuitPoint(-30, -6));/* COACH CHANGED - for high goal */
-
+		/* TEST CODE TO DRAW LINES FOR VISUALIZATION */
+		if(testModeActive) {
+			for (int h = 0; h < fieldPoints.size() - 1; h++) {
+				lines.add(new PursuitLines(fieldPoints.get(h).x, fieldPoints.get(h).y, fieldPoints.get(h + 1).x, fieldPoints.get(h + 1).y));
+			}
+		}
 		//TURN ON SHOOTER -- allow time to power up to full speed while driving
 		robotUG.shooter.setShooter_Power(0.8);//1.0 for high goal too much @ Y = -6, trying -8
 
@@ -251,6 +277,8 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		//TURN ON CONVEYOR & COLLECTOR (last ring is partially under collector)
 		robotUG.conveyor.setMotion(Conveyor.motionType.UP);
 		robotUG.collector.collectorWheel.setPower(-1.0);//need negative power to collector rings
+		robotUG.collector.collectorPower = -1.0;//set variable to track in Offline code
+
 		if(testModeActive){//accessing time will exceed size of data file and cause errors, run by number of counts
 			int counts = 0;
 			while(counts < 50) {
@@ -280,6 +308,8 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		//TURN OFF CONVEYOR & COLLECTOR OFF
 		robotUG.conveyor.setMotion(Conveyor.motionType.OFF);
 		robotUG.collector.collectorWheel.setPower(0.0);
+		robotUG.collector.collectorPower = 0.0;//set variable to track in Offline code
+
 		robotUG.shooter.shutdown();
 //		telemetry.addData("Time to Shoot Target 3 targets", " %1.2f", shootTime);
 //		pressAToContinue();//record the time to fire shot #1 and observe outcome
@@ -367,7 +397,24 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		telemetry.addLine("----------------------------------");
 		telemetry.addLine("Observe telemetry and Press A to shutdown");
 
-		pressAToContinue();//observe telemetry before shutdown
+		if(testModeActive){// Can't access gamePad
+			telemetry.update();
+			int counts = 0;
+			while(counts < 10) {//wait a 1.0s at the end
+				telemetry.addLine("WAITING....");
+				telemetry.addData("Counts", " %d", counts);
+				telemetry.update();
+				robotUG.driveTrain.robotNavigator(this);
+				counts+=1;
+			}
+			telemetry.addLine("/////////////////////////////////");
+			telemetry.addLine("OpMode Complete");
+			telemetry.addData("Counts", " %d", counts);
+			telemetry.update();
+		}
+		else {// PressA included so the runtime and final reported position can be observed
+			pressAToContinue();//observe telemetry before shutdown, without pressA the display is cleared
+		}
 		robotUG.shutdownAll();
 	}
 

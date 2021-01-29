@@ -59,7 +59,7 @@ public class WobbleArm {
         if(tm) {
             om.telemetry.addData("Wobble Arm", " Initializing...");
             om.telemetry.update();
-//            wobbleGoalServo = new Servo();wobbleGoalArm = new DcMotor();wobbleGoalArm.timeStep = om.timeStep * (0.2);//NEEDED FOR OFFLINE
+//            wobbleGoalServo = new Servo();wobbleGoalArm = new DcMotor();wobbleGoalArm.timeStep = om.timeStep * (0.5);//NEEDED FOR OFFLINE
             wobbleGoalArm.setPower(0);
             wobbleGoalArm.setTargetPosition(0);
             wobbleGoalArm.setDirection(DcMotorSimple.Direction.FORWARD);
