@@ -217,17 +217,17 @@ public class WobbleArm {
     public void setWobbleGoalArmUp(Gamepad gamepad, BasicOpMode om) {
 
         if (gamepad.dpad_up){
-            wobbleArmTargetAngle = 70;// initial guess for Wobble Goal over field wall || was 80
+            wobbleArmTargetAngle = 70;// angle for Wobble Goal over field wall || was 80
             wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));// Updated coach method
             om.sleep(300);
         }
 
     }
 
-    public void setWobbleGoalArmStowed(Gamepad gamepad, BasicOpMode om) {
+    public void setWobbleGoalArmOverWall(Gamepad gamepad, BasicOpMode om) {
 
         if (gamepad.dpad_right){
-            wobbleArmTargetAngle = 10;// initial guess for Wobble Goal stowed safely
+            wobbleArmTargetAngle = 90;// angle for Wobble Goal over wall
             wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));// Updated coach method
             om.sleep(300);
         }

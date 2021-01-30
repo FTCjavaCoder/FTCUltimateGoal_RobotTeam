@@ -126,7 +126,7 @@ public class EverythingDrive extends BasicTeleOp {
 
             robotUG.wobbleArm.setWobbleGoalArmDown(gamepad2,this);
 
-            robotUG.wobbleArm.setWobbleGoalArmStowed(gamepad2,this);
+            robotUG.wobbleArm.setWobbleGoalArmOverWall(gamepad2,this);
 
             robotUG.wobbleArm.setWobbleServoPos(gamepad2,this);
 
