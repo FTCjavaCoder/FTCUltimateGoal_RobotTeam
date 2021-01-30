@@ -75,7 +75,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //			telemetry.addData("ConfigArray Index", "%d with Value: %s", j, configArray[j]);
 //		}
 		telemetry.update();
-		robotUG.driveTrain.robotFieldLocation.setLocation(-57,-63,90);//Moved to separate method
+		robotUG.driveTrain.robotFieldLocation.setLocation(-54,-63,90);//Moved to separate method
 
 	}
 	@Override
