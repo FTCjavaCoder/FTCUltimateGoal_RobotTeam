@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="William's Teleop", group="TeleOp")
 @Disabled
-public class William_Teleop extends BasicTeleOp {
+public class SSWilliam_Teleop extends BasicTeleOp {
 
     @Override
     public void runOpMode() {

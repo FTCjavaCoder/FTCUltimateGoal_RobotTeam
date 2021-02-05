@@ -1,20 +1,17 @@
 package UltimateGoal_RobotTeam.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 import UltimateGoal_RobotTeam.HarwareConfig.Conveyor;
 import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.Utilities.PursuitLines;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
-@Autonomous(name="Complete Autonomous Blue Exterior", group="Autonomous")
+@Autonomous(name="Main Blue Interior Autonomous", group="Autonomous")
 
- public class CompleteAutonomousBlueExterior extends BasicAuto {
+ public class MainBlueInAuto extends BasicAuto {
 	@Override
 	public void runOpMode() {
-
-
 
 		constructRobot();
 
@@ -39,7 +36,6 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		telemetry.addLine("----------------------------------");
 		telemetry.update();
 	}
-
 	@Override
 	public void constructRobot() {
 		// This method constructs the robot
@@ -75,11 +71,13 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //			telemetry.addData("ConfigArray Index", "%d with Value: %s", j, configArray[j]);
 //		}
 		telemetry.update();
-		robotUG.driveTrain.robotFieldLocation.setLocation(-54,-63,90);//Moved to separate method
+
+		robotUG.driveTrain.robotFieldLocation.setLocation(-31,-63,90); //MOVED HERE FOR OFFLINE CODE
 
 	}
 	@Override
 	public void initialize() {
+
 		// Tell the robot where it's starting location and orientation on the field is
 
 		robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
@@ -101,26 +99,16 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 	@Override
 	public void runCode() {
 		runtime.reset();
-		/* COACH NOTE: using side Color can make use of mirroring BLUE "-" values to RED "+" values
-		 * SUGGEST: Making basic steps in BasicAuto that can be called by OpModes
-		 * 		- driveToRingsInterior & driveToRingsExterior methods
-		 * 		- driveToWobbleZone() - currently only need 1 but could have interior and exterior variants
-		 * 		- driveToShootingZone() - currently only need 1 but could have interior and exterior variants
-		 *  	- Make other methods to combine repeated steps
-		 * 			Shoot Targets, View Rings, Get 2nd wobble goal
-		 */
+		haveBlueWobble2 = true;//Robot is gripping wobble goal
 
-		haveBlueWobble1 = true;//Robot is gripping wobble goal
 		robotUG.wobbleArm.wobbleGoalServo.setPosition(0.9);//this is a firm grip on the goal
 		telemetry.update();
 		// Add points for Pure Pursuit motion - always start with where the robot was initialized to be on the field
 
 		/* Drive to Wobble Goal and Scan the Number of Rings*/
 
-		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); //x: -57, y: -63
-//		fieldPoints.add(new PursuitPoint(-57, -57));
-		fieldPoints.add(new PursuitPoint(-36, -52));// WAS (-40, -46.2) updated to better view rings (changed it to -44, -35); 1/22: changed it back to -36, -53
-		fieldPoints.add(new PursuitPoint(-37, -43));
+		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); // x: -33, y: -63; was -36
+		fieldPoints.add(new PursuitPoint(-36, -41)); //was -36, -43; I changed x t0 -34.5
 
 	// Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
 		for(int h=0;h<fieldPoints.size();h++) {
@@ -129,7 +117,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To View the Rings");
 
-		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);
+//		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);
 
 		/* -- COACH NOTE: overall good progress but several items need to be tested
 		 *   - Should create variables either in OpMode or in HW for specific conditions so a parameter can be used
@@ -185,6 +173,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 			pressAToContinue();
 			robotUG.imageRecog.shutdown();//shutdown after pressA to allow the driver to observe screen before moving on
 		}
+
 	/* Choose Where to go Next and Pick up Wobble Goal */
 		decideWobbleGoalZone(ringsViewed);
 		/* -- COACH NOTE: for decideWobbleGoalZone
@@ -196,14 +185,14 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		for(int h=0;h<fieldPoints.size();h++) {
 //		telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
 //		}
-
-//		pressAToContinue();// review the Pursuit Points
 		/* TEST CODE TO DRAW LINES FOR VISUALIZATION */
 		if(testModeActive) {
 			for (int h = 0; h < fieldPoints.size() - 1; h++) {
 				lines.add(new PursuitLines(fieldPoints.get(h).x, fieldPoints.get(h).y, fieldPoints.get(h + 1).x, fieldPoints.get(h + 1).y));
 			}
 		}
+//		pressAToContinue();// review the Pursuit Points
+
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
 
 		/* COACH ADDITIONS: added helpful telemetry
@@ -258,18 +247,14 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		 */
 		fieldPoints.add(new PursuitPoint(-48, -6));/* COACH CHANGED - for high goal - allow all options to align */
 		fieldPoints.add(new PursuitPoint(-30, -6));/* COACH CHANGED - for high goal */
-
 		/* TEST CODE TO DRAW LINES FOR VISUALIZATION */
 		if(testModeActive) {
 			for (int h = 0; h < fieldPoints.size() - 1; h++) {
 				lines.add(new PursuitLines(fieldPoints.get(h).x, fieldPoints.get(h).y, fieldPoints.get(h + 1).x, fieldPoints.get(h + 1).y));
 			}
 		}
-		//TURN ON SHOOTER -- allow time to power up to full speed while driving, UPDATE TO SHOOTER SPEED METHOD
+		//TURN ON SHOOTER -- allow time to power up to full speed while driving
 		robotUG.shooter.setShooter_Power(0.8);//1.0 for high goal too much @ Y = -6, trying -8
-		/* Alternative for Speed Control Below */
-//		robotUG.shooter.setShooterMode(true);//Make speed control active
-//		robotUG.shooter.shooterSpeedControl(1300, this);//Set speed in RPM
 
 	/* Drive to and Shoot the Powershots */
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To PowerShot Shooting Position");
@@ -296,6 +281,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		robotUG.conveyor.setMotion(Conveyor.motionType.UP);
 		robotUG.collector.collectorWheel.setPower(-1.0);//need negative power to collector rings
 		robotUG.collector.collectorPower = -1.0;//set variable to track in Offline code
+
 		if(testModeActive){//accessing time will exceed size of data file and cause errors, run by number of counts
 			int counts = 0;
 			while(counts < 50) {
@@ -331,7 +317,6 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		telemetry.addData("Time to Shoot Target 3 targets", " %1.2f", shootTime);
 //		pressAToContinue();//record the time to fire shot #1 and observe outcome
 
-		// ---------- CODE FOR POWER SHOT ------------------------
 		/* COACH NOTE: observation that robot not moving far enough right
 		 *  7.5" is the correct spacing but the robot rotates so may not fully move the desired amount
 		 *   Could update motion using the navigator
@@ -393,7 +378,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		robotUG.shooter.setShooter_Power(0.0);
 //		telemetry.addData("Time to Shoot Target #3", " %1.2f", shootTime);
 //		pressAToContinue();//record the time to fire shot #1 and observe outcome
-// ---------- END CODE FOR POWER SHOT ------------------------
+
 
 		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 12, -90, "Move Fwd ~6 in. to score points", this);
 		/* INCREASED DRIVING DISTANCE BASED ON SHOOTING LOCATION*/
@@ -414,6 +399,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		telemetry.addData("Final Pursuit Point", " (%.2f, %.2f)", fieldPoints.get(fieldPoints.size()-1).x,fieldPoints.get(fieldPoints.size()-1).y);
 		telemetry.addLine("----------------------------------");
 		telemetry.addLine("Observe telemetry and Press A to shutdown");
+
 		if(testModeActive){// Can't access gamePad
 			telemetry.update();
 			int counts = 0;

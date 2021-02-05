@@ -8,7 +8,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 
 @TeleOp(name="Everything Drive", group="TeleOp")
 
-public class EverythingDrive extends BasicTeleOp {
+public class MainDrive extends BasicTeleOp {
 
     @Override
     public void runOpMode() {

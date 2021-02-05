@@ -4,14 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
-
 /**
  *
  */
 
-@TeleOp(name="FullDrive Stick Control", group="TeleOp")
+@TeleOp(name="FullDrive", group="TeleOp")
 @Disabled
-public class FullDrive_StickControl extends BasicTeleOp {
+public class SSFullDrive extends BasicTeleOp {
 
     @Override
     public void runOpMode() {
@@ -31,10 +30,10 @@ public class FullDrive_StickControl extends BasicTeleOp {
         while (opModeIsActive()) {
 
             // Set Drive Motor Power
-            Billy.drivePowerAll(gamepad1, gamepad2,this);
+            Billy.drivePower(gamepad1, gamepad2, this);
 
-//            // use the left/right triggers on gamepad1 to rotate the robot counter/clockwise
-//            Billy.rotatePowerRightStick(gamepad1, gamepad2);
+            // use the left/right triggers on gamepad1 to rotate the robot counter/clockwise
+            Billy.rotatePower(gamepad1, gamepad2, this);
 
             Billy.angleUnWrap();
 

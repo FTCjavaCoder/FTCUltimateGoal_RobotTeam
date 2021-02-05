@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Weighted Power Teleop", group="TeleOp")
 @Disabled
-public class Weighted_Teleop extends BasicTeleOp {
+public class SSWeighted_Teleop extends BasicTeleOp {
 
     @Override
     public void runOpMode() {

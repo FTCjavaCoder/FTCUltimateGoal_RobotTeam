@@ -10,7 +10,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 @Autonomous(name="Double Wobble Goal Autonomous Left", group="Autonomous")
 @Disabled
- public class DoubleWobbleGoalAutonomousLeft extends BasicAuto {
+ public class BlueEx2WobbleAuto extends BasicAuto {
 	@Override
 	public void runOpMode() {
 
