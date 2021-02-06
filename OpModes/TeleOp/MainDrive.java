@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 
-@TeleOp(name="Everything Drive", group="TeleOp")
+@TeleOp(name="Main Drive", group="TeleOp")
 
 public class MainDrive extends BasicTeleOp {
 

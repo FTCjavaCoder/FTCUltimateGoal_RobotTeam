@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.Range;
  * I made this TeleOp because 1) I wanted to experiment with the code and 2) I don't like the current driver controls
  */
 
-@TeleOp(name="William's Teleop", group="TeleOp")
+@TeleOp(name="SS William's Teleop", group="TeleOp")
 @Disabled
 public class SSWilliam_Teleop extends BasicTeleOp {
 

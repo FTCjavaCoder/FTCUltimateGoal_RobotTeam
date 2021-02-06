@@ -2,19 +2,14 @@ package UltimateGoal_RobotTeam.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import UltimateGoal_RobotTeam.HarwareConfig.Conveyor;
 import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
-import UltimateGoal_RobotTeam.Utilities.PursuitLines;
-import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
-@Autonomous(name="Main Blue Exterior Autonomous", group="Autonomous")
+@Autonomous(name="Blue Interior Power Shot Autonomous", group="Autonomous")
 
- public class MainBlueExAuto extends BasicAuto {
+ public class BlueInPowerShotAuto extends BasicAuto {
 	@Override
 	public void runOpMode() {
-
-
 
 		constructRobot();
 
@@ -39,7 +34,6 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		telemetry.addLine("----------------------------------");
 		telemetry.update();
 	}
-
 	@Override
 	public void constructRobot() {
 		// This method constructs the robot
@@ -75,11 +69,13 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //			telemetry.addData("ConfigArray Index", "%d with Value: %s", j, configArray[j]);
 //		}
 		telemetry.update();
-		robotUG.driveTrain.robotFieldLocation.setLocation(-54,-63,90);//Moved to separate method
+
+		robotUG.driveTrain.robotFieldLocation.setLocation(-31,-63,90); //MOVED HERE FOR OFFLINE CODE
 
 	}
 	@Override
 	public void initialize() {
+
 		// Tell the robot where it's starting location and orientation on the field is
 
 		robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
@@ -101,9 +97,11 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 	@Override
 	public void runCode() {
 		runtime.reset();
-		haveBlueWobble1 = true;//Robot is gripping wobble goal
+		haveBlueWobble2 = true;//Robot is gripping wobble goal
 
-		exteriorDriveToRings(-36, -52, -37, -43, 0.9);
+		interiorDriveToRings(-36, -41, 0.9);
+
+//		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);
 
 	/* Choose Where to go Next and Pick up Wobble Goal */
 		decideWobbleGoalZone(decideRingNumber());
@@ -141,13 +139,13 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		robotUG.driveTrain.IMUDriveRotate(0, "Rotate 90 deg CCW", this);/* COACH CHANGED */
 
 	/* Drives the Robot to the Shooting area. x1 and y1 are the first coordinates; x2 and y2 are the second. */
-		driveToShoot(-48,-6, -30, -6, 0.8);
+		driveToShoot(-48,-6, -14.5, -6, 0.825);
 
 //		pressAToContinue();
 
 	/* Shoot the High Goal. */
-		shootHighGoal(-1.0, 10);
-		robotUG.shooter.shutdown();
+		shootPowerShot(-1.0, 3);
+
 //		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 8.5, -90, "Move Right 7.5 inch to shot", this);
 //
 //		//Make sure that robot is lined up for 2nd shot
@@ -204,7 +202,6 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		robotUG.shooter.setShooter_Power(0.0);
 //		telemetry.addData("Time to Shoot Target #3", " %1.2f", shootTime);
 //		pressAToContinue();//record the time to fire shot #1 and observe outcome
-// ---------- END CODE FOR POWER SHOT ------------------------
 
 		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 12, -90, "Move Fwd ~6 in. to score points", this);
 		/* INCREASED DRIVING DISTANCE BASED ON SHOOTING LOCATION*/
@@ -225,6 +222,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		telemetry.addData("Final Pursuit Point", " (%.2f, %.2f)", fieldPoints.get(fieldPoints.size()-1).x,fieldPoints.get(fieldPoints.size()-1).y);
 		telemetry.addLine("----------------------------------");
 		telemetry.addLine("Observe telemetry and Press A to shutdown");
+
 		if(testModeActive){// Can't access gamePad
 			telemetry.update();
 			int counts = 0;
