@@ -1,6 +1,7 @@
 package UltimateGoal_RobotTeam.OpModes.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
@@ -8,7 +9,7 @@ import UltimateGoal_RobotTeam.OpModes.Autonomous.BasicAuto;
 import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 
 @TeleOp(name="Pure Pursuit Trouble Shooting", group="Test")
-
+@Disabled
 public class PurePursuitTS extends BasicTeleOp {
 
     @Override

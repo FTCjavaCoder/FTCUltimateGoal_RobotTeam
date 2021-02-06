@@ -29,6 +29,7 @@
 
 package UltimateGoal_RobotTeam.OpModes.Test.Prototypes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -55,7 +56,7 @@ import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
  * is explained below.
  */
 @TeleOp(name = "ImageRecog tfod test", group = "Test")
-
+@Disabled
 public class ImageRecogTest extends BasicTeleOp {
 
 

@@ -1,12 +1,13 @@
 package UltimateGoal_RobotTeam.OpModes.Test.Prototypes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 
 @TeleOp(name="Wobble Goal Arm and Grab Test ONLY", group="Test")
-
+@Disabled
 public class WobbleGoalArmGrabTest extends BasicTeleOp {
 
     @Override

@@ -1,5 +1,6 @@
 package UltimateGoal_RobotTeam.OpModes.Test.Prototypes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -7,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 
 @TeleOp(name="Shooter Test Caleb", group="Test")
-
+@Disabled
 public class ShooterCalebTest extends BasicTeleOp {
 
     public DcMotor shooterLeft = null;

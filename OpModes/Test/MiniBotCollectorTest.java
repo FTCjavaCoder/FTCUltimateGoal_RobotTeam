@@ -1,4 +1,4 @@
-package UltimateGoal_RobotTeam.OpModes.Test.Prototypes;
+package UltimateGoal_RobotTeam.OpModes.Test;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 
-@TeleOp(name="Collector Demo", group="Test")
-@Disabled
- public class CollectorDemo extends BasicTeleOp {
+@TeleOp(name="MiniBot Collector Test", group="Test")
+
+ public class MiniBotCollectorTest extends BasicTeleOp {
 	@Override
 	public void runOpMode() {
 
@@ -60,7 +60,7 @@ import UltimateGoal_RobotTeam.OpModes.TeleOp.BasicTeleOp;
 			// Set wheel Motor Power
 			robotUG.collector.collectorControl(gamepad2,  this);
 
-
+			robotUG.driveTrain.drivePowerAllLeftStickScaled(gamepad1, gamepad2, this);
 
 			telemetry.addData("Status", "Run Time: ",runtime.toString());
 			telemetry.addData("Commands", "collectorPower (%.2f), collectorWheel Power (%.2f)", robotUG.collector.collectorPower, robotUG.collector.collectorWheel.getPower());
