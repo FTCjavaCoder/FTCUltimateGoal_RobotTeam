@@ -503,9 +503,7 @@ public class BasicAuto extends BasicOpMode {
 //		 	  ringsViewed = robotUG.imageRecog.viewRings(this, 25);//baseline method that runs for set number of loops
             ringsViewed = robotUG.imageRecog.viewRingsTimed(this, 0.5);// ALTERNATE method that runs based on time
         }
-        /* COACH NOTE: imageRecog methods end with telemetry being added but waiting for a telemetry.update()
-         * -- expect an update in the main OpMode or a pressAToContinue method to follow
-         */
+
         telemetry.addLine("------------------------------------");
         telemetry.addData("Image Recognition Completed", "String Value: %s", ringsViewed);
         if(testModeActive){
@@ -513,7 +511,7 @@ public class BasicAuto extends BasicOpMode {
         }
         else { // This is what runs on robot
 //            pressAToContinue();
-            robotUG.imageRecog.shutdown();//shutdown after pressA to allow the driver to observe screen before moving on
+            robotUG.imageRecog.shutdown(); //shutdown after pressA to allow the driver to observe screen before moving on
         }
 
         return ringsViewed;
@@ -559,32 +557,22 @@ public class BasicAuto extends BasicOpMode {
 
         fieldPoints.clear();// clear all the prior points
         fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y));
-        //Add the current robot location so a pursuit path can be found
-        //Add the desired points
-        /* COACH SUGGESTION: move the robot further behind the shooting line so that any R/L motion will not cross the line
-         *   - moved location from 0 to -6 in Y
-         *   - Added a point at (-24, -6) so robot would align straight from any location
-         */
         fieldPoints.add(new PursuitPoint(x1, y1));/* COACH CHANGED - for high goal - allow all options to align */ //is set to -48, -6
         fieldPoints.add(new PursuitPoint(x2, y2));/* COACH CHANGED - for high goal */ //is set to -30, -6
 
-        /* TEST CODE TO DRAW LINES FOR VISUALIZATION */
+        /* Get Points for Drawing Lines in Visualization */
         fieldSimPoints();
 
         //TURN ON SHOOTER -- allow time to power up to full speed while driving
         robotUG.shooter.setShooter_Power(shooterPwr);//1.0 for high goal too much @ Y = -6, trying -8
 
-        /* Drive to and Shoot the Powershots */
+        /* Drive to and Shoot the Power Shots */
         robotUG.driveTrain.drivePursuit(fieldPoints,this,"To PowerShot Shooting Position");
 //		telemetry.addLine("Drive to Shooting Position");
 //		telemetry.addData("Desired Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.targetPoint.x, robotUG.driveTrain.targetPoint.y);
 //		telemetry.addData("Robot Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
 //		telemetry.addData("Robot Angles", " \t Desired: %1.1f, \t Actual: %1.1f", 0.0, robotUG.driveTrain.robotHeading);
 //		pressAToContinue();
-        /* Coach Note: need to rotate to face the PowerShot targets or HIGh GOAL and activate shooter, conveyor, & collector
-         * see added lines below
-         */
-
 
         robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);/* COACH ADDED */
 
