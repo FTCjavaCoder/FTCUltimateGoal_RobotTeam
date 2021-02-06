@@ -96,20 +96,14 @@ public class WobbleArm {
 
         if (gamepad.left_bumper) {
             armPower -= powerInc;
-            wobbleGoalArm.setPower(armPower);
             om.sleep(300);
         }
         if (gamepad.right_bumper) {
             armPower += powerInc;
-            wobbleGoalArm.setPower(armPower);
             om.sleep(300);
         }
 
-//        if (gamepad.b) {
-//            armPower = 0.0;
-//            wobbleGoalArm.setPower(armPower);
-//            om.sleep(300);
-//        }
+        wobbleGoalArm.setPower(armPower);
 
     }
 
