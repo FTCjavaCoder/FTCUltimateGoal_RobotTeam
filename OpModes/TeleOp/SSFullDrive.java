@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.Range;
  *
  */
 
-@TeleOp(name="FullDrive", group="TeleOp")
+@TeleOp(name="SS FullDrive", group="TeleOp")
 @Disabled
 public class SSFullDrive extends BasicTeleOp {
 

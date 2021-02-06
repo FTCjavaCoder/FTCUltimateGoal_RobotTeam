@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.Range;
  *
  */
 
-@TeleOp(name="Weighted Power Teleop", group="TeleOp")
+@TeleOp(name="SS Weighted Power Teleop", group="TeleOp")
 @Disabled
 public class SSWeighted_Teleop extends BasicTeleOp {
 

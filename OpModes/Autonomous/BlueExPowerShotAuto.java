@@ -2,15 +2,12 @@ package UltimateGoal_RobotTeam.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import UltimateGoal_RobotTeam.HarwareConfig.Conveyor;
 import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
-import UltimateGoal_RobotTeam.Utilities.PursuitLines;
-import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
-@Autonomous(name="Main Blue Exterior Autonomous", group="Autonomous")
+@Autonomous(name="Blue Exterior Power Shot Autonomous", group="Autonomous")
 
- public class MainBlueExAuto extends BasicAuto {
+ public class BlueExPowerShotAuto extends BasicAuto {
 	@Override
 	public void runOpMode() {
 
@@ -141,13 +138,13 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		robotUG.driveTrain.IMUDriveRotate(0, "Rotate 90 deg CCW", this);/* COACH CHANGED */
 
 	/* Drives the Robot to the Shooting area. x1 and y1 are the first coordinates; x2 and y2 are the second. */
-		driveToShoot(-48,-6, -30, -6, 0.8);
+		driveToShoot(-48,-6, -14.5, -6, 0.825);
 
 //		pressAToContinue();
 
 	/* Shoot the High Goal. */
-		shootHighGoal(-1.0, 10);
-		robotUG.shooter.shutdown();
+		shootPowerShot(-1.0, 3);
+
 //		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 8.5, -90, "Move Right 7.5 inch to shot", this);
 //
 //		//Make sure that robot is lined up for 2nd shot

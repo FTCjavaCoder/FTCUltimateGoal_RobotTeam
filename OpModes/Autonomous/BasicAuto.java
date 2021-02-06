@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.util.ArrayList;
 import java.util.List;
 
+import UltimateGoal_RobotTeam.HarwareConfig.Conveyor;
 import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
 //import OfflineCode.OfflineHW.Telemetry;
@@ -407,7 +408,6 @@ public class BasicAuto extends BasicOpMode {
     }
 /* updateIMU() moved to BasicOpMode */
 
-
     public void forwardToViewRings() {
         // move forward ~18 inches
 
@@ -416,42 +416,6 @@ public class BasicAuto extends BasicOpMode {
 //        // move forward ~18 inches pure pursuit
 //        fieldPoints.add(new PursuitPoint(00,00));// no point yet
 //        robotUG.driveTrain.drivePursuit(fieldPoints,this,"Forward to rings");
-
-    }
-
-    public void decideWobbleGoalZone(String ringsViewed) {
-
-        switch (ringsViewed) {
-
-            case "None":
-                // Zone A pursuit points
-
-                fieldPoints.add(new PursuitPoint(-54,-36));//sharper turn to avoid rings, keeping robot off center on tiles
-                fieldPoints.add(new PursuitPoint(-54, -8));//more negative final location for wobble goal drop
-            break;
-
-            case "Single":
-                // Zone B pursuit points
-
-
-                fieldPoints.add(new PursuitPoint(-12,-36));//sharper turn to avoid rings
-                fieldPoints.add(new PursuitPoint(-12,-12));
-                fieldPoints.add(new PursuitPoint(-30,6));//keeping robot off center on tiles
-                fieldPoints.add(new PursuitPoint(-30,16));//added straight section, more negative final location for wobble goal drop
-            break;
-
-            case "Quad":
-                // Zone C pursuit points
-
-                fieldPoints.add(new PursuitPoint(-54,-36));//sharper turn to avoid rings, keeping robot off center on tiles
-                fieldPoints.add(new PursuitPoint(-54,40));//more negative final location for wobble goal drop
-            break;
-
-            case "Multiple":
-                //el problemo
-            break;
-
-        }
 
     }
 
@@ -469,5 +433,210 @@ public class BasicAuto extends BasicOpMode {
                 seeRings = "None";
         }
         return seeRings;
+    }
+
+    public void interiorDriveToRings(double x, double y, double Wservo) {
+
+        robotUG.wobbleArm.wobbleGoalServo.setPosition(Wservo);//this is a firm grip on the goal; 0.9
+        telemetry.update();
+        // Add points for Pure Pursuit motion - always start with where the robot was initialized to be on the field
+
+        /* Drive to Wobble Goal and Scan the Number of Rings*/
+
+        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); // x: -33, y: -63; was -36
+        fieldPoints.add(new PursuitPoint(x, y)); //was -36, -43; I changed x t0 -34.5; changed to -36, -41
+
+        // Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
+        for(int h=0;h<fieldPoints.size();h++) {
+            telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
+        }
+
+        robotUG.driveTrain.drivePursuit(fieldPoints,this,"To View the Rings");
+    }
+
+    public void exteriorDriveToRings(double x1, double y1, double x2, double y2, double Wservo){
+
+        robotUG.wobbleArm.wobbleGoalServo.setPosition(Wservo);//this is a firm grip on the goal
+        telemetry.update();
+        // Add points for Pure Pursuit motion - always start with where the robot was initialized to be on the field
+
+        /* Drive to Wobble Goal and Scan the Number of Rings*/
+
+        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); //x: -57, y: -63
+//		fieldPoints.add(new PursuitPoint(-57, -57));
+        fieldPoints.add(new PursuitPoint(x1, y1));// WAS (-40, -46.2) updated to better view rings (changed it to -44, -35); 1/22: changed it back to -36, -52
+        fieldPoints.add(new PursuitPoint(x2, y2)); // -37, -43
+
+        // Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
+        for(int h=0;h<fieldPoints.size();h++) {
+            telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
+        }
+
+        robotUG.driveTrain.drivePursuit(fieldPoints,this,"To View the Rings");
+
+        robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);
+
+    }
+
+    public String decideRingNumber() {
+
+        String ringsViewed;//Define string for returning what rings were seen
+        if(testModeActive){//Need this code for Offline
+            /* THIS IS WHERE THE WAIT AND VIEW RINGS OCCURS*/
+            int counts = 0;
+            while(counts < 10) {// 10 counts or data points should equal 1 offline second (300 points = 30 s)
+                telemetry.addLine("VIEWING RINGS");
+                telemetry.addData("Counts", " %d", counts);
+                telemetry.update();
+                updateIMU();//run this to log data fro offline code while waiting
+                counts+=1;
+            }
+            ringsViewed = testModeViewRings();
+        }
+        else {//This is what runs on the robot
+            double start = runtime.time();
+            while ((runtime.time() - start) < 2.0) {
+                // Do nothing but report TM for counter and wait for robot to settle before looking at rings
+                robotUG.imageRecog.getTelemetry(this);
+                telemetry.update();
+            }
+//		 	  ringsViewed = robotUG.imageRecog.viewRings(this, 25);//baseline method that runs for set number of loops
+            ringsViewed = robotUG.imageRecog.viewRingsTimed(this, 0.5);// ALTERNATE method that runs based on time
+        }
+
+        telemetry.addLine("------------------------------------");
+        telemetry.addData("Image Recognition Completed", "String Value: %s", ringsViewed);
+        if(testModeActive){
+            telemetry.update();//Offline code can't access gamepad or imageRecognition
+        }
+        else { // This is what runs on robot
+//            pressAToContinue();
+            robotUG.imageRecog.shutdown(); //shutdown after pressA to allow the driver to observe screen before moving on
+        }
+
+        return ringsViewed;
+    }
+
+    public void decideWobbleGoalZone(String ringsViewed) {
+
+        switch (ringsViewed) {
+
+            case "None":
+                // Zone A pursuit points
+
+                fieldPoints.add(new PursuitPoint(-54,-36));//sharper turn to avoid rings, keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-54, -8));//more negative final location for wobble goal drop
+                break;
+
+            case "Single":
+                // Zone B pursuit points
+
+
+                fieldPoints.add(new PursuitPoint(-12,-36));//sharper turn to avoid rings
+                fieldPoints.add(new PursuitPoint(-12,-12));
+                fieldPoints.add(new PursuitPoint(-30,6));//keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-30,16));//added straight section, more negative final location for wobble goal drop
+                break;
+
+            case "Quad":
+                // Zone C pursuit points
+
+                fieldPoints.add(new PursuitPoint(-54,-36));//sharper turn to avoid rings, keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-54,40));//more negative final location for wobble goal drop
+                break;
+
+            case "Multiple":
+                //el problemo
+                break;
+
+        }
+
+    }
+
+    public void driveToShoot(double x1, double y1, double x2, double y2, double shooterPwr) {
+
+        fieldPoints.clear();// clear all the prior points
+        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y));
+        fieldPoints.add(new PursuitPoint(x1, y1));/* COACH CHANGED - for high goal - allow all options to align */ //is set to -48, -6
+        fieldPoints.add(new PursuitPoint(x2, y2));/* COACH CHANGED - for high goal */ //is set to -30, -6
+
+        /* Get Points for Drawing Lines in Visualization */
+        fieldSimPoints();
+
+        //TURN ON SHOOTER -- allow time to power up to full speed while driving
+        robotUG.shooter.setShooter_Power(shooterPwr);//1.0 for high goal too much @ Y = -6, trying -8
+
+        /* Drive to and Shoot the Power Shots */
+        robotUG.driveTrain.drivePursuit(fieldPoints,this,"To PowerShot Shooting Position");
+//		telemetry.addLine("Drive to Shooting Position");
+//		telemetry.addData("Desired Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.targetPoint.x, robotUG.driveTrain.targetPoint.y);
+//		telemetry.addData("Robot Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
+//		telemetry.addData("Robot Angles", " \t Desired: %1.1f, \t Actual: %1.1f", 0.0, robotUG.driveTrain.robotHeading);
+//		pressAToContinue();
+
+        robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);/* COACH ADDED */
+
+    }
+
+    public void shootHighGoal(double collectorPwr, double time) {
+
+        robotUG.conveyor.setMotion(Conveyor.motionType.UP);
+        robotUG.collector.collectorWheel.setPower(collectorPwr);//need negative power to collector rings
+        robotUG.collector.collectorPower = collectorPwr;//set variable to track in Offline code
+
+        if(testModeActive){//accessing time will exceed size of data file and cause errors, run by number of counts
+            int counts = 0;
+            while(counts < 5 * time) {
+                telemetry.addLine("Shoot High Goal x3");
+                telemetry.addData("Counts", " %d", counts);
+                telemetry.addData("Shooter Power", "  %1.2f",  robotUG.shooter.getShooter_Power());
+                telemetry.addData("Conveyor Power", " %1.1f",  robotUG.conveyor.conveyor_Power);
+                telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
+                telemetry.update();
+                robotUG.driveTrain.robotNavigator(this);
+                counts+=1;
+            }
+        }
+        else {
+            double startTime = runtime.time();
+            double shootTime = runtime.time() - startTime;
+            while (shootTime < time) {//Since no sensors purely timed set of shots
+                shootTime = runtime.time() - startTime;
+                telemetry.addLine("Shoot high goal x 3");
+                telemetry.addData("Timer", " %1.2f", shootTime);
+                telemetry.addData("Shooter Power", "  %1.2f", robotUG.shooter.getShooter_Power());
+                telemetry.addData("Conveyor Power", " %1.1f", robotUG.conveyor.conveyor_Power);
+                telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
+                telemetry.update();
+            }
+        }
+        //TURN OFF CONVEYOR & COLLECTOR OFF
+        robotUG.conveyor.setMotion(Conveyor.motionType.OFF);
+        robotUG.collector.collectorWheel.setPower(0.0);
+        robotUG.collector.collectorPower = 0.0;//set variable to track in Offline code
+
+    }
+
+    public void shootPowerShot(double collectorPwr, double time) {
+
+        shootHighGoal(collectorPwr,time);
+        robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Left 7.5 In. to Shoot the Power Shot", this);
+
+        shootHighGoal(collectorPwr,time);
+        robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Left 7.5 In. to Shoot the Power Shot", this);
+
+        shootHighGoal(collectorPwr,time);
+
+        robotUG.shooter.shutdown();
+
+    }
+
+    public void fieldSimPoints() {
+
+        if(testModeActive) {
+            for (int h = 0; h < fieldPoints.size() - 1; h++) {
+                lines.add(new PursuitLines(fieldPoints.get(h).x, fieldPoints.get(h).y, fieldPoints.get(h + 1).x, fieldPoints.get(h + 1).y));
+            }
+        }
     }
 }

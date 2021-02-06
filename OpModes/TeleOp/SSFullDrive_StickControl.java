@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.Range;
  *
  */
 
-@TeleOp(name="FullDrive Stick Control", group="TeleOp")
+@TeleOp(name="SS FullDrive Stick Control", group="TeleOp")
 @Disabled
 public class SSFullDrive_StickControl extends BasicTeleOp {
 
