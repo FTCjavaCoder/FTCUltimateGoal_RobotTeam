@@ -1149,7 +1149,7 @@ public class DriveTrain {
         backLeft.setPower(Range.clip(-forwardDirection + rightDirection - clockwise, -powerLimit, powerLimit));
     }
 
-    public void drivePowerAllLeftStickScaled(Gamepad g1, Gamepad g2, BasicTeleOp om) {
+    public void drivePowerAllLeftStickScaled(Gamepad g1, Gamepad g2, BasicTeleOp om) {/* COACH Note: Remove g2, not needed*/
 
         double maxPower;
         double powerLimit;

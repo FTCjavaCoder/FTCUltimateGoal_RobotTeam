@@ -50,10 +50,10 @@ public class WobbleArm {
     /* Parameters used for offline code for locating arm
      *
      */
-    public final double ARM_LENGTH = 12.0;
+    public final double ARM_LENGTH = 12.5;
     public final double ARM_X = 8.0;//location Right/Left on robot for arm pivot
-    public final double ARM_Y = 0.0;//location FWD/BACK on robot for arm pivot
-    public final double ARM_INIT_ANGLE_DEG = 45.0;
+    public final double ARM_Y = -6.5;//location FWD/BACK on robot for arm pivot
+    public final double ARM_INIT_ANGLE_DEG = 35.0;
 
     public WobbleArm(BasicOpMode om, boolean tm)  {
         if(tm) {
