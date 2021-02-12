@@ -116,19 +116,19 @@ public class MainDrive extends BasicTeleOp {
 //            robotUG.driveTrain.angleUnWrap();
             robotUG.driveTrain.robotNavigator(this);
 
-            robotUG.conveyor.ConveyorControl(gamepad1, this);
+            robotUG.conveyor.ConveyorControl(gamepad2, this);
 
-            robotUG.shooter.setShooterPowerControl(gamepad1, this);
+            robotUG.shooter.setShooterPowerButton(gamepad2, this);
 
-            robotUG.wobbleArm.setWobbleMotorPower(gamepad2, this);
+            robotUG.wobbleArm.setWobbleMotorPower(gamepad1, this);
 
-            robotUG.wobbleArm.setWobbleGoalArmUp(gamepad2, this);
+            robotUG.wobbleArm.setWobbleGoalArmUp(gamepad1, this);
 
-            robotUG.wobbleArm.setWobbleGoalArmDown(gamepad2,this);
+            robotUG.wobbleArm.setWobbleGoalArmDown(gamepad1,this);
 
-            robotUG.wobbleArm.setWobbleGoalArmOverWall(gamepad2,this);
+            robotUG.wobbleArm.setWobbleGoalArmOverWall(gamepad1,this);
 
-            robotUG.wobbleArm.setWobbleServoPos(gamepad2,this);
+            robotUG.wobbleArm.setWobbleServoPos(gamepad1,this);
 
             robotUG.collector.collectorOnOffControl(gamepad2,  this);
 

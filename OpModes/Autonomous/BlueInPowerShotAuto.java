@@ -139,7 +139,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 //		robotUG.driveTrain.IMUDriveRotate(0, "Rotate 90 deg CCW", this);/* COACH CHANGED */
 
 	/* Drives the Robot to the Shooting area. x1 and y1 are the first coordinates; x2 and y2 are the second. */
-		driveToShoot(-48,-6, -14.5, -6, 0.825);
+		driveToShoot(-48,-6, -14.5, -6, 0.775);
 
 //		pressAToContinue();
 
@@ -239,7 +239,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 			telemetry.update();
 		}
 		else {// PressA included so the runtime and final reported position can be observed
-			pressAToContinue();//observe telemetry before shutdown, without pressA the display is cleared
+//			pressAToContinue();//observe telemetry before shutdown, without pressA the display is cleared
 		}
 		robotUG.shutdownAll();
 	}
