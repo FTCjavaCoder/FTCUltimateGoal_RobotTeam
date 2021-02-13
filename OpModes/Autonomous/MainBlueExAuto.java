@@ -241,7 +241,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 			telemetry.update();
 		}
 		else {// PressA included so the runtime and final reported position can be observed
-			pressAToContinue();//observe telemetry before shutdown, without pressA the display is cleared
+//			pressAToContinue();//observe telemetry before shutdown, without pressA the display is cleared
 		}
 		robotUG.shutdownAll();
 	}

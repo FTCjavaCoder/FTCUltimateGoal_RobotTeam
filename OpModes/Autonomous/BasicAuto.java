@@ -629,6 +629,8 @@ public class BasicAuto extends BasicOpMode {
 
         robotUG.shooter.shutdown();
 
+
+
     }
 
     public void fieldSimPoints() {

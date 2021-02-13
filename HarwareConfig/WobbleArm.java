@@ -307,6 +307,27 @@ public class WobbleArm {
 
         }
 
+        om.robotUG.driveTrain.setMotorPower(0.2);
+
+        wobbleArmTargetAngle = 0.0;// this is back near start but not all the way to avoid overshoot and impact
+        /* LIFT ARM   */
+        wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
+        armPos = wobbleGoalArm.getCurrentPosition();
+        om.robotUG.driveTrain.robotNavigator(om);//NEEDED FOR OFFLINE CODE TO UPDATE POSITIONS
+        count = 0;
+        while(Math.abs(wobbleGoalArm.getTargetPosition() - armPos) > 10){// alternate loop criteria but need variable for tolerances
+            // do nothing but wait for arm to move within tolerance
+            om.telemetry.addLine("WOBBLE GOAL DROP: RAISE");
+            om.telemetry.addData("Loop count", " %d",count);
+
+            armPos = getTelemetry(om);
+            om.robotUG.driveTrain.robotNavigator(om);//NEEDED FOR OFFLINE CODE TO UPDATE POSITIONS
+            om.telemetry.addLine("________________________________");
+            om.telemetry.update();
+            count +=1;
+
+        }
+
     }
 
     public void grabWobble(BasicOpMode om) {

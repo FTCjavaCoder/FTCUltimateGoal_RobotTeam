@@ -157,6 +157,43 @@ public class Shooter {
 
     }
 
+    public void setShooterPowerButton(Gamepad gamepad, BasicOpMode om) {
+        // if speedActive and setShooterMode are removed then can remove the NOT(speedActive) outer loop
+        // IF speedActive = TRUE THEN using external speed control and this method is inactive
+        if (!speedActive) {
+            if (gamepad.dpad_down) {
+                shooter_Power = 0;
+                shooterLeft.setPower(shooter_Power);
+                shooterRight.setPower(shooter_Power);
+                integratorReset();//reset integrator for new commands
+                om.sleep(300);
+            }
+
+            if (gamepad.dpad_left) {
+                shooter_Power = 0.75;//NOTE - direction changed for motor, dPad_up = increased power to Right and Left is now reversed
+                shooterLeft.setPower(shooter_Power);//NOTE - direction changed for motor
+                shooterRight.setPower(shooter_Power);
+                integratorReset();//reset integrator for new commands
+                om.sleep(300);
+            }
+            if (gamepad.dpad_up) {
+                shooter_Power = 0.80;//NOTE - direction changed for motor, dPad_down = decreased power to Right and Left is now reversed
+                shooterLeft.setPower(shooter_Power);//NOTE - direction changed for motor
+                shooterRight.setPower(shooter_Power);
+                integratorReset();//reset integrator for new commands
+                om.sleep(300);
+            }
+            if (gamepad.dpad_right) {
+                shooter_Power = 0.85;//NOTE - direction changed for motor, dPad_down = decreased power to Right and Left is now reversed
+                shooterLeft.setPower(shooter_Power);//NOTE - direction changed for motor
+                shooterRight.setPower(shooter_Power);
+                integratorReset();//reset integrator for new commands
+                om.sleep(300);
+            }
+        }
+
+    }
+
     public void setShooterSpeed(Gamepad gp, BasicOpMode om) {
 
         if (gp.dpad_left) {
