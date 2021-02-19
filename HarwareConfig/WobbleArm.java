@@ -40,7 +40,7 @@ public class WobbleArm {
     public double armPowerHold = 0.7;
     public final double ARM_ANGLE_UP = 40.0;
     public final double ARM_ANGLE_WALL = 70.0;
-    public final double ARM_ANGLE_DOWN = 120.0;
+    public final double ARM_ANGLE_DOWN = 135.0;
     public final double ARM_ANGLE_STOW = 15.0;
     public final double ARM_GEAR_RATIO = 24.0/15.0; //Coach Note: updated value is 24.0/15.0, commands were updated but don't make sense
             // Drop position of 190 > 180 doesn't physically make sense when observing robot
