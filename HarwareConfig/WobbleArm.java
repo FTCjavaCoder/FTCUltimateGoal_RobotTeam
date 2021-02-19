@@ -51,9 +51,9 @@ public class WobbleArm {
      *
      */
     public final double ARM_LENGTH = 12.5;
-    public final double ARM_X = 8.0;//location Right/Left on robot for arm pivot
-    public final double ARM_Y = -6.5;//location FWD/BACK on robot for arm pivot
-    public final double ARM_INIT_ANGLE_DEG = 35.0;
+    public final double ARM_X = -8.0;//location Right/Left on robot for arm pivot - updated to FrontLeft
+    public final double ARM_Y = 3.5;//location FWD/BACK on robot for arm pivot - updated to FrontLeft
+    public final double ARM_INIT_ANGLE_DEG = 30.0;
 
     public WobbleArm(BasicOpMode om, boolean tm)  {
         if(tm) {
