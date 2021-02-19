@@ -38,7 +38,11 @@ public class WobbleArm {
     public double armPower = 0.25;
     public double powerInc = 0.05;
     public double armPowerHold = 0.7;
-    public final double ARM_GEAR_RATIO = 24/15; //Coach Note: updated value is 24.0/15.0, commands were updated but don't make sense
+    public final double ARM_ANGLE_UP = 40.0;
+    public final double ARM_ANGLE_WALL = 70.0;
+    public final double ARM_ANGLE_DOWN = 120.0;
+    public final double ARM_ANGLE_STOW = 15.0;
+    public final double ARM_GEAR_RATIO = 24.0/15.0; //Coach Note: updated value is 24.0/15.0, commands were updated but don't make sense
             // Drop position of 190 > 180 doesn't physically make sense when observing robot
             // Error might be integer division in input 24/15 = 1.0 vs. 24.0/15.0 = 1.6 - need to investigate in a test OpMode
             // 24 = motor motion for 15 of input arm motion output * 24/15 = motor OR motor * 15/24 = output
@@ -137,23 +141,6 @@ public class WobbleArm {
 
     }
 
-    public void autoWobbleMotorVariable(Gamepad gamepad, BasicOpMode om) {
-
-        if (gamepad.y) {
-            wobbleArmTargetAngle = 190.0;/* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE  - this is drop angle   */
-//            wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));// KS added om.cons & commented
-            om.sleep(300);
-        }
-        if (gamepad.a) {
-            wobbleArmTargetAngle = 65;/* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE - this is perpendicular before drop    */
-//            wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));// KS added om.cons & commented
-            om.sleep(300);
-        }
-
-//        c = 1;//Coach note: what's this?  replaced by "pressAToContinue"?
-
-    }
-
     public void setWobbleMotorPosition(Gamepad gamepad, BasicOpMode om) {
 
         if (gamepad.dpad_right) {
@@ -201,7 +188,7 @@ public class WobbleArm {
     public void setWobbleGoalArmDown(Gamepad gamepad, BasicOpMode om) {
 
         if (gamepad.dpad_down){
-            wobbleArmTargetAngle = 190.0;/* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE - this is perpendicular to grab    */
+            wobbleArmTargetAngle = ARM_ANGLE_DOWN;/* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE - this is perpendicular to grab    */
             wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));// Updated coach method
             om.sleep(300);
         }
@@ -211,7 +198,7 @@ public class WobbleArm {
     public void setWobbleGoalArmUp(Gamepad gamepad, BasicOpMode om) {
 
         if (gamepad.dpad_up){
-            wobbleArmTargetAngle = 70;// angle for Wobble Goal over field wall || was 80
+            wobbleArmTargetAngle = ARM_ANGLE_UP;// angle for Wobble Goal over field wall || was 80
             wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));// Updated coach method
             om.sleep(300);
         }
@@ -221,7 +208,7 @@ public class WobbleArm {
     public void setWobbleGoalArmOverWall(Gamepad gamepad, BasicOpMode om) {
 
         if (gamepad.dpad_right){
-            wobbleArmTargetAngle = 90;// angle for Wobble Goal over wall
+            wobbleArmTargetAngle = ARM_ANGLE_WALL;// angle for Wobble Goal over wall
             wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));// Updated coach method
             om.sleep(300);
         }
@@ -232,7 +219,7 @@ public class WobbleArm {
 
         wobbleGoalArm.setPower(0.5);
 
-        wobbleArmTargetAngle = 65.0;
+        wobbleArmTargetAngle = ARM_ANGLE_UP;
         /* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE    */
 //        wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));// KS added om.cons & commented
         wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
@@ -259,7 +246,7 @@ public class WobbleArm {
         if(!om.testModeActive) {
             om.sleep(500);//might not need to be this long
         }
-        wobbleArmTargetAngle = 190.0;
+        wobbleArmTargetAngle = ARM_ANGLE_DOWN;
         /* UPDATED ABOVE ANGLE FOR GEAR RATIO UPDATE   to drop goal */
 
 //        wobbleArmTarget = (int) Math.round(wobbleArmTargetAngle * (MOTOR_DEG_TO_COUNT * ARM_GEAR_RATIO));// KS added om.cons & commented
@@ -288,7 +275,7 @@ public class WobbleArm {
         om.haveRedWobble1 = false;// wobble goal dropped
         om.haveRedWobble2 = false;// wobble goal dropped
 
-        wobbleArmTargetAngle = 25.0;// this is back near start but not all the way to avoid overshoot and impact
+        wobbleArmTargetAngle = ARM_ANGLE_STOW;// this is back near start but not all the way to avoid overshoot and impact
         /* LIFT ARM   */
         wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
         armPos = wobbleGoalArm.getCurrentPosition();
@@ -333,7 +320,7 @@ public class WobbleArm {
     public void grabWobble(BasicOpMode om) {
 
         wobbleGoalArm.setPower(0.5);
-        wobbleArmTargetAngle = 190.0;
+        wobbleArmTargetAngle = ARM_ANGLE_DOWN;
 
         wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
         while(Math.abs(wobbleGoalArm.getTargetPosition() - wobbleGoalArm.getCurrentPosition()) > 10){// alternate loop criteria but need variable for tolerances
@@ -349,7 +336,7 @@ public class WobbleArm {
         wobbleGoalServo.setPosition(0.9);//this is a good grip
         om.sleep(500);//might not need to be this long
 
-        wobbleArmTargetAngle = 65.0;
+        wobbleArmTargetAngle = ARM_ANGLE_UP;
 
         wobbleGoalArm.setTargetPosition(angleToCounts(wobbleArmTargetAngle));
         while(Math.abs(wobbleGoalArm.getTargetPosition() - wobbleGoalArm.getCurrentPosition()) > 10){// alternate loop criteria but need variable for tolerances
