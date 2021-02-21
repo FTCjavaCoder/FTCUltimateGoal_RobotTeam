@@ -488,10 +488,11 @@ public class BasicAuto extends BasicOpMode {
                 telemetry.addLine("VIEWING RINGS");
                 telemetry.addData("Counts", " %d", counts);
                 telemetry.update();
-                updateIMU();//run this to log data fro offline code while waiting
+                robotUG.driveTrain.robotNavigator(this);
                 counts+=1;
             }
             ringsViewed = testModeViewRings();
+            updateIMU();//Needs to be added 1 more time somewhere early in code -- missing a location where IMU angle is called but field isn't updated
         }
         else {//This is what runs on the robot
             double start = runtime.time();
