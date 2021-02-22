@@ -118,7 +118,7 @@ public class BasicAuto extends BasicOpMode {
     public boolean writeRW2 = false;
     public boolean robotSeeRing = false;
     public int IMUCounter =0;
-    public final static int size = 300;
+    public final static int size = 3000;//Make sure that all arrays are large enough to go past 30 seconds - will set the size in Offline code
     public int[] collectorArray = new int[size];
     public int[] conveyorArray = new int[size];
     public int[] shooterArray = new int[size];
