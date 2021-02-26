@@ -642,4 +642,104 @@ public class BasicAuto extends BasicOpMode {
             }
         }
     }
+
+    public void DriveToRings(String side) {
+
+
+        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
+        switch (side) {
+
+            //set points for the interior side
+            case "Int":
+
+            fieldPoints.add(new PursuitPoint(-18, -30));
+
+                // Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
+                for(int h=0;h<fieldPoints.size();h++) {
+                    telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
+                }
+
+                robotUG.driveTrain.drivePursuit(fieldPoints,this,"To View the Rings");
+
+            robotUG.driveTrain.IMUDriveRotate(-33.69, "Rotate to Face Targets", this);
+            fieldPoints.clear();
+
+            break;
+
+            //set points for the exterior side
+            case "Ext":
+
+            fieldPoints.add(new PursuitPoint(-54, -30));
+
+                // Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
+                for(int h=0;h<fieldPoints.size();h++) {
+                    telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
+                }
+
+                robotUG.driveTrain.drivePursuit(fieldPoints,this,"To View the Rings");
+
+            robotUG.driveTrain.IMUDriveRotate(-33.69, "Rotate to Face Targets", this);
+            fieldPoints.clear();
+
+            break;
+        }
+
+
+
+    }
+
+    public void DriveToPoints(String side, String ringsViewed) {
+
+        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
+
+        switch (side) {
+
+            case "Int":
+                fieldPoints.add(new PursuitPoint(-18,-8));
+            break;
+
+            case "Ext":
+                fieldPoints.add(new PursuitPoint(-54,-24));
+            break;
+
+        }
+
+        switch (ringsViewed) {
+
+            case "None":
+                // Zone A pursuit points
+
+                fieldPoints.add(new PursuitPoint(-54,-18));//sharper turn to avoid rings, keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-54, -8));//more negative final location for wobble goal drop
+                break;
+
+            case "Single":
+                // Zone B pursuit points
+
+                fieldPoints.add(new PursuitPoint(-30,6));//keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-30,16));//added straight section, more negative final location for wobble goal drop
+                break;
+
+            case "Quad":
+                // Zone C pursuit points
+
+                fieldPoints.add(new PursuitPoint(-54,30));//sharper turn to avoid rings, keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-54,40));//more negative final location for wobble goal drop
+                break;
+
+            case "Multiple":
+                //el problemo
+                break;
+
+        }
+
+        // Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
+        for(int h=0;h<fieldPoints.size();h++) {
+            telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
+        }
+
+        robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
+
+    }
+
 }

@@ -72,7 +72,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		}
 		telemetry.update();
 
-		robotUG.driveTrain.robotFieldLocation.setLocation(-31,-63,90); //MOVED HERE FOR OFFLINE CODE
+		robotUG.driveTrain.robotFieldLocation.setLocation(-18,-63,90); //MOVED HERE FOR OFFLINE CODE
 
 	}
 	@Override
@@ -101,12 +101,13 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		runtime.reset();
 		haveBlueWobble2 = true;//Robot is gripping wobble goal
 
-		interiorDriveToRings(-36, -41, 0.9);
+		DriveToRings("Int");
+//		interiorDriveToRings(-36, -41, 0.9);
 
 //		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);
 
 	/* Choose Where to go Next and Pick up Wobble Goal */
-		decideWobbleGoalZone(decideRingNumber());
+		DriveToPoints("Int", decideRingNumber());
 
 	/* Get Points for Drawing Lines in Visualization */
 		fieldSimPoints();
@@ -114,7 +115,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		pressAToContinue();
 
 	/* Move to the Wobble Goal Drop Zone */
-		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
+//		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
 
 //		telemetry.addLine("Drive to Wobble Goal Drop Zone Completed");
 //		telemetry.addData("Desired Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.targetPoint.x, robotUG.driveTrain.targetPoint.y);
@@ -146,8 +147,8 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		pressAToContinue();
 
 	/* Shoot the High Goal. */
-		shootHighGoal(-1.0, 10);
-		robotUG.shooter.shutdown();
+//		shootHighGoal(-1.0, 10);
+//		robotUG.shooter.shutdown();
 //		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 8.5, -90, "Move Right 7.5 inch to shot", this);
 //
 //		//Make sure that robot is lined up for 2nd shot
