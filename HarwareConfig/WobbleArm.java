@@ -317,7 +317,7 @@ public class WobbleArm {
 
     }
 
-    public void grabWobble(BasicOpMode om) {
+    public void grabWobble(BasicAuto om) {
 
         wobbleGoalArm.setPower(0.5);
         wobbleArmTargetAngle = ARM_ANGLE_DOWN;
@@ -335,6 +335,9 @@ public class WobbleArm {
         }
         wobbleGoalServo.setPosition(0.9);//this is a good grip
         om.sleep(500);//might not need to be this long
+
+        om.haveBlueWobble2 = true;// wobble goal grabbed
+        om.haveRedWobble2 = true;// wobble goal grabbed
 
         wobbleArmTargetAngle = ARM_ANGLE_UP;
 

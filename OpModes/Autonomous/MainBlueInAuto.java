@@ -1,6 +1,8 @@
 package UltimateGoal_RobotTeam.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import UltimateGoal_RobotTeam.HarwareConfig.Conveyor;
 import UltimateGoal_RobotTeam.HarwareConfig.DriveTrain;
 import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
@@ -8,7 +10,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitLines;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 @Autonomous(name="Main Blue Interior Autonomous", group="Autonomous")
-
+@Disabled
  public class MainBlueInAuto extends BasicAuto {
 	@Override
 	public void runOpMode() {
@@ -107,7 +109,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);
 
 	/* Choose Where to go Next and Pick up Wobble Goal */
-		DriveToPoints("Int", decideRingNumber());
+//		DriveToPoints("Int", decideRingNumber());
 
 	/* Get Points for Drawing Lines in Visualization */
 		fieldSimPoints();
