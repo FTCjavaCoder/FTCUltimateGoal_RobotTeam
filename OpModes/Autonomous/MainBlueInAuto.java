@@ -83,6 +83,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		// Tell the robot where it's starting location and orientation on the field is
 
 		robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
+		updateIMU();
 		robotUG.driveTrain.robotX = 0;// robot local coordinates always start at 0
 		robotUG.driveTrain.robotY = 0;
 		robotUG.wobbleArm.wobbleGoalServo.setPosition(0.8);//this is a loose grip
@@ -126,7 +127,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		pressAToContinue();// Review robot's motion
 
 	/* Rotate 180*, Drop the Wobble Goal and Rotation 180 */
-		robotUG.driveTrain.IMUDriveRotate(90, "Rotate 180*", this);
+//		robotUG.driveTrain.IMUDriveRotate(90, "Rotate 180*", this);
 		robotUG.wobbleArm.dropWobble(this);
 
 //		telemetry.addLine("Rotate to Drop Goal");
@@ -149,8 +150,8 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		pressAToContinue();
 
 	/* Shoot the High Goal. */
-//		shootHighGoal(-1.0, 10);
-//		robotUG.shooter.shutdown();
+		shootHighGoal(-1.0, 10);
+		robotUG.shooter.shutdown();
 //		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 8.5, -90, "Move Right 7.5 inch to shot", this);
 //
 //		//Make sure that robot is lined up for 2nd shot

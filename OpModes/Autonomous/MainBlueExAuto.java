@@ -84,6 +84,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		// Tell the robot where it's starting location and orientation on the field is
 
 		robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
+		updateIMU();
 		robotUG.driveTrain.robotX = 0;// robot local coordinates always start at 0
 		robotUG.driveTrain.robotY = 0;
 		robotUG.wobbleArm.wobbleGoalServo.setPosition(0.8);//this is a loose grip
@@ -104,10 +105,12 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		runtime.reset();
 		haveBlueWobble1 = true;//Robot is gripping wobble goal
 
-		exteriorDriveToRings(-36, -52, -37, -43, 0.9);
+		DriveToRings("Ext");
+//		exteriorDriveToRings(-36, -52, -37, -43, 0.9);
 
 	/* Choose Where to go Next and Pick up Wobble Goal */
-		decideWobbleGoalZone(decideRingNumber());
+		DriveToPoints("Ext", decideRingNumber());
+//		decideWobbleGoalZone(decideRingNumber());
 
 	/* Get Points for Drawing Lines in Visualization */
 		fieldSimPoints();
@@ -115,7 +118,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		pressAToContinue();
 
 	/* Move to the Wobble Goal Drop Zone */
-		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
+//		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
 
 //		telemetry.addLine("Drive to Wobble Goal Drop Zone Completed");
 //		telemetry.addData("Desired Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.targetPoint.x, robotUG.driveTrain.targetPoint.y);
@@ -124,7 +127,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		pressAToContinue();// Review robot's motion
 
 	/* Rotate 180*, Drop the Wobble Goal and Rotation 180 */
-		robotUG.driveTrain.IMUDriveRotate(90, "Rotate 180*", this);
+//		robotUG.driveTrain.IMUDriveRotate(90, "Rotate 180*", this);
 		robotUG.wobbleArm.dropWobble(this);
 
 //		telemetry.addLine("Rotate to Drop Goal");

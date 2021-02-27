@@ -677,7 +677,7 @@ public class BasicAuto extends BasicOpMode {
 
                 robotUG.driveTrain.drivePursuit(fieldPoints,this,"To View the Rings");
 
-            robotUG.driveTrain.IMUDriveRotate(-33.69, "Rotate to Face Targets", this);
+            robotUG.driveTrain.IMUDriveRotate(-156.3, "Rotate to Face Targets", this); //-90 - inverse tan 1.5 - 10
             fieldPoints.clear();
 
             break;
@@ -704,7 +704,41 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
+<<<<<<< Updated upstream
     public void driveToSecondWobbleGoal(String side, String ringsViewed) {
+=======
+    public void DriveToPoints(String side, String ringsViewed) {
+
+        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
+
+        switch (side) {
+
+            case "Int":
+                fieldPoints.add(new PursuitPoint(-18,-24));
+            break;
+
+            case "Ext":
+                fieldPoints.add(new PursuitPoint(-54,-24));
+            break;
+
+        }
+
+        switch (ringsViewed) {
+
+            case "None":
+                // Zone A pursuit points
+
+                fieldPoints.add(new PursuitPoint(-54,-18));//sharper turn to avoid rings, keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-54, -8));//more negative final location for wobble goal drop
+                break;
+
+            case "Single":
+                // Zone B pursuit points
+
+                fieldPoints.add(new PursuitPoint(-30,6));//keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-30,16));//added straight section, more negative final location for wobble goal drop
+                break;
+>>>>>>> Stashed changes
 
 
     }
