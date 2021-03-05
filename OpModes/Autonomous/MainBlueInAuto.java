@@ -110,7 +110,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);
 
 	/* Choose Where to go Next and Pick up Wobble Goal */
-//		DriveToPoints("Int", decideRingNumber());
+		DriveToPoints("Int", decideRingNumber());
 
 	/* Get Points for Drawing Lines in Visualization */
 		fieldSimPoints();
@@ -118,7 +118,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		pressAToContinue();
 
 	/* Move to the Wobble Goal Drop Zone */
-//		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
+		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Wobble Goal drop zone");
 
 //		telemetry.addLine("Drive to Wobble Goal Drop Zone Completed");
 //		telemetry.addData("Desired Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.targetPoint.x, robotUG.driveTrain.targetPoint.y);

@@ -700,13 +700,10 @@ public class BasicAuto extends BasicOpMode {
             break;
         }
 
-
-
     }
 
-<<<<<<< Updated upstream
-    public void driveToSecondWobbleGoal(String side, String ringsViewed) {
-=======
+//    public void driveToSecondWobbleGoal(String side, String ringsViewed) {}
+
     public void DriveToPoints(String side, String ringsViewed) {
 
         fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
@@ -738,12 +735,11 @@ public class BasicAuto extends BasicOpMode {
                 fieldPoints.add(new PursuitPoint(-30,6));//keeping robot off center on tiles
                 fieldPoints.add(new PursuitPoint(-30,16));//added straight section, more negative final location for wobble goal drop
                 break;
->>>>>>> Stashed changes
 
 
     }
 
-    public void driveToSecondWobbleGoalDrop(String side, String ringsViewed) {
+//    public void driveToSecondWobbleGoalDrop(String side, String ringsViewed) {
 
 
     }
