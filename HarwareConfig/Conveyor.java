@@ -44,19 +44,19 @@ public class Conveyor {
             conveyor_Power = 1;
             conveyorLeft.setPower(conveyor_Power);
             conveyorRight.setPower(-conveyor_Power);
-            om.sleep(300);
+//            om.sleep(300);
         }
         if (gamepad.y) {
             conveyor_Power = -1;
             conveyorLeft.setPower(conveyor_Power);
             conveyorRight.setPower(-conveyor_Power);
-            om.sleep(300);
+//            om.sleep(300);
         }
         if (gamepad.b) {
             conveyor_Power = 0;
             conveyorLeft.setPower(conveyor_Power);
             conveyorRight.setPower(conveyor_Power);
-            om.sleep(300);
+//            om.sleep(300);
         }
 
     }

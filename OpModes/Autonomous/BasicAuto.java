@@ -99,9 +99,10 @@ public class BasicAuto extends BasicOpMode {
     public double secondWobbleGoalY;
 
     public double centralPositionX = -24;
-    public double centralPositionY = -24;
-    public double secondWobbleGoalPosX = -24;
-    public double secondWobbleGoalPosY = -42;//????
+    public double centralPositionY = -12;// was -24
+    public double secondWobbleGoalPosX = -36;// was -24
+    public double secondWobbleGoalPosY = -42;
+    //????
 
     /* Coach Note: moved runTime to BasicOpMode so it would be available for all methods receiving om
      *
@@ -115,7 +116,7 @@ public class BasicAuto extends BasicOpMode {
     public boolean haveRedWobble1 = false;
     public boolean haveRedWobble2 = false;
 
-     //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
+    //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
 //    public FieldConfiguration fc = new FieldConfiguration();//NEEDED FOR OFFLINE
 
     public boolean writeBR = false;
@@ -125,13 +126,13 @@ public class BasicAuto extends BasicOpMode {
     public boolean writeRW1 = false;
     public boolean writeRW2 = false;
     public boolean robotSeeRing = false;
-    public int IMUCounter =0;
+    public int IMUCounter = 0;
     public final static int size = 3000;//Make sure that all arrays are large enough to go past 30 seconds - will set the size in Offline code
     public int[] collectorArray = new int[size];
     public int[] conveyorArray = new int[size];
     public int[] shooterArray = new int[size];
     public double[] wgaAngleArray = new double[size];
-     //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
+    //********** Added from OfflineOpModeLibs to BasicAuto forOfflineOpModeRunFile ******************
 
 
     /* Needed for Pure Pursuit */
@@ -171,6 +172,7 @@ public class BasicAuto extends BasicOpMode {
 
 
     }
+
     @Override
     public void updateIMU() {
         //NEEDED FOR OFFLINE CODE TO UPDATE HW POSITIONS
@@ -222,16 +224,18 @@ public class BasicAuto extends BasicOpMode {
             }
         }
     }
+
     public void runCode() {
 
 
     }
+
     public void constructRobot() {
 
 
     }
 
-     public void initialize() {
+    public void initialize() {
 
         telemetry.addLine("NOT READY DON'T PRESS PLAY");
         telemetry.update();
@@ -414,12 +418,12 @@ public class BasicAuto extends BasicOpMode {
         telemetry.update();//Update telemetry to update display
 
     }
-/* updateIMU() moved to BasicOpMode */
+    /* updateIMU() moved to BasicOpMode */
 
     public void forwardToViewRings() {
         // move forward ~18 inches
 
-        robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack,20,-90,"Forward to rings",this);
+        robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 20, -90, "Forward to rings", this);
 
 //        // move forward ~18 inches pure pursuit
 //        fieldPoints.add(new PursuitPoint(00,00));// no point yet
@@ -427,18 +431,16 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
-    public String testModeViewRings(){
+    public String testModeViewRings() {
         String seeRings;
         // Options are 0, 1, 4 rings on the field
         // ringSelect is global in BasicAuto and set within the OfflineOopMode for Field Configuration
-        if(ringSelect == 1){
+        if (ringSelect == 1) {
             seeRings = "Single";//Same string returned from ImageRecog.viewRingsTimed or viewRings
-        }
-        else if(ringSelect == 4){
+        } else if (ringSelect == 4) {
             seeRings = "Quad";//Same string returned from ImageRecog.viewRingsTimed or viewRings
-        }
-        else {// if didn't see rings then return "None" to match ImageREcog
-                seeRings = "None";
+        } else {// if didn't see rings then return "None" to match ImageREcog
+            seeRings = "None";
         }
         return seeRings;
     }
@@ -451,18 +453,18 @@ public class BasicAuto extends BasicOpMode {
 
         /* Drive to Wobble Goal and Scan the Number of Rings*/
 
-        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); // x: -33, y: -63; was -36
+        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y)); // x: -33, y: -63; was -36
         fieldPoints.add(new PursuitPoint(x, y)); //was -36, -43; I changed x t0 -34.5; changed to -36, -41
 
         // Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
-        for(int h=0;h<fieldPoints.size();h++) {
+        for (int h = 0; h < fieldPoints.size(); h++) {
             telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
         }
 
-        robotUG.driveTrain.drivePursuit(fieldPoints,this,"To View the Rings");
+        robotUG.driveTrain.drivePursuit(fieldPoints, this, "To View the Rings");
     }
 
-    public void exteriorDriveToRings(double x1, double y1, double x2, double y2, double Wservo){
+    public void exteriorDriveToRings(double x1, double y1, double x2, double y2, double Wservo) {
 
         robotUG.wobbleArm.wobbleGoalServo.setPosition(Wservo);//this is a firm grip on the goal
         telemetry.update();
@@ -470,17 +472,17 @@ public class BasicAuto extends BasicOpMode {
 
         /* Drive to Wobble Goal and Scan the Number of Rings*/
 
-        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y)); //x: -57, y: -63
+        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y)); //x: -57, y: -63
 //		fieldPoints.add(new PursuitPoint(-57, -57));
         fieldPoints.add(new PursuitPoint(x1, y1));// WAS (-40, -46.2) updated to better view rings (changed it to -44, -35); 1/22: changed it back to -36, -52
         fieldPoints.add(new PursuitPoint(x2, y2)); // -37, -43
 
         // Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
-        for(int h=0;h<fieldPoints.size();h++) {
+        for (int h = 0; h < fieldPoints.size(); h++) {
             telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
         }
 
-        robotUG.driveTrain.drivePursuit(fieldPoints,this,"To View the Rings");
+        robotUG.driveTrain.drivePursuit(fieldPoints, this, "To View the Rings");
 
         robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);
 
@@ -489,20 +491,19 @@ public class BasicAuto extends BasicOpMode {
     public String decideRingNumber() {
 
         String ringsViewed;//Define string for returning what rings were seen
-        if(testModeActive){//Need this code for Offline
+        if (testModeActive) {//Need this code for Offline
             /* THIS IS WHERE THE WAIT AND VIEW RINGS OCCURS*/
             int counts = 0;
-            while(counts < 10) {// 10 counts or data points should equal 1 offline second (300 points = 30 s)
+            while (counts < 10) {// 10 counts or data points should equal 1 offline second (300 points = 30 s)
                 telemetry.addLine("VIEWING RINGS");
                 telemetry.addData("Counts", " %d", counts);
                 telemetry.update();
                 robotUG.driveTrain.robotNavigator(this);
-                counts+=1;
+                counts += 1;
             }
             ringsViewed = testModeViewRings();
             updateIMU();//Needs to be added 1 more time somewhere early in code -- missing a location where IMU angle is called but field isn't updated
-        }
-        else {//This is what runs on the robot
+        } else {//This is what runs on the robot
             double start = runtime.time();
             while ((runtime.time() - start) < 2.0) {
                 // Do nothing but report TM for counter and wait for robot to settle before looking at rings
@@ -515,10 +516,9 @@ public class BasicAuto extends BasicOpMode {
 
         telemetry.addLine("------------------------------------");
         telemetry.addData("Image Recognition Completed", "String Value: %s", ringsViewed);
-        if(testModeActive){
+        if (testModeActive) {
             telemetry.update();//Offline code can't access gamepad or imageRecognition
-        }
-        else { // This is what runs on robot
+        } else { // This is what runs on robot
 //            pressAToContinue();
             robotUG.imageRecog.shutdown(); //shutdown after pressA to allow the driver to observe screen before moving on
         }
@@ -533,7 +533,7 @@ public class BasicAuto extends BasicOpMode {
             case "None":
                 // Zone A pursuit points
 
-                fieldPoints.add(new PursuitPoint(-54,-36));//sharper turn to avoid rings, keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-54, -36));//sharper turn to avoid rings, keeping robot off center on tiles
                 fieldPoints.add(new PursuitPoint(-54, -8));//more negative final location for wobble goal drop
                 secondWobbleGoalX = -54;
                 secondWobbleGoalY = -8;
@@ -543,10 +543,10 @@ public class BasicAuto extends BasicOpMode {
                 // Zone B pursuit points
 
 
-                fieldPoints.add(new PursuitPoint(-12,-36));//sharper turn to avoid rings
-                fieldPoints.add(new PursuitPoint(-12,-12));
-                fieldPoints.add(new PursuitPoint(-30,6));//keeping robot off center on tiles
-                fieldPoints.add(new PursuitPoint(-30,16));//added straight section, more negative final location for wobble goal drop
+                fieldPoints.add(new PursuitPoint(-12, -36));//sharper turn to avoid rings
+                fieldPoints.add(new PursuitPoint(-12, -12));
+                fieldPoints.add(new PursuitPoint(-30, 6));//keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-30, 16));//added straight section, more negative final location for wobble goal drop
 
                 secondWobbleGoalX = -30;
                 secondWobbleGoalY = 16;
@@ -555,8 +555,8 @@ public class BasicAuto extends BasicOpMode {
             case "Quad":
                 // Zone C pursuit points
 
-                fieldPoints.add(new PursuitPoint(-54,-36));//sharper turn to avoid rings, keeping robot off center on tiles
-                fieldPoints.add(new PursuitPoint(-54,40));//more negative final location for wobble goal drop
+                fieldPoints.add(new PursuitPoint(-54, -36));//sharper turn to avoid rings, keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-54, 40));//more negative final location for wobble goal drop
 
                 secondWobbleGoalX = -54;
                 secondWobbleGoalY = 40;
@@ -584,7 +584,7 @@ public class BasicAuto extends BasicOpMode {
         robotUG.shooter.setShooter_Power(shooterPwr);//1.0 for high goal too much @ Y = -6, trying -8
 
         /* Drive to and Shoot the Power Shots */
-        robotUG.driveTrain.drivePursuit(fieldPoints,this,"To PowerShot Shooting Position");
+        robotUG.driveTrain.drivePursuit(fieldPoints, this, "To PowerShot Shooting Position");
 //		telemetry.addLine("Drive to Shooting Position");
 //		telemetry.addData("Desired Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.targetPoint.x, robotUG.driveTrain.targetPoint.y);
 //		telemetry.addData("Robot Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
@@ -601,20 +601,19 @@ public class BasicAuto extends BasicOpMode {
         robotUG.collector.collectorWheel.setPower(collectorPwr);//need negative power to collector rings
         robotUG.collector.collectorPower = collectorPwr;//set variable to track in Offline code
 
-        if(testModeActive){//accessing time will exceed size of data file and cause errors, run by number of counts
+        if (testModeActive) {//accessing time will exceed size of data file and cause errors, run by number of counts
             int counts = 0;
-            while(counts < 5 * time) {
+            while (counts < 5 * time) {
                 telemetry.addLine("Shoot High Goal x3");
                 telemetry.addData("Counts", " %d", counts);
-                telemetry.addData("Shooter Power", "  %1.2f",  robotUG.shooter.getShooter_Power());
-                telemetry.addData("Conveyor Power", " %1.1f",  robotUG.conveyor.conveyor_Power);
+                telemetry.addData("Shooter Power", "  %1.2f", robotUG.shooter.getShooter_Power());
+                telemetry.addData("Conveyor Power", " %1.1f", robotUG.conveyor.conveyor_Power);
                 telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
                 telemetry.update();
                 robotUG.driveTrain.robotNavigator(this);
-                counts+=1;
+                counts += 1;
             }
-        }
-        else {
+        } else {
             double startTime = runtime.time();
             double shootTime = runtime.time() - startTime;
             while (shootTime < time) {//Since no sensors purely timed set of shots
@@ -636,23 +635,22 @@ public class BasicAuto extends BasicOpMode {
 
     public void shootPowerShot(double collectorPwr, double time) {
 
-        shootHighGoal(collectorPwr,time);
+        shootHighGoal(collectorPwr, time);
         robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Left 7.5 In. to Shoot the Power Shot", this);
 
-        shootHighGoal(collectorPwr,time);
+        shootHighGoal(collectorPwr, time);
         robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Left 7.5 In. to Shoot the Power Shot", this);
 
-        shootHighGoal(collectorPwr,time);
+        shootHighGoal(collectorPwr, time);
 
         robotUG.shooter.shutdown();
-
 
 
     }
 
     public void fieldSimPoints() {
 
-        if(testModeActive) {
+        if (testModeActive) {
             for (int h = 0; h < fieldPoints.size() - 1; h++) {
                 lines.add(new PursuitLines(fieldPoints.get(h).x, fieldPoints.get(h).y, fieldPoints.get(h + 1).x, fieldPoints.get(h + 1).y));
             }
@@ -662,61 +660,60 @@ public class BasicAuto extends BasicOpMode {
     public void DriveToRings(String side) {
 
 
-        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
+        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y));
         switch (side) {
 
             //set points for the interior side
             case "Int":
 
-            fieldPoints.add(new PursuitPoint(-18, -30));
+                fieldPoints.add(new PursuitPoint(-18, -30));
 
                 // Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
-                for(int h=0;h<fieldPoints.size();h++) {
+                for (int h = 0; h < fieldPoints.size(); h++) {
                     telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
                 }
 
-                robotUG.driveTrain.drivePursuit(fieldPoints,this,"To View the Rings");
+                robotUG.driveTrain.drivePursuit(fieldPoints, this, "To View the Rings");
 
-            robotUG.driveTrain.IMUDriveRotate(-156.3, "Rotate to Face Targets", this); //-90 - inverse tan 1.5 - 10
-            fieldPoints.clear();
+                robotUG.driveTrain.IMUDriveRotate(-156.3, "Rotate to Face Targets", this); //-90 - inverse tan 1.5 - 10
+                fieldPoints.clear();
 
-            break;
+                break;
 
             //set points for the exterior side
             case "Ext":
 
-            fieldPoints.add(new PursuitPoint(-54, -30));
+                fieldPoints.add(new PursuitPoint(-54, -30));
 
                 // Display the robot points on the screen to confirm what was entered - needed for troubleshooting only
-                for(int h=0;h<fieldPoints.size();h++) {
+                for (int h = 0; h < fieldPoints.size(); h++) {
                     telemetry.addData("Point", "%d: %.2f, %.2f", h, fieldPoints.get(h).x, fieldPoints.get(h).y);
                 }
 
-                robotUG.driveTrain.drivePursuit(fieldPoints,this,"To View the Rings");
+                robotUG.driveTrain.drivePursuit(fieldPoints, this, "To View the Rings");
 
-            robotUG.driveTrain.IMUDriveRotate(-33.69, "Rotate to Face Targets", this);
-            fieldPoints.clear();
+                robotUG.driveTrain.IMUDriveRotate(-33.69, "Rotate to Face Targets", this);
+                fieldPoints.clear();
 
-            break;
+                break;
         }
 
     }
 
-//    public void driveToSecondWobbleGoal(String side, String ringsViewed) {}
+    public void DriveToPoints (String side, String ringsViewed){
 
-    public void DriveToPoints(String side, String ringsViewed) {
 
-        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x  ,robotUG.driveTrain.robotFieldLocation.y));
+        fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y));
 
         switch (side) {
 
             case "Int":
-                fieldPoints.add(new PursuitPoint(-18,-24));
-            break;
+                fieldPoints.add(new PursuitPoint(-18, -24));
+                break;
 
             case "Ext":
-                fieldPoints.add(new PursuitPoint(-54,-24));
-            break;
+                fieldPoints.add(new PursuitPoint(-54, -24));
+                break;
 
         }
 
@@ -725,22 +722,18 @@ public class BasicAuto extends BasicOpMode {
             case "None":
                 // Zone A pursuit points
 
-                fieldPoints.add(new PursuitPoint(-54,-18));//sharper turn to avoid rings, keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-54, -18));//sharper turn to avoid rings, keeping robot off center on tiles
                 fieldPoints.add(new PursuitPoint(-54, -8));//more negative final location for wobble goal drop
                 break;
 
             case "Single":
                 // Zone B pursuit points
 
-                fieldPoints.add(new PursuitPoint(-30,6));//keeping robot off center on tiles
-                fieldPoints.add(new PursuitPoint(-30,16));//added straight section, more negative final location for wobble goal drop
+                fieldPoints.add(new PursuitPoint(-30, 6));//keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-30, 16));//added straight section, more negative final location for wobble goal drop
                 break;
 
-
-    }
-
-//    public void driveToSecondWobbleGoalDrop(String side, String ringsViewed) {
-
+        }
 
     }
 

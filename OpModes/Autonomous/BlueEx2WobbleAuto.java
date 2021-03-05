@@ -156,64 +156,6 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		//Add the current robot location so a pursuit path can be found
 		//Add the desired points
 
-//		/* COACH SUGGESTION: move the robot further behind the shooting line so that any R/L motion will not cross the line
-//		 *   - moved location from 0 to -6 in Y
-//		 *   - Added a point at (-24, -6) so robot would align straight from any location
-//		 */
-//		fieldPoints.add(new PursuitPoint(-48, -8));/* COACH CHANGED - for high goal - allow all options to align */
-//		fieldPoints.add(new PursuitPoint(-30, -8));/* COACH CHANGED - for high goal */
-//
-//		//TURN ON SHOOTER -- allow time to power up to full speed while driving
-//		robotUG.shooter.setShooter_Power(1.0);//1.0 for high goal too much @ Y = -6, trying -8
-//
-//	/* Drive to and Shoot the Powershots */
-//		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To PowerShot Shooting Position");
-////		telemetry.addLine("Drive to Shooting Position");
-////		telemetry.addData("Desired Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.targetPoint.x, robotUG.driveTrain.targetPoint.y);
-////		telemetry.addData("Robot Position (X, Y)", " \t\t( %1.1f, %1.1f)", robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
-////		telemetry.addData("Robot Angles", " \t Desired: %1.1f, \t Actual: %1.1f", 0.0, robotUG.driveTrain.robotHeading);
-////		pressAToContinue();
-//	/* Coach Note: need to rotate to face the PowerShot targets or HIGh GOAL and activate shooter, conveyor, & collector
-//	 * see added lines below
-//	 */
-//
-//
-//	robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);/* COACH ADDED */
-//
-//	// make sure you are at -90 angle
-////		telemetry.addLine(" VERIFY robot is aligned Shoot Target #1");
-////		telemetry.addData("Heading", " %1.1f",  robotUG.driveTrain.robotHeading);
-////		telemetry.addData("Location", " (%1.1f, %1.1f)",  robotUG.driveTrain.robotFieldLocation.x,robotUG.driveTrain.robotFieldLocation.y);
-////		pressAToContinue();
-//
-//		// shoot HIGH GOAL
-//		//TURN ON CONVEYOR & COLLECTOR (last ring is partially under collector)
-//		robotUG.conveyor.setMotion(Conveyor.motionType.UP);
-//		robotUG.collector.collectorWheel.setPower(-1.0);//need negative power to collector rings
-//		double startTime = runtime.time();
-//		double shootTime = runtime.time() - startTime;
-//		while(shootTime <10.0) {//Since no sensors purely timed set of shots
-//			shootTime = runtime.time() - startTime;
-//			telemetry.addLine("Shoot high goal x 3");
-//			telemetry.addData("Timer", " %1.2f", shootTime);
-//			telemetry.addData("Shooter Power", "  %1.2f",  robotUG.shooter.getShooter_Power());
-//			telemetry.addData("Conveyor Power", " %1.1f",  robotUG.conveyor.conveyor_Power);
-//			telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
-//			telemetry.update();
-//		}
-//		//TURN OFF CONVEYOR & COLLECTOR OFF
-//		robotUG.conveyor.setMotion(Conveyor.motionType.OFF);
-//		robotUG.collector.collectorWheel.setPower(0.0);
-//		robotUG.shooter.shutdown();
-////		telemetry.addData("Time to Shoot Target 3 targets", " %1.2f", shootTime);
-////		pressAToContinue();//record the time to fire shot #1 and observe outcome
-//
-//		/* COACH NOTE: observation that robot not moving far enough right
-//		 *  7.5" is the correct spacing but the robot rotates so may not fully move the desired amount
-//		 *   Could update motion using the navigator
-//		 *   short term increase the motion by 1.0 to 8.5" and try out
-//		 */
-
 		//park on line
 
 //		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 12, -90, "Move Fwd ~6 in. to score points", this);

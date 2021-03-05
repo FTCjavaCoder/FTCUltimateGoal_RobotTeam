@@ -59,19 +59,19 @@ public class Collector {
         if (g.dpad_left) {
             collectorPower = 0.0;
             collectorWheel.setPower(collectorPower);
-            om.sleep(300);
+//            om.sleep(300);
         }
 
         // changed controls from gamepad up/down
         if (g.left_trigger > 0) {
             collectorPower += 0.10;
             collectorWheel.setPower(collectorPower);
-            om.sleep(300);
+//            om.sleep(300);
         }
         if (g.right_trigger > 0) {
             collectorPower -= 0.10;
             collectorWheel.setPower(collectorPower);
-            om.sleep(300);
+//            om.sleep(300);
         }
 
     }
@@ -81,12 +81,12 @@ public class Collector {
         if (g.left_trigger > 0) {
             collectorPower = 0;// collector off
             collectorWheel.setPower(collectorPower);
-            om.sleep(300);
+//            om.sleep(300);
         }
         if (g.right_trigger > 0) {
             collectorPower = -1;// collector on
             collectorWheel.setPower(collectorPower);
-            om.sleep(300);
+//            om.sleep(300);
         }
 
     }
