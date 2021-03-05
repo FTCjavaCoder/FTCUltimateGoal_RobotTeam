@@ -100,9 +100,8 @@ public class BasicAuto extends BasicOpMode {
 
     public double centralPositionX = -24;
     public double centralPositionY = -12;// was -24
-    public double secondWobbleGoalPosX = -36;// was -24
-    public double secondWobbleGoalPosY = -42;
-    //????
+    public double secondWobbleGoalPosX = -30;// was -24
+    public double secondWobbleGoalPosY = -36;// was -42
 
     /* Coach Note: moved runTime to BasicOpMode so it would be available for all methods receiving om
      *
@@ -535,8 +534,8 @@ public class BasicAuto extends BasicOpMode {
 
                 fieldPoints.add(new PursuitPoint(-54, -36));//sharper turn to avoid rings, keeping robot off center on tiles
                 fieldPoints.add(new PursuitPoint(-54, -8));//more negative final location for wobble goal drop
-                secondWobbleGoalX = -54;
-                secondWobbleGoalY = -8;
+//                secondWobbleGoalX = -54;
+//                secondWobbleGoalY = -8;
                 break;
 
             case "Single":
@@ -548,8 +547,8 @@ public class BasicAuto extends BasicOpMode {
                 fieldPoints.add(new PursuitPoint(-30, 6));//keeping robot off center on tiles
                 fieldPoints.add(new PursuitPoint(-30, 16));//added straight section, more negative final location for wobble goal drop
 
-                secondWobbleGoalX = -30;
-                secondWobbleGoalY = 16;
+//                secondWobbleGoalX = -30;
+//                secondWobbleGoalY = 16;
                 break;
 
             case "Quad":
@@ -558,8 +557,8 @@ public class BasicAuto extends BasicOpMode {
                 fieldPoints.add(new PursuitPoint(-54, -36));//sharper turn to avoid rings, keeping robot off center on tiles
                 fieldPoints.add(new PursuitPoint(-54, 40));//more negative final location for wobble goal drop
 
-                secondWobbleGoalX = -54;
-                secondWobbleGoalY = 40;
+//                secondWobbleGoalX = -54;
+//                secondWobbleGoalY = 40;
                 break;
 
             case "Multiple":

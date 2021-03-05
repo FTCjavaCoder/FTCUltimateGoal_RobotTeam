@@ -101,12 +101,15 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		runtime.reset();
 		haveBlueWobble2 = true;//Robot is gripping wobble goal
 
-		interiorDriveToRings(-36, -41, 0.9);
+		DriveToRings("Int");
+//		interiorDriveToRings(-36, -41, 0.9);
 
 //		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);
 
 		/* Choose Where to go Next and Pick up Wobble Goal */
-		decideWobbleGoalZone(decideRingNumber());
+		String rings = decideRingNumber();
+
+		decideWobbleGoalZone(rings);
 
 		/* Get Points for Drawing Lines in Visualization */
 		fieldSimPoints();
@@ -126,7 +129,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		robotUG.wobbleArm.dropWobble(this);
 
 //		pressAToContinue();// Review wobble goal drop
-		robotUG.driveTrain.IMUDriveRotate(90, "Rotate 180 counter-clockwise", this);
+//		robotUG.driveTrain.IMUDriveRotate(45, "Rotate 135 clockwise", this);
 
 		fieldPoints.clear();// clear all the prior points
 		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y));
@@ -134,19 +137,28 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 		// back for second Wobble Goal
 		fieldPoints.add(new PursuitPoint(centralPositionX, centralPositionY));
 		fieldPoints.add(new PursuitPoint(secondWobbleGoalPosX, secondWobbleGoalPosY));
-//		pressAToContinue();// Review new pursuit points
+
+		/* Get Points for Drawing Lines in Visualization */
+		fieldSimPoints();
 
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To Second Wobble Goal");
 
 		robotUG.wobbleArm.grabWobble(this);// Grab second Wobble Goal
 
-		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate 180 clockwise", this);
+//		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate 135 counter-clockwise", this);
 
-		// Go to drop point for second Wobble Goal
-		fieldPoints.add(new PursuitPoint(centralPositionX, centralPositionY));
-		fieldPoints.add(new PursuitPoint(secondWobbleGoalX, (secondWobbleGoalY - 10) ));
-		fieldPoints.add(new PursuitPoint(secondWobbleGoalX, secondWobbleGoalY));
-//		pressAToContinue();// Review new pursuit points
+		fieldPoints.clear();// clear all the prior points
+		fieldPoints.add(new PursuitPoint(robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y));
+
+//		// Go to drop point for second Wobble Goal
+//		fieldPoints.add(new PursuitPoint(centralPositionX, centralPositionY));
+//		fieldPoints.add(new PursuitPoint(secondWobbleGoalX, (secondWobbleGoalY - 10) ));
+//		fieldPoints.add(new PursuitPoint(secondWobbleGoalX, secondWobbleGoalY));
+
+		decideWobbleGoalZone(rings);
+
+		/* Get Points for Drawing Lines in Visualization */
+		fieldSimPoints();
 
 		robotUG.driveTrain.drivePursuit(fieldPoints,this,"To second Wobble Goal drop zone");
 
