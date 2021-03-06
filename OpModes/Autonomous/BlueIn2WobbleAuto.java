@@ -7,7 +7,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 @Autonomous(name="Blue Interior Double Wobble Goal Autonomous", group="Autonomous")
-@Disabled
+//@Disabled
  public class BlueIn2WobbleAuto extends BasicAuto {
 	@Override
 	public void runOpMode() {
