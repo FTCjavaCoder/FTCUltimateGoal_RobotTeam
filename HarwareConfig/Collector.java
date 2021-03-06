@@ -98,25 +98,26 @@ public class Collector {
         // set initial controls - expecting to use GamePad2
         // Using dead zone of -0.2 to 0.2 to avoid multiple selections from motion out and back
         // may need separate method for preset positions
-        if (gp.left_stick_y < -0.2) {//Y is negative away from driver
-            servoPos += 0.05;
-            collectorServo.setPosition(servoPos);
-            om.sleep(300);
-        }
-        if (gp.left_stick_y > 0.2) {//Y is positive towards driver
-            servoPos -= 0.05;
-            collectorServo.setPosition(servoPos);
-            om.sleep(300);
-        }
-        if (gp.right_stick_y < -0.2) {//Y is negative away from driver
-            servoPos += 0.01;
-            collectorServo.setPosition(servoPos);
-            om.sleep(300);
-        }
-        if (gp.right_stick_y > 0.2) {//Y is positive towards driver
-            servoPos -= 0.01;
-            collectorServo.setPosition(servoPos);
-            om.sleep(300);
+        if(om.runtime.time() >= om.timeLimitCollector) {
+
+            if (gp.left_stick_y < -0.2) {//Y is negative away from driver
+                servoPos += 0.05;
+                collectorServo.setPosition(servoPos);
+            }
+            if (gp.left_stick_y > 0.2) {//Y is positive towards driver
+                servoPos -= 0.05;
+                collectorServo.setPosition(servoPos);
+            }
+            if (gp.right_stick_y < -0.2) {//Y is negative away from driver
+                servoPos += 0.01;
+                collectorServo.setPosition(servoPos);
+            }
+            if (gp.right_stick_y > 0.2) {//Y is positive towards driver
+                servoPos -= 0.01;
+                collectorServo.setPosition(servoPos);
+            }
+
+            om.timeLimitCollector = om.runtime.time() + 0.3;
         }
 
     }
