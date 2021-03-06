@@ -34,6 +34,8 @@ public class BasicOpMode extends LinearOpMode {
 
     public ElapsedTime runtime = new ElapsedTime(); //create a counter for elapsed time
 
+    public double timeLimitCollector = 0.0;
+
 //public Telemetry telemetry = new Telemetry();//NEEDED FOR OFFLINE
 //public double timeStep = 135;//NEEDED FOR OFFLINE
 // timeStep (in milliseconds) determined so that faster motor speeds will show shorter time (number of steps, indices in array) to reach distance
