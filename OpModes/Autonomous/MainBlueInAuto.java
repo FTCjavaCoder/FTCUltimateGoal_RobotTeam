@@ -10,7 +10,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitLines;
 import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 @Autonomous(name="Main Blue Interior Autonomous", group="Autonomous")
-@Disabled
+
  public class MainBlueInAuto extends BasicAuto {
 	@Override
 	public void runOpMode() {
@@ -106,7 +106,6 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 		DriveToRings("Int");
 //		interiorDriveToRings(-36, -41, 0.9);
-
 //		robotUG.driveTrain.IMUDriveRotate(-90, "Rotate to Face Targets", this);
 
 	/* Choose Where to go Next and Pick up Wobble Goal */
@@ -114,6 +113,15 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 
 	/* Get Points for Drawing Lines in Visualization */
 		fieldSimPoints();
+
+		if (!testModeActive) {
+			while (!gamepad1.a) {
+				telemetry.addData("Robot Heading", " Desired: %.2f, FieldNav: %.2f, RobotHeading: %.2f", robotUG.driveTrain.targetHeading, robotUG.driveTrain.robotFieldLocation.theta, robotUG.driveTrain.robotHeading);
+				telemetry.addData("Robot Location", " Desired(X,Y): (%.2f,%.2f), Navigator(X,Y): (%.2f,%.2f)",
+						robotUG.driveTrain.targetPoint.x, robotUG.driveTrain.targetPoint.y, robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
+				telemetry.update();
+				}
+			}
 
 //		pressAToContinue();
 
@@ -145,7 +153,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		robotUG.driveTrain.IMUDriveRotate(0, "Rotate 90 deg CCW", this);/* COACH CHANGED */
 
 	/* Drives the Robot to the Shooting area. x1 and y1 are the first coordinates; x2 and y2 are the second. */
-		driveToShoot(-48,-6, -30, -6, 0.8);
+		driveToShoot(-48,-6, -30, -6, 1275);
 
 //		pressAToContinue();
 
@@ -209,7 +217,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		telemetry.addData("Time to Shoot Target #3", " %1.2f", shootTime);
 //		pressAToContinue();//record the time to fire shot #1 and observe outcome
 
-		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 12, -90, "Move Fwd ~6 in. to score points", this);
+		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 14, -90, "Move Fwd ~6 in. to score points", this);
 		/* INCREASED DRIVING DISTANCE BASED ON SHOOTING LOCATION*/
 
 		//Telemetry output after driving completed

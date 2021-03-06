@@ -520,7 +520,7 @@ public class BasicAuto extends BasicOpMode {
             telemetry.update();//Offline code can't access gamepad or imageRecognition
         } else { // This is what runs on robot
 //            pressAToContinue();
-            robotUG.imageRecog.shutdown(); //shutdown after pressA to allow the driver to observe screen before moving on
+//            robotUG.imageRecog.shutdown(); //shutdown after pressA to allow the driver to observe screen before moving on
         }
 
         return ringsViewed;
@@ -581,7 +581,9 @@ public class BasicAuto extends BasicOpMode {
         fieldSimPoints();
 
         //TURN ON SHOOTER -- allow time to power up to full speed while driving
-        robotUG.shooter.setShooter_Power(shooterPwr);//1.0 for high goal too much @ Y = -6, trying -8
+//        robotUG.shooter.setShooter_Power(shooterPwr);//1.0 for high goal too much @ Y = -6, trying -8
+        robotUG.shooter.speedActive = true;
+        robotUG.shooter.shooterSpeedControl(shooterPwr, this);
 
         /* Drive to and Shoot the Power Shots */
         robotUG.driveTrain.drivePursuit(fieldPoints, this, "To PowerShot Shooting Position");
@@ -599,7 +601,7 @@ public class BasicAuto extends BasicOpMode {
 
         robotUG.conveyor.setMotion(Conveyor.motionType.UP);
         robotUG.collector.collectorWheel.setPower(collectorPwr);//need negative power to collector rings
-        robotUG.collector.collectorPower = collectorPwr;//set variable to track in Offline code
+//        robotUG.collector.collectorPower = collectorPwr;//set variable to track in Offline code
 
         if (testModeActive) {//accessing time will exceed size of data file and cause errors, run by number of counts
             int counts = 0;
@@ -731,6 +733,17 @@ public class BasicAuto extends BasicOpMode {
 
                 fieldPoints.add(new PursuitPoint(-30, 6));//keeping robot off center on tiles
                 fieldPoints.add(new PursuitPoint(-30, 16));//added straight section, more negative final location for wobble goal drop
+                break;
+
+            case "Quad":
+                // Zone C pursuit points
+
+                fieldPoints.add(new PursuitPoint(-54,30));//sharper turn to avoid rings, keeping robot off center on tiles
+                fieldPoints.add(new PursuitPoint(-54,40));//more negative final location for wobble goal drop
+                break;
+
+            case "Multiple":
+                //el problemo
                 break;
 
         }

@@ -80,6 +80,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 		// Tell the robot where it's starting location and orientation on the field is
 
 		robotUG.driveTrain.initIMUtoAngle(-robotUG.driveTrain.robotFieldLocation.theta);//ADDED HERE FOR OFFLINE, NEEDS TO BE IN initialize() method in OpMode
+		updateIMU();
 		robotUG.driveTrain.robotX = 0;// robot local coordinates always start at 0
 		robotUG.driveTrain.robotY = 0;
 		robotUG.wobbleArm.wobbleGoalServo.setPosition(0.8);//this is a loose grip
@@ -100,10 +101,12 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 		runtime.reset();
 		haveBlueWobble1 = true;//Robot is gripping wobble goal
 
-		exteriorDriveToRings(-36, -52, -37, -43, 0.9);
+		DriveToRings("Ext");
+//		exteriorDriveToRings(-36, -52, -37, -43, 0.9);
 
 	/* Choose Where to go Next and Pick up Wobble Goal */
-		decideWobbleGoalZone(decideRingNumber());
+		DriveToPoints("Ext", decideRingNumber());
+//		decideWobbleGoalZone(decideRingNumber());
 
 	/* Get Points for Drawing Lines in Visualization */
 		fieldSimPoints();
@@ -120,7 +123,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 //		pressAToContinue();// Review robot's motion
 
 	/* Rotate 180*, Drop the Wobble Goal and Rotation 180 */
-		robotUG.driveTrain.IMUDriveRotate(90, "Rotate 180*", this);
+//		robotUG.driveTrain.IMUDriveRotate(90, "Rotate 180*", this);
 		robotUG.wobbleArm.dropWobble(this);
 
 //		telemetry.addLine("Rotate to Drop Goal");
@@ -138,15 +141,13 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 //		robotUG.driveTrain.IMUDriveRotate(0, "Rotate 90 deg CCW", this);/* COACH CHANGED */
 
 	/* Drives the Robot to the Shooting area. x1 and y1 are the first coordinates; x2 and y2 are the second. */
-		driveToShoot(-48,-6, -14.5, -6, 0.775);
+		driveToShoot(-48,-6, -14.5, -6, 1175);
 
 //		pressAToContinue();
 
 	/* Shoot the High Goal. */
-		shootPowerShot(-1.0, 3);
-
-
-
+		shootPowerShot(-1.0, 4);
+		robotUG.shooter.shutdown();
 //		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 8.5, -90, "Move Right 7.5 inch to shot", this);
 //
 //		//Make sure that robot is lined up for 2nd shot
@@ -205,7 +206,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 //		pressAToContinue();//record the time to fire shot #1 and observe outcome
 // ---------- END CODE FOR POWER SHOT ------------------------
 
-		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 12, -90, "Move Fwd ~6 in. to score points", this);
+		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.FwdBack, 14, -90, "Move Fwd ~6 in. to score points", this);
 		/* INCREASED DRIVING DISTANCE BASED ON SHOOTING LOCATION*/
 
 		//Telemetry output after driving completed

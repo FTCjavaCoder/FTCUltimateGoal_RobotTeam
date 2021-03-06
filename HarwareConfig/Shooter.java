@@ -50,7 +50,7 @@ public class Shooter {
     private double powerFeedForward = 0.0;//Shooter Feed Forward Power based on target speed not error
     private double powerLeft = 0.0;//Shooter left total power command (range -1.0 to 1.0)
     private double powerRight = 0.0;//Shooter right total power command (range -1.0 to 1.0)
-    private boolean speedActive = false;//variable to toggle between speed control and power control for trial and error
+    public boolean speedActive = false;//variable to toggle between speed control and power control for trial and error
     private final double COUNT_PER_REV = 103.6;// ANDYMARK NeveRest 3.7 gearmotor ticks(counts)/rev
     private final double MOTOR_MAX_SPEED = 1700.0;//motor speed capability in RPM, limits command
     /* Make below private final constants once done with troubleshooting */
