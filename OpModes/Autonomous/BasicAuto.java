@@ -580,9 +580,9 @@ public class BasicAuto extends BasicOpMode {
         fieldSimPoints();
 
         //TURN ON SHOOTER -- allow time to power up to full speed while driving
-//        robotUG.shooter.setShooter_Power(shooterPwr);//1.0 for high goal too much @ Y = -6, trying -8
-        robotUG.shooter.speedActive = true;
-        robotUG.shooter.shooterSpeedControl(shooterPwr, this);
+        robotUG.shooter.setShooter_Power(shooterPwr);//1.0 for high goal too much @ Y = -6, trying -8
+//        robotUG.shooter.speedActive = true;
+//        robotUG.shooter.shooterSpeedControl(shooterPwr, this);
 
         /* Drive to and Shoot the Power Shots */
         robotUG.driveTrain.drivePursuit(fieldPoints, this, "To PowerShot Shooting Position");
@@ -596,8 +596,7 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
-    public void shootHighGoal(double collectorPwr, double time) {
-
+    public void shootHighGoal(double collectorPwr, double time, double speed) {
         robotUG.conveyor.setMotion(Conveyor.motionType.UP);
         robotUG.collector.collectorWheel.setPower(collectorPwr);//need negative power to collector rings
 //        robotUG.collector.collectorPower = collectorPwr;//set variable to track in Offline code
@@ -625,6 +624,9 @@ public class BasicAuto extends BasicOpMode {
                 telemetry.addData("Conveyor Power", " %1.1f", robotUG.conveyor.conveyor_Power);
                 telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
                 telemetry.update();
+                robotUG.shooter.speedActive = true;
+                robotUG.shooter.shooterSpeedControl(speed, this);
+
             }
         }
         //TURN OFF CONVEYOR & COLLECTOR OFF
@@ -634,15 +636,15 @@ public class BasicAuto extends BasicOpMode {
 
     }
 
-    public void shootPowerShot(double collectorPwr, double time) {
+    public void shootPowerShot(double collectorPwr, double time, double speed) {
 
-        shootHighGoal(collectorPwr, time);
+        shootHighGoal(collectorPwr, time, speed);
         robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Left 7.5 In. to Shoot the Power Shot", this);
 
-        shootHighGoal(collectorPwr, time);
+        shootHighGoal(collectorPwr, time, speed);
         robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Left 7.5 In. to Shoot the Power Shot", this);
 
-        shootHighGoal(collectorPwr, time);
+        shootHighGoal(collectorPwr, time, speed);
 
         robotUG.shooter.shutdown();
 

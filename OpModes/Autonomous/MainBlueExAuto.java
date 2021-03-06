@@ -154,12 +154,12 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		robotUG.driveTrain.IMUDriveRotate(0, "Rotate 90 deg CCW", this);/* COACH CHANGED */
 
 	/* Drives the Robot to the Shooting area. x1 and y1 are the first coordinates; x2 and y2 are the second. */
-		driveToShoot(-48,-6, -30, -6, 1275);
+		driveToShoot(-48,-6, -30, -6, 0.8);
 
 //		pressAToContinue();
 
 	/* Shoot the High Goal. */
-		shootHighGoal(-1.0, 10);
+		shootHighGoal(-1.0, 10, 1275);
 		robotUG.shooter.shutdown();
 //		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 8.5, -90, "Move Right 7.5 inch to shot", this);
 //

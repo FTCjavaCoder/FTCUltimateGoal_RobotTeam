@@ -141,12 +141,12 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 //		robotUG.driveTrain.IMUDriveRotate(0, "Rotate 90 deg CCW", this);/* COACH CHANGED */
 
 	/* Drives the Robot to the Shooting area. x1 and y1 are the first coordinates; x2 and y2 are the second. */
-		driveToShoot(-48,-6, -14.5, -6, 1175);
+		driveToShoot(-48,-6, -14.5, -6, 0.7);
 
 //		pressAToContinue();
 
 	/* Shoot the High Goal. */
-		shootPowerShot(-1.0, 4);
+		shootPowerShot(-1.0, 4, 1175);
 		robotUG.shooter.shutdown();
 //		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 8.5, -90, "Move Right 7.5 inch to shot", this);
 //
