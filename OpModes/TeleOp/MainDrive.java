@@ -82,22 +82,22 @@ public class MainDrive extends BasicTeleOp {
 
 // run until the end of the match (driver presses STOP)
         // CONFIGURE THE TELEMETRY DESIRED w/o gamepad prior to loop
-        robotUG.setTelemetrySize(5);//create windows for driveTrain, wobbleGoal, shooter, conveyor, collector
-        robotUG.setTelemetryIndex(0);//active index from 0 to size-1
+        robotUG.setTelemetrySize(1);//create windows for driveTrain, wobbleGoal, shooter, conveyor, collector
+//        robotUG.setTelemetryIndex(0);//active index from 0 to size-1
         //Options are 0 = inactive, 1 = drivetrain, 2 = WGA, 3 = shooter, 4 = conveyor , 5 = collector, 6 = image recognition
-        robotUG.setTelemetryOption(1);//DriveTrain
+//        robotUG.setTelemetryOption(1);//DriveTrain
 
-        robotUG.setTelemetryIndex(1);
-        robotUG.setTelemetryOption(2);//Wobble Goal Arm
+//        robotUG.setTelemetryIndex(1);
+//        robotUG.setTelemetryOption(2);//Wobble Goal Arm
 
-        robotUG.setTelemetryIndex(2);
+        robotUG.setTelemetryIndex(0);
         robotUG.setTelemetryOption(3);//Shooter
 
-        robotUG.setTelemetryIndex(3);
-        robotUG.setTelemetryOption(4);//Conveyor
-
-        robotUG.setTelemetryIndex(4);
-        robotUG.setTelemetryOption(5);//Collector
+//        robotUG.setTelemetryIndex(3);
+//        robotUG.setTelemetryOption(4);//Conveyor
+//
+//        robotUG.setTelemetryIndex(4);
+//        robotUG.setTelemetryOption(5);//Collector
         double[] gainData =robotUG.shooter.getGainArray();
 
         RobotLog.ii("SHOOTER SPEED LOG", "********* NEW LOG ***********");

@@ -201,6 +201,16 @@ public class Shooter {
             integratorReset();//reset integrator for new commands
             om.sleep(200);
         }
+        if (gp.left_bumper) {
+            userTargetRPM = 1175.0;//set target speed to power shot RPM
+            integratorReset();//reset integrator for new commands
+            om.sleep(200);
+        }
+        if (gp.right_bumper) {
+            userTargetRPM = 1275.0;//set target speed to high goal RPM
+            integratorReset();//reset integrator for new commands
+            om.sleep(200);
+        }
         if (gp.dpad_up) {
             userTargetRPM += 25.0;//increase target speed, was 100.0
             integratorReset();//reset integrator for new commands
