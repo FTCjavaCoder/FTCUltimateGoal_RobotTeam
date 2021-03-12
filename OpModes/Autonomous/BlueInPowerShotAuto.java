@@ -146,7 +146,7 @@ import UltimateGoal_RobotTeam.HarwareConfig.HardwareRobotMulti;
 //		pressAToContinue();
 
 	/* Shoot the High Goal. */
-		shootPowerShot(-1.0, 4, 1175);
+		shootPowerShot(-1.0, 4, cons.SHOOTER_RPM_POWERSHOT);
 		robotUG.shooter.shutdown();
 //		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 8.5, -90, "Move Right 7.5 inch to shot", this);
 //

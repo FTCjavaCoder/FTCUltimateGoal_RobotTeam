@@ -38,6 +38,10 @@ public class Constants {
     public double IMU_DISTANCE_TOL = 1.0;
 
     public double SHOOTER_POWER_LIMIT = 0.9;// was 1.0
+    public double SHOOTER_RPM_HIGHGOAL = 1275;// was 1.0
+    public double SHOOTER_RPM_POWERSHOT = 1175;// was 1.0
+
+
 
     public int MOVE_TOL = 30;// tolerance for motor reaching final positions in drive methods
 
@@ -138,6 +142,10 @@ public class Constants {
 
         pHM.put("speedKP", new ParameterHM(0.0024, instanceType.controlGain,groupType.SHOOTER_GAINS));
 
+        pHM.put("SHOOTER_RPM_HIGHGOAL", new ParameterHM(1275, instanceType.shooterRPM,groupType.AUTO_LIMITS));
+
+        pHM.put("SHOOTER_RPM_POWERSHOT", new ParameterHM(1175, instanceType.shooterRPM,groupType.AUTO_LIMITS));
+
     }// Define initial values for HashMap parameters
 
     public void initParameters() {
@@ -191,6 +199,12 @@ public class Constants {
             }
             if(s.equals("speedKP")) {
                 speedKP = pHM.get(s).value;
+            }
+            if(s.equals("SHOOTER_RPM_HIGHGOAL")) {
+                SHOOTER_RPM_HIGHGOAL = pHM.get(s).value;
+            }
+            if(s.equals("SHOOTER_RPM_POWERSHOT")) {
+                SHOOTER_RPM_POWERSHOT = pHM.get(s).value;
             }
 
         }

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ParameterHM {
 
-    public enum instanceType {powerLimit, driveGain, counts, toleranceCounts, distanceInches, rotationDegrees, servoPosition, controlGain}
+    public enum instanceType {powerLimit, driveGain, counts, toleranceCounts, distanceInches, rotationDegrees, servoPosition, controlGain, shooterRPM}
 
     public boolean hasRange = true;
     public double min = -999;
@@ -87,6 +87,15 @@ public class ParameterHM {
                 max = 1;
                 increment = 0.0001;
                 format = "%.5f";
+                paramType = type;
+                break;
+
+            case shooterRPM :
+                value = inputValue;
+                hasRange = true;
+                min = 0;
+                max = 1700;
+                increment = 25;
                 paramType = type;
                 break;
         }
@@ -186,6 +195,10 @@ public class ParameterHM {
             case ("controlGain"):
                 inst = instanceType.controlGain;
                 break;
+            case ("shooterRPM"):
+                inst = instanceType.shooterRPM;
+                break;
+
         }
         return inst;
     }

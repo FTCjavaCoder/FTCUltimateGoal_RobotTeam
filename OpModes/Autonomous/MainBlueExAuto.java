@@ -159,7 +159,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		pressAToContinue();
 
 	/* Shoot the High Goal. */
-		shootHighGoal(-1.0, 10, 1275);
+		shootHighGoal(-1.0, 10, cons.SHOOTER_RPM_HIGHGOAL);
 		robotUG.shooter.shutdown();
 //		robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 8.5, -90, "Move Right 7.5 inch to shot", this);
 //
