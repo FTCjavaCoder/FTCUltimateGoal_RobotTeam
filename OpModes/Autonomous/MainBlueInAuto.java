@@ -114,14 +114,14 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 	/* Get Points for Drawing Lines in Visualization */
 		fieldSimPoints();
 
-		if (!testModeActive) {
-			while (!gamepad1.a) {
-				telemetry.addData("Robot Heading", " Desired: %.2f, FieldNav: %.2f, RobotHeading: %.2f", robotUG.driveTrain.targetHeading, robotUG.driveTrain.robotFieldLocation.theta, robotUG.driveTrain.robotHeading);
-				telemetry.addData("Robot Location", " Desired(X,Y): (%.2f,%.2f), Navigator(X,Y): (%.2f,%.2f)",
-						robotUG.driveTrain.targetPoint.x, robotUG.driveTrain.targetPoint.y, robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
-				telemetry.update();
-				}
-			}
+//		if (!testModeActive) {
+//			while (!gamepad1.a) {
+//				telemetry.addData("Robot Heading", " Desired: %.2f, FieldNav: %.2f, RobotHeading: %.2f", robotUG.driveTrain.targetHeading, robotUG.driveTrain.robotFieldLocation.theta, robotUG.driveTrain.robotHeading);
+//				telemetry.addData("Robot Location", " Desired(X,Y): (%.2f,%.2f), Navigator(X,Y): (%.2f,%.2f)",
+//						robotUG.driveTrain.targetPoint.x, robotUG.driveTrain.targetPoint.y, robotUG.driveTrain.robotFieldLocation.x, robotUG.driveTrain.robotFieldLocation.y);
+//				telemetry.update();
+//				}
+//			}
 
 //		pressAToContinue();
 
