@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 import UltimateGoal_RobotTeam.OpModes.BasicOpMode;
 
@@ -101,20 +102,20 @@ public class Collector {
         if(om.runtime.time() >= om.timeLimitCollector) {
 
             if (gp.left_stick_y < -0.2) {//Y is negative away from driver
-                servoPos += 0.05;
-                collectorServo.setPosition(servoPos);
+                servoPos += 0.1;
+                collectorServo.setPosition(Range.clip(servoPos, 0, 0.7));
             }
             if (gp.left_stick_y > 0.2) {//Y is positive towards driver
-                servoPos -= 0.05;
-                collectorServo.setPosition(servoPos);
+                servoPos -= 0.1;
+                collectorServo.setPosition(Range.clip(servoPos, 0, 0.7));
             }
             if (gp.right_stick_y < -0.2) {//Y is negative away from driver
-                servoPos += 0.01;
-                collectorServo.setPosition(servoPos);
+                servoPos += 0.05;
+                collectorServo.setPosition(Range.clip(servoPos, 0, 0.7));
             }
             if (gp.right_stick_y > 0.2) {//Y is positive towards driver
-                servoPos -= 0.01;
-                collectorServo.setPosition(servoPos);
+                servoPos -= 0.05;
+                collectorServo.setPosition(Range.clip(servoPos, 0, 0.7));
             }
 
             om.timeLimitCollector = om.runtime.time() + 0.3;

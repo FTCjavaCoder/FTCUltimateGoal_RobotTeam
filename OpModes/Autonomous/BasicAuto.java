@@ -619,10 +619,11 @@ public class BasicAuto extends BasicOpMode {
             while (shootTime < time) {//Since no sensors purely timed set of shots
                 shootTime = runtime.time() - startTime;
                 telemetry.addLine("Shoot high goal x 3");
-                telemetry.addData("Timer", " %1.2f", shootTime);
-                telemetry.addData("Shooter Power", "  %1.2f", robotUG.shooter.getShooter_Power());
-                telemetry.addData("Conveyor Power", " %1.1f", robotUG.conveyor.conveyor_Power);
-                telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
+                robotUG.shooter.getMaxTelemetry(this);
+//                telemetry.addData("Timer", " %1.2f", shootTime);
+//                telemetry.addData("Shooter Power", "  %1.2f", robotUG.shooter.getShooter_Power());
+//                telemetry.addData("Conveyor Power", " %1.1f", robotUG.conveyor.conveyor_Power);
+//                telemetry.addLine("Press GamePad2 'BACK' once shooter fires ...");
                 telemetry.update();
                 robotUG.shooter.speedActive = true;
                 robotUG.shooter.shooterSpeedControl(speed, this);
@@ -678,7 +679,7 @@ public class BasicAuto extends BasicOpMode {
 
                 robotUG.driveTrain.drivePursuit(fieldPoints, this, "To View the Rings");
 
-                robotUG.driveTrain.IMUDriveRotate(-156.3, "Rotate to Face Targets", this); //-90 - inverse tan 1.5 - 10
+                robotUG.driveTrain.IMUDriveRotate(-166.3, "Rotate to Face Targets", this); //-90 - inverse tan 1.5 - 10
                 fieldPoints.clear();
 
                 break;
@@ -695,7 +696,7 @@ public class BasicAuto extends BasicOpMode {
 
                 robotUG.driveTrain.drivePursuit(fieldPoints, this, "To View the Rings");
 
-                robotUG.driveTrain.IMUDriveRotate(-33.69, "Rotate to Face Targets", this);
+                robotUG.driveTrain.IMUDriveRotate(-23.69, "Rotate to Face Targets", this);
                 fieldPoints.clear();
 
                 break;
