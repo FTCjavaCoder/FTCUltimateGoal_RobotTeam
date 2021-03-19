@@ -12,6 +12,8 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 	@Override
 	public void runOpMode() {
 
+		constructRobot();
+
 		initialize();
 
 		waitForStart();
