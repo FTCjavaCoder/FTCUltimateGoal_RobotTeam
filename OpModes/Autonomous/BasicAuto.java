@@ -504,7 +504,7 @@ public class BasicAuto extends BasicOpMode {
             updateIMU();//Needs to be added 1 more time somewhere early in code -- missing a location where IMU angle is called but field isn't updated
         } else {//This is what runs on the robot
             double start = runtime.time();
-            while ((runtime.time() - start) < 2.0) {
+            while ((runtime.time() - start) < 1.0) {
                 // Do nothing but report TM for counter and wait for robot to settle before looking at rings
                 robotUG.imageRecog.getTelemetry(this);
                 telemetry.update();
@@ -640,15 +640,16 @@ public class BasicAuto extends BasicOpMode {
     public void shootPowerShot(double collectorPwr, double time, double speed) {
 
         shootHighGoal(collectorPwr, time, speed);
+        robotUG.shooter.setShooter_Power(0.8);
         robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Left 7.5 In. to Shoot the Power Shot", this);
 
         shootHighGoal(collectorPwr, time, speed);
+        robotUG.shooter.setShooter_Power(0.8);
         robotUG.driveTrain.IMUDriveFwdRight(DriveTrain.moveDirection.RightLeft, 7.5, -90, "Move Left 7.5 In. to Shoot the Power Shot", this);
 
         shootHighGoal(collectorPwr, time, speed);
 
         robotUG.shooter.shutdown();
-
 
     }
 
