@@ -52,9 +52,9 @@ public class Constants {
     public double PURSUIT_RADIUS = 6.0;
 
     // Shooter control parameters
-    public double speedKI = 0.0005;
+    public double speedKI = 0.00025;
     public double maxError = 1000;
-    public double speedKP = 0.0020;
+    public double speedKP = 0.0024;
 
 
     //Old Skystone variables
