@@ -72,7 +72,7 @@ import UltimateGoal_RobotTeam.Utilities.PursuitPoint;
 //		}
 		telemetry.update();
 
-		robotUG.driveTrain.robotFieldLocation.setLocation(-31,-63,90); //MOVED HERE FOR OFFLINE CODE
+		robotUG.driveTrain.robotFieldLocation.setLocation(-18,-63,90); //MOVED HERE FOR OFFLINE CODE
 
 	}
 
