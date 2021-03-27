@@ -103,21 +103,22 @@ public class Collector {
 
             if (gp.left_stick_y < -0.2) {//Y is negative away from driver
                 servoPos += 0.1;
-                collectorServo.setPosition(Range.clip(servoPos, 0, 0.7));
             }
             if (gp.left_stick_y > 0.2) {//Y is positive towards driver
                 servoPos -= 0.1;
-                collectorServo.setPosition(Range.clip(servoPos, 0, 0.7));
+            }
+            if(gp.right_stick_button) {
+                servoPos = 0.2;
             }
             if (gp.right_stick_y < -0.2) {//Y is negative away from driver
-                servoPos += 0.05;
-                collectorServo.setPosition(Range.clip(servoPos, 0, 0.7));
+                servoPos = 0.4;
             }
             if (gp.right_stick_y > 0.2) {//Y is positive towards driver
-                servoPos -= 0.05;
-                collectorServo.setPosition(Range.clip(servoPos, 0, 0.7));
+                servoPos = 0.3;
             }
 
+            servoPos = Range.clip(servoPos, 0, 0.7);
+            collectorServo.setPosition(servoPos);
             om.timeLimitCollector = om.runtime.time() + 0.3;
         }
 

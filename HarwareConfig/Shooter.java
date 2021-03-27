@@ -202,7 +202,7 @@ public class Shooter {
             om.sleep(200);
         }
         if (gp.left_bumper) {
-            userTargetRPM = 1175.0;//set target speed to power shot RPM
+            userTargetRPM = 1225.0;//set target speed to power shot RPM
             integratorReset();//reset integrator for new commands
             om.sleep(200);
         }

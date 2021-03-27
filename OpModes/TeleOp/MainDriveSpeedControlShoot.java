@@ -119,7 +119,7 @@ public class MainDriveSpeedControlShoot extends BasicTeleOp {
             robotUG.conveyor.ConveyorControl(gamepad2, this);
 
 
-            robotUG.shooter.setShooterModeGamePad(gamepad2,this);//SET the speedActive boolean to determine motor control mode - dPad Right
+            robotUG.shooter.speedActive = true;
 
             robotUG.shooter.setShooterSpeed(gamepad2,this);//Updated the internal shooter userTargetRPM - dPad
 
